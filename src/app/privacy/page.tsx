@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy policy for World-Class Calculators.",
+  description: "Privacy policy for MyCalcsWorld.",
 };
 
 export default function PrivacyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <p className="mt-4 text-sm text-slate-500">Last updated: September 9, 2026</p>
       <div className="mt-6 space-y-4 text-slate-600 leading-relaxed">
         <p>
-          World-Class Calculators performs calculator math in your browser. We do not
+          MyCalcsWorld performs calculator math in your browser. We do not
           require an account to use the tools.
         </p>
         <h2 className="text-lg font-semibold text-slate-900 pt-2">Information we collect</h2>

@@ -17,7 +17,7 @@ type GoldApiRow = {
 
 async function fetchGoldApi(symbol: string): Promise<GoldApiRow> {
   const res = await fetch(`https://api.gold-api.com/price/${symbol}`, {
-    headers: { Accept: "application/json", "User-Agent": "world-class-calculators/1.0" },
+    headers: { Accept: "application/json", "User-Agent": "mycalcsworld/1.0" },
     next: { revalidate: 600 },
   });
   if (!res.ok) throw new Error(`gold-api ${symbol} HTTP ${res.status}`);

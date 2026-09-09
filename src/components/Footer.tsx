@@ -10,10 +10,11 @@ export function Footer() {
         <AdSlot placement="footer" className="mb-8 bg-slate-900 border-slate-800 no-print" />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-white font-bold text-lg mb-2">World-Class Calculators</p>
+            <p className="text-white font-bold text-lg mb-2">MyCalcsWorld</p>
             <p className="text-sm text-slate-400">
-              A free hub of {calculatorCount}+ working calculators — built to feel faster and
-              clearer than ad-heavy calculator directories, with room to grow beyond 200 tools.
+              Free online calculators for finance, math, health, and everyday life —{" "}
+              {calculatorCount}+ working tools, built to feel faster and clearer than
+              ad-heavy calculator directories.
             </p>
           </div>
           <div>
@@ -62,7 +63,7 @@ export function Footer() {
           </div>
         </div>
         <p className="mt-8 border-t border-slate-800 pt-6 text-xs text-slate-500">
-          © {new Date().getFullYear()} World-Class Calculators. Estimates only — not
+          © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
           professional advice.
         </p>
       </div>

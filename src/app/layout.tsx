@@ -16,27 +16,27 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://world-class-calculators.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "World-Class Calculators — Free Online Calculator Hub",
-    template: "%s | World-Class Calculators",
+    default: "MyCalcsWorld — Free Online Calculators",
+    template: "%s | MyCalcsWorld",
   },
   description:
-    "200+ free working calculators for finance, math, health, conversion, construction, cooking, science, and more. Fast, dark-mode ready, AdSense-friendly.",
+    "Free online calculators for finance, math, health, and everyday life. 200+ working tools — mortgage, BMI, conversions, construction, and more.",
   openGraph: {
     type: "website",
-    siteName: "World-Class Calculators",
-    title: "World-Class Calculators",
+    siteName: "MyCalcsWorld",
+    title: "MyCalcsWorld",
     description:
-      "200+ free, accurate online calculators — mortgage, BMI, conversions, construction, health, and more.",
+      "Free online calculators for finance, math, health, and everyday life.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "World-Class Calculators",
-    description: "Free online calculators for everyday decisions.",
+    title: "MyCalcsWorld",
+    description: "Free online calculators for finance, math, health, and everyday life.",
   },
   robots: { index: true, follow: true },
 };

@@ -1,4 +1,6 @@
-# World-Class Calculators
+# MyCalcsWorld
+
+Free online calculators for finance, math, health, and everyday life.
 
 A polished, SEO-friendly **Next.js** calculator megasite with **200+ working calculators**, live commodity prices, a modern mobile-first UX (dark mode, ⌘K search, richer results), and AdSense-ready placements.
 
@@ -6,6 +8,7 @@ A polished, SEO-friendly **Next.js** calculator megasite with **200+ working cal
 
 ## Live / repo
 
+- Brand / canonical site: https://mycalcsworld.online
 - GitHub: https://github.com/staed-web/world-class-calculators
 - Deploy target: Vercel (App Router)
 
@@ -79,7 +82,7 @@ High-traffic additions this pass include credit-card payoff, lease vs buy, rent 
 |----------|---------|
 | `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | e.g. `ca-pub-xxxxxxxx` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_*` | Optional slot IDs (header, in-content, sidebar, sticky-mobile, footer, default) |
-| `NEXT_PUBLIC_SITE_URL` | Canonical site URL for sitemap/metadata |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL for sitemap/metadata (default `https://mycalcsworld.online`) |
 
 ## Disclaimers
 

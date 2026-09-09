@@ -11,7 +11,7 @@ export default function DisclaimerPage() {
       <h1 className="text-3xl font-bold text-slate-900">Disclaimer</h1>
       <div className="mt-6 space-y-4 text-slate-600 leading-relaxed">
         <p>
-          All calculators and results on World-Class Calculators are provided for
+          All calculators and results on MyCalcsWorld are provided for
           general educational and informational purposes only. They are{" "}
           <strong>estimates</strong>, not guarantees.
         </p>

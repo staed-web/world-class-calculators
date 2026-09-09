@@ -3,7 +3,7 @@ import { categories } from "@/lib/categories";
 import { allCalculators, calculatorPath } from "@/lib/calculators/registry";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://world-class-calculators.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/search", "/about", "/privacy", "/disclaimer"].map(

@@ -8,7 +8,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border backdrop-blur" style={{ background: "var(--header)" }}>
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
         <Link href="/" className="shrink-0 font-bold text-brand text-lg tracking-tight">
-          World-Class<span className="text-foreground"> Calculators</span>
+          MyCalcs<span className="text-foreground">World</span>
         </Link>
         <div className="hidden flex-1 md:block max-w-md ml-auto">
           <SearchBar showShortcut />

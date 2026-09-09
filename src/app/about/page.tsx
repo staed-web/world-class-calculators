@@ -3,7 +3,7 @@ import { calculatorCount } from "@/lib/calculators/registry";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About World-Class Calculators — mission, scope, and how the site works.",
+  description: "About MyCalcsWorld — mission, scope, and how the site works.",
 };
 
 export default function AboutPage() {
@@ -11,7 +11,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-10 prose prose-slate">
       <h1 className="text-3xl font-bold text-slate-900">About</h1>
       <p className="mt-4 text-slate-600 leading-relaxed">
-        World-Class Calculators is a free online hub of {calculatorCount} working
+        MyCalcsWorld is a free online hub of {calculatorCount} working
         calculators spanning finance, math, health & fitness, unit conversion, dates,
         everyday life, science & engineering, business, education, and statistics.
       </p>
