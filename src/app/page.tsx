@@ -11,11 +11,14 @@ import {
 } from "@/lib/calculators/registry";
 
 export default function HomePage() {
-  const featured = getFeaturedCalculators().slice(0, 6);
+  const featured = getFeaturedCalculators().slice(0, 9);
   const popular = getPopularCalculators().slice(0, 12);
 
   return (
-    <div>
+    <div className="relative">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] ambient-mesh" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-24 h-[28rem] ambient-grid opacity-40" aria-hidden />
+
       <section
         className="relative overflow-hidden border-b border-border text-white"
         style={{
@@ -23,51 +26,69 @@ export default function HomePage() {
             "linear-gradient(135deg, var(--hero-from), var(--hero-via) 45%, var(--hero-to))",
         }}
       >
-        <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_15%_20%,white,transparent_42%),radial-gradient(circle_at_85%_10%,#a5b4fc,transparent_35%)]" />
-        <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-20">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-teal-100">
-            {calculatorCount}+ free calculators · mobile-first · dark mode
+        <div className="hero-orb -left-10 top-8 h-56 w-56 bg-teal-300/40" />
+        <div className="hero-orb right-0 top-20 h-64 w-64 bg-indigo-400/35" style={{ animationDelay: "1.5s" }} />
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_15%_20%,white,transparent_42%),radial-gradient(circle_at_85%_10%,#a5b4fc,transparent_35%)]" />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-22">
+          <p className="rise-in mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-teal-100">
+            {calculatorCount}+ free calculators · interactive charts · 3D math
           </p>
-          <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-            Faster calculators. Clearer results. More tools than the ad-stuffed hubs.
+          <h1 className="rise-in max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
+            Calculators that feel like a modern product — not a dusty directory.
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-teal-50/95">
-            Finance, math, health, construction, cooking, science, and conversions —
-            accurate, keyboard-friendly, and print-ready. Search with{" "}
+          <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
+            Finance charts, SIP growth, amortization curves, and showcase 3D math —
+            accurate, mobile-first, and fast. Search with{" "}
             <span className="font-semibold">⌘K</span> /{" "}
             <span className="font-semibold">Ctrl+K</span>.
           </p>
-          <div className="mt-8 max-w-xl">
+          <div className="rise-in mt-8 max-w-xl" style={{ animationDelay: "120ms" }}>
             <SearchBar size="lg" showShortcut />
           </div>
           <div className="mt-6 flex flex-wrap gap-2 text-sm">
-            {["mortgage", "credit card payoff", "percentage", "bmi", "concrete", "ohm"].map(
-              (q) => (
-                <Link
-                  key={q}
-                  href={`/search?q=${encodeURIComponent(q)}`}
-                  className="rounded-full bg-white/15 px-3 py-1 hover:bg-white/25"
-                >
-                  {q}
-                </Link>
-              )
-            )}
+            {[
+              "amortization chart",
+              "sip growth",
+              "3d function",
+              "bmi",
+              "projectile",
+              "one rep max",
+            ].map((q) => (
+              <Link
+                key={q}
+                href={`/search?q=${encodeURIComponent(q)}`}
+                className="rounded-full border border-white/15 bg-white/10 px-3 py-1 backdrop-blur-sm transition hover:bg-white/25"
+              >
+                {q}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 space-y-14">
+      <div className="relative mx-auto max-w-6xl px-4 py-10 space-y-14">
         <AdSlot placement="header" className="no-print" />
+
+        <section className="grid gap-4 sm:grid-cols-3">
+          {[
+            { t: "Interactive charts", d: "Amortization, SIP, trajectories, and more via Recharts." },
+            { t: "Showcase 3D", d: "Surface plots, Pythagoras space diagonal, spheres & growth bars." },
+            { t: `${calculatorCount}+ tools`, d: "Finance, math, health, construction, science — all working." },
+          ].map((x) => (
+            <div key={x.t} className="rounded-2xl surface-card glass-card p-5">
+              <h2 className="font-semibold text-foreground">{x.t}</h2>
+              <p className="mt-1 text-sm text-muted">{x.d}</p>
+            </div>
+          ))}
+        </section>
 
         <section className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-5">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">Browse by category</h2>
-                <p className="text-muted text-sm mt-1">
-                  Dense directories with counts — find tools in one tap.
-                </p>
-              </div>
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Browse by category</h2>
+              <p className="text-muted text-sm mt-1">
+                Dense directories with counts — find tools in one tap.
+              </p>
             </div>
             <div id="categories">
               <CategoryGrid />
@@ -77,7 +98,12 @@ export default function HomePage() {
         </section>
 
         <section>
-          <h2 className="mb-5 text-2xl font-bold text-foreground">Featured</h2>
+          <div className="mb-5 flex items-end justify-between gap-3">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Featured</h2>
+            <Link href="/categories/math" className="text-sm font-medium text-brand hover:underline">
+              Try 3D math →
+            </Link>
+          </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((c) => (
               <CalculatorCard key={`${c.category}/${c.slug}`} calc={c} />
@@ -88,7 +114,7 @@ export default function HomePage() {
         <AdSlot placement="in-content" className="no-print" />
 
         <section>
-          <h2 className="mb-5 text-2xl font-bold text-foreground">Popular</h2>
+          <h2 className="mb-5 text-2xl font-bold tracking-tight text-foreground">Popular</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {popular.map((c) => (
               <CalculatorCard key={`${c.category}/${c.slug}`} calc={c} />

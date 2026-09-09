@@ -12,6 +12,13 @@ import { LiveCommoditiesCalculator } from "./LiveCommoditiesCalculator";
 import { AdSlot } from "./AdSlot";
 import { DisclaimerBanner } from "./DisclaimerBanner";
 import { CalculatorCard } from "./CalculatorCard";
+import {
+  Function3DCalculator,
+  Pythagoras3DCalculator,
+  Sphere3DCalculator,
+  Cylinder3DCalculator,
+  Compound3DCalculator,
+} from "./viz/CustomVizCalculators";
 
 function relatedFor(calc: CalculatorMeta): CalculatorMeta[] {
   const fromMeta = (calc.related ?? [])
@@ -73,6 +80,16 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
             <LiveCommoditiesCalculator mode="jewelry-melt" />
           ) : calc.kind === "custom" && calc.customKey === "commodities-unit" ? (
             <LiveCommoditiesCalculator mode="commodity-unit" />
+          ) : calc.kind === "custom" && calc.customKey === "3d-function" ? (
+            <Function3DCalculator />
+          ) : calc.kind === "custom" && calc.customKey === "pythagoras-3d" ? (
+            <Pythagoras3DCalculator />
+          ) : calc.kind === "custom" && calc.customKey === "sphere-3d" ? (
+            <Sphere3DCalculator />
+          ) : calc.kind === "custom" && calc.customKey === "cylinder-3d" ? (
+            <Cylinder3DCalculator />
+          ) : calc.kind === "custom" && calc.customKey === "compound-3d" ? (
+            <Compound3DCalculator />
           ) : (
             <CalculatorForm category={calc.category} slug={calc.slug} />
           )}

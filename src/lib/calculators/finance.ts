@@ -27,6 +27,7 @@ import {
   emiWithExtra,
 } from "../formulas/finance";
 import { amortizeYearlySummary } from "../formulas/catalog";
+import { sipGrowthSchedule } from "../formulas/wave2";
 import {
   requireNums,
   fmtMoney,
@@ -209,6 +210,20 @@ export const financeCalculators: CalculatorMeta[] = [
             rows: tableRows,
           },
           chart,
+          lineChart: {
+            xKey: "year",
+            series: [
+              { key: "principal", label: "Principal", color: "#0d9488" },
+              { key: "interest", label: "Interest", color: "#f43f5e" },
+              { key: "balance", label: "Balance", color: "#6366f1" },
+            ],
+            points: yearly.map((r) => ({
+              year: r.year,
+              principal: r.principal,
+              interest: r.interest,
+              balance: r.endBalance,
+            })),
+          },
         },
       ]);
     },
@@ -787,10 +802,27 @@ export const financeCalculators: CalculatorMeta[] = [
       const n = parsed.n;
       if (n.monthly < 0 || n.years <= 0) return err("Enter positive tenure and non-negative investment.");
       const r = sipFutureValue(n.monthly, n.rate, n.years);
+      const schedule = sipGrowthSchedule(n.monthly, n.rate, n.years);
       return ok([
         { label: "Future value", value: fmtMoney(r.total), emphasize: true },
         { label: "Total invested", value: fmtMoney(r.invested) },
         { label: "Estimated gains", value: fmtMoney(r.gains) },
+        {
+          label: "Growth chart",
+          value: `${schedule.length} years`,
+          lineChart: {
+            xKey: "year",
+            series: [
+              { key: "value", label: "Portfolio", color: "#0d9488" },
+              { key: "invested", label: "Invested", color: "#6366f1" },
+            ],
+            points: schedule.map((row) => ({
+              year: row.year,
+              value: row.value,
+              invested: row.invested,
+            })),
+          },
+        },
       ]);
     },
   },

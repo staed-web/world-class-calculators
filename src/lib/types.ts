@@ -44,6 +44,18 @@ export interface ResultChartBar {
   value: number;
 }
 
+export interface ResultLineSeries {
+  key: string;
+  label: string;
+  color?: string;
+}
+
+export interface ResultLineChart {
+  xKey: string;
+  series: ResultLineSeries[];
+  points: Array<Record<string, string | number>>;
+}
+
 export interface ResultItem {
   label: string;
   value: string;
@@ -51,6 +63,7 @@ export interface ResultItem {
   hint?: string;
   table?: ResultTable;
   chart?: ResultChartBar[];
+  lineChart?: ResultLineChart;
 }
 
 export type ComputeFn = (

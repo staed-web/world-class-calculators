@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import type { ResultChartBar, ResultItem, ResultTable } from "@/lib/types";
 import { getCalculator } from "@/lib/calculators/registry";
+import { ResultLineChartView } from "@/components/charts/ResultLineChart";
+import { AnimatedNumber } from "@/components/charts/AnimatedNumber";
 
 export function CalculatorForm({
   category,
@@ -66,7 +68,7 @@ export function CalculatorForm({
     <div className="grid gap-6 lg:grid-cols-5">
       <form
         onSubmit={onSubmit}
-        className="lg:col-span-3 space-y-4 rounded-2xl surface-card p-6"
+        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-6"
       >
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
@@ -185,7 +187,7 @@ function ResultsPanel({
     );
   }
   return (
-    <div className="rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50 to-white p-6 shadow-sm dark:border-teal-900 dark:from-teal-950/40 dark:to-card">
+    <div className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-6 shadow-sm backdrop-blur-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30">
       <div className="mb-3 flex items-center justify-between gap-2">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
           Results
@@ -202,17 +204,12 @@ function ResultsPanel({
         {output.map((item) => (
           <div key={item.label}>
             <dt className="text-xs text-muted">{item.label}</dt>
-            <dd
-              className={
-                item.emphasize
-                  ? "text-xl font-bold text-foreground"
-                  : "text-base font-medium text-foreground"
-              }
-            >
-              {item.value}
+            <dd>
+              <AnimatedNumber value={item.value} emphasize={item.emphasize} />
             </dd>
             {item.hint && <p className="text-xs text-muted">{item.hint}</p>}
             {item.chart && item.chart.length > 0 && <MiniBars data={item.chart} />}
+            {item.lineChart && <ResultLineChartView data={item.lineChart} variant="area" />}
             {item.table && <ResultTableView table={item.table} />}
           </div>
         ))}

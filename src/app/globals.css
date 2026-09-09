@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f7fb;
+  --background: #f3f6fb;
   --foreground: #0b1220;
   --brand: #0f766e;
   --brand-dark: #0d9488;
@@ -14,32 +14,38 @@
   --success: #059669;
   --danger: #e11d48;
   --ring: #2dd4bf;
-  --header: rgba(255, 255, 255, 0.86);
+  --header: rgba(255, 255, 255, 0.78);
   --hero-from: #0f766e;
   --hero-via: #0d9488;
   --hero-to: #4f46e5;
-  --shadow: 0 10px 30px -18px rgba(15, 23, 42, 0.35);
+  --shadow: 0 12px 40px -20px rgba(15, 23, 42, 0.35);
+  --mesh-a: rgba(45, 212, 191, 0.18);
+  --mesh-b: rgba(99, 102, 241, 0.14);
+  --mesh-c: rgba(244, 114, 182, 0.08);
 }
 
 .dark {
-  --background: #0b1220;
+  --background: #070b14;
   --foreground: #e5eefb;
   --brand: #2dd4bf;
   --brand-dark: #5eead4;
   --brand-soft: #134e4a;
-  --card: #111827;
+  --card: #0f172a;
   --muted: #94a3b8;
-  --border: #1f2937;
+  --border: #1e293b;
   --accent: #818cf8;
   --accent-soft: #1e1b4b;
   --success: #34d399;
   --danger: #fb7185;
   --ring: #2dd4bf;
-  --header: rgba(17, 24, 39, 0.9);
+  --header: rgba(15, 23, 42, 0.82);
   --hero-from: #042f2e;
   --hero-via: #134e4a;
   --hero-to: #312e81;
-  --shadow: 0 12px 36px -20px rgba(0, 0, 0, 0.7);
+  --shadow: 0 16px 48px -24px rgba(0, 0, 0, 0.75);
+  --mesh-a: rgba(45, 212, 191, 0.08);
+  --mesh-b: rgba(99, 102, 241, 0.1);
+  --mesh-c: rgba(244, 114, 182, 0.06);
 }
 
 @theme inline {
@@ -83,6 +89,53 @@ html {
   box-shadow: var(--shadow);
 }
 
+.glass-card {
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.ambient-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% -10%, var(--mesh-a), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 90% 0%, var(--mesh-b), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, var(--mesh-c), transparent 55%),
+    linear-gradient(180deg, transparent, transparent);
+}
+
+.ambient-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  opacity: 0.45;
+  animation: floaty 12s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18px) scale(1.05); }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rise-in {
+  animation: rise-in 0.55s ease-out both;
+}
+
+.result-panel {
+  animation: rise-in 0.35s ease-out;
+}
+
 .kbd {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.7rem;
@@ -92,6 +145,12 @@ html {
   padding: 0.1rem 0.35rem;
   color: var(--muted);
   background: color-mix(in oklab, var(--card) 80%, var(--border));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb, .rise-in, .result-panel {
+    animation: none !important;
+  }
 }
 
 @media print {
