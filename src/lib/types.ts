@@ -34,11 +34,23 @@ export interface FieldDef {
   required?: boolean;
 }
 
+export interface ResultTable {
+  headers: string[];
+  rows: string[][];
+}
+
+export interface ResultChartBar {
+  label: string;
+  value: number;
+}
+
 export interface ResultItem {
   label: string;
   value: string;
   emphasize?: boolean;
   hint?: string;
+  table?: ResultTable;
+  chart?: ResultChartBar[];
 }
 
 export type ComputeFn = (
@@ -64,6 +76,8 @@ export interface CalculatorMeta {
   customKey?: string;
   formulaNote?: string;
   related?: string[];
+  /** When true, form recalculates live as fields change (default true). */
+  liveCalc?: boolean;
 }
 
 export interface CategoryMeta {

@@ -3,7 +3,6 @@ import {
   mortgagePayment,
   simpleInterest,
   compoundInterest,
-  amortizeSchedule,
   refinanceSavings,
   roi,
   tipAmount,
@@ -27,6 +26,7 @@ import {
   salaryHike,
   emiWithExtra,
 } from "../formulas/finance";
+import { amortizeYearlySummary } from "../formulas/catalog";
 import {
   requireNums,
   fmtMoney,
@@ -176,16 +176,40 @@ export const financeCalculators: CalculatorMeta[] = [
       const parsed = requireNums(v, ["principal", "rate", "years"]);
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
-      const rows = amortizeSchedule(n.principal, n.rate, n.years, 12);
       const pmt = mortgagePayment(n.principal, n.rate, n.years);
-      const firstYearInterest = rows.reduce((s, r) => s + r.interest, 0);
-      const firstYearPrincipal = rows.reduce((s, r) => s + r.principal, 0);
+      const yearly = amortizeYearlySummary(n.principal, n.rate, n.years);
+      const totalInterest = yearly.reduce((s, r) => s + r.interest, 0);
+      const y1 = yearly[0];
+      const tableRows = yearly.map((r) => [
+        String(r.year),
+        fmtMoney(r.payment),
+        fmtMoney(r.principal),
+        fmtMoney(r.interest),
+        fmtMoney(r.endBalance),
+      ]);
+      const chart = yearly.slice(0, Math.min(30, yearly.length)).map((r) => ({
+        label: "Y" + r.year,
+        value: r.interest,
+      }));
       return ok([
         { label: "Monthly payment", value: fmtMoney(pmt), emphasize: true },
-        { label: "Year 1 interest", value: fmtMoney(firstYearInterest) },
-        { label: "Year 1 principal paid", value: fmtMoney(firstYearPrincipal) },
-        { label: "Balance after 12 months", value: fmtMoney(rows[rows.length - 1]?.balance ?? 0) },
-        { label: "Note", value: "First 12 months summarized (full schedule available in a future update)." },
+        { label: "Total interest", value: fmtMoney(totalInterest) },
+        { label: "Total of payments", value: fmtMoney(pmt * n.years * 12) },
+        {
+          label: "Year 1",
+          value: y1
+            ? `Interest ${fmtMoney(y1.interest)} · Principal ${fmtMoney(y1.principal)} · Bal ${fmtMoney(y1.endBalance)}`
+            : "—",
+        },
+        {
+          label: "Annual schedule",
+          value: `${yearly.length} years`,
+          table: {
+            headers: ["Year", "Payments", "Principal", "Interest", "Balance"],
+            rows: tableRows,
+          },
+          chart,
+        },
       ]);
     },
   },

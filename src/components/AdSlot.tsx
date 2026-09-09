@@ -42,7 +42,8 @@ export function AdSlot({ placement, className = "" }: AdSlotProps) {
   if (!client) {
     return (
       <div
-        className={`flex items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-400 ${sizeClass} ${className}`}
+        data-adslot={placement}
+      className={`flex items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-400 ${sizeClass} ${className}`}
         aria-hidden="true"
         data-ad-placement={placement}
       >
@@ -52,7 +53,8 @@ export function AdSlot({ placement, className = "" }: AdSlotProps) {
   }
 
   return (
-    <div className={`${sizeClass} ${className}`} data-ad-placement={placement}>
+    <div data-adslot={placement}
+      className={`${sizeClass} ${className}`} data-ad-placement={placement}>
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}

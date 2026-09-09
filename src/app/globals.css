@@ -1,13 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --brand: #0d9488;
-  --brand-dark: #0f766e;
+  --background: #f4f7fb;
+  --foreground: #0b1220;
+  --brand: #0f766e;
+  --brand-dark: #0d9488;
+  --brand-soft: #ccfbf1;
   --card: #ffffff;
   --muted: #64748b;
   --border: #e2e8f0;
+  --accent: #4f46e5;
+  --accent-soft: #e0e7ff;
+  --success: #059669;
+  --danger: #e11d48;
+  --ring: #2dd4bf;
+  --header: rgba(255, 255, 255, 0.86);
+  --hero-from: #0f766e;
+  --hero-via: #0d9488;
+  --hero-to: #4f46e5;
+  --shadow: 0 10px 30px -18px rgba(15, 23, 42, 0.35);
+}
+
+.dark {
+  --background: #0b1220;
+  --foreground: #e5eefb;
+  --brand: #2dd4bf;
+  --brand-dark: #5eead4;
+  --brand-soft: #134e4a;
+  --card: #111827;
+  --muted: #94a3b8;
+  --border: #1f2937;
+  --accent: #818cf8;
+  --accent-soft: #1e1b4b;
+  --success: #34d399;
+  --danger: #fb7185;
+  --ring: #2dd4bf;
+  --header: rgba(17, 24, 39, 0.9);
+  --hero-from: #042f2e;
+  --hero-via: #134e4a;
+  --hero-to: #312e81;
+  --shadow: 0 12px 36px -20px rgba(0, 0, 0, 0.7);
 }
 
 @theme inline {
@@ -15,9 +47,12 @@
   --color-foreground: var(--foreground);
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
   --color-card: var(--card);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -33,5 +68,42 @@ html {
 }
 
 ::selection {
-  background: #99f6e4;
+  background: var(--brand-soft);
+  color: var(--foreground);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.surface-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.kbd {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 0.4rem;
+  padding: 0.1rem 0.35rem;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--card) 80%, var(--border));
+}
+
+@media print {
+  header, footer, .no-print, [data-adslot] {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+  .surface-card {
+    box-shadow: none;
+    border-color: #ddd;
+  }
 }

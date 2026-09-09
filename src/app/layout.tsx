@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     template: "%s | World-Class Calculators",
   },
   description:
-    "Free working calculators for finance, math, health, conversion, dates, business, and more. Fast, mobile-friendly, and AdSense-ready.",
+    "200+ free working calculators for finance, math, health, conversion, construction, cooking, science, and more. Fast, dark-mode ready, AdSense-friendly.",
   openGraph: {
     type: "website",
     siteName: "World-Class Calculators",
     title: "World-Class Calculators",
     description:
-      "A large catalog of free, accurate online calculators — mortgage, BMI, unit conversion, and dozens more.",
+      "200+ free, accurate online calculators — mortgage, BMI, conversions, construction, health, and more.",
   },
   twitter: {
     card: "summary_large_image",
@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
