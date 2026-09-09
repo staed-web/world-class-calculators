@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     description: "Free online calculators for finance, math, health, and everyday life.",
   },
   robots: { index: true, follow: true },
+  other: {
+    "google-adsense-account": "ca-pub-9372118866074955",
+  },
 };
 
 export default function RootLayout({
@@ -46,7 +49,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adsenseClient =
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-9372118866074955";
 
   return (
     <html
