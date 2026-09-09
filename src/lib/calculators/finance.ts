@@ -16,6 +16,16 @@ import {
   breakEvenUnits,
   gstVat,
   cdFutureValue,
+  continuousCompound,
+  effectiveAnnualRate,
+  compoundingSchedule,
+  sipFutureValue,
+  ruleOf72,
+  cagr,
+  inflationAdjust,
+  npv,
+  salaryHike,
+  emiWithExtra,
 } from "../formulas/finance";
 import {
   requireNums,
@@ -23,6 +33,7 @@ import {
   fmtNumber,
   fmtPercent,
   parseNum,
+  parseList,
   err,
   ok,
 } from "./helpers";
@@ -636,6 +647,307 @@ export const financeCalculators: CalculatorMeta[] = [
       return ok([
         { label: "Equivalent future cost", value: fmtMoney(future), emphasize: true },
         { label: "Today's purchasing power of that future sum", value: fmtMoney(power), hint: "If you hold cash with no return" },
+      ]);
+    },
+  },
+  {
+    slug: "compounding",
+    category: "finance",
+    name: "Compounding Calculator",
+    description:
+      "Compare continuous vs n-times-per-year compounding, effective annual rate, and a year-by-year growth schedule.",
+    keywords: [
+      "compounding",
+      "continuous compounding",
+      "effective rate",
+      "EAR",
+      "compound frequency",
+      "growth schedule",
+    ],
+    featured: true,
+    popular: true,
+    kind: "form",
+    formulaNote:
+      "Discrete: A=P(1+r/n)^(nt). Continuous: A=P·e^(rt). EAR shown for the selected frequency.",
+    fields: [
+      { id: "principal", label: "Principal", type: "number", defaultValue: 10000, prefix: "$" },
+      { id: "rate", label: "Nominal annual rate", type: "number", defaultValue: 6, suffix: "%" },
+      { id: "years", label: "Years", type: "number", defaultValue: 10, step: 0.5 },
+      {
+        id: "freq",
+        label: "Compounding",
+        type: "select",
+        defaultValue: "12",
+        options: [
+          { value: "1", label: "Annually (n=1)" },
+          { value: "2", label: "Semi-annually (n=2)" },
+          { value: "4", label: "Quarterly (n=4)" },
+          { value: "12", label: "Monthly (n=12)" },
+          { value: "365", label: "Daily (n=365)" },
+          { value: "continuous", label: "Continuous (e^(rt))" },
+        ],
+      },
+    ],
+    related: ["compound-interest", "cd-apy", "sip", "rule-of-72"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["principal", "rate", "years"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.principal < 0 || n.years < 0) return err("Principal and years must be ≥ 0.");
+      const continuous = v.freq === "continuous";
+      let total: number;
+      let interest: number;
+      if (continuous) {
+        const r = continuousCompound(n.principal, n.rate, n.years);
+        total = r.total;
+        interest = r.interest;
+      } else {
+        const freq = Number(v.freq);
+        if (!Number.isFinite(freq) || freq <= 0) return err("Invalid frequency.");
+        const r = compoundInterest(n.principal, n.rate, n.years, freq);
+        total = r.total;
+        interest = r.interest;
+      }
+      const ear = effectiveAnnualRate(
+        n.rate,
+        continuous ? "continuous" : Number(v.freq)
+      );
+      const schedule = compoundingSchedule(
+        n.principal,
+        n.rate,
+        Math.min(n.years, 10),
+        continuous ? "continuous" : Number(v.freq)
+      );
+      const last = schedule[schedule.length - 1];
+      const disc = continuousCompound(n.principal, n.rate, n.years);
+      const monthly = compoundInterest(n.principal, n.rate, n.years, 12);
+      return ok([
+        { label: "Future value", value: fmtMoney(total), emphasize: true },
+        { label: "Interest earned", value: fmtMoney(interest) },
+        { label: "Effective annual rate (EAR)", value: fmtPercent(ear), emphasize: true },
+        {
+          label: continuous ? "Vs monthly compounding" : "Vs continuous compounding",
+          value: continuous
+            ? fmtMoney(monthly.total)
+            : fmtMoney(disc.total),
+          hint: continuous
+            ? "Same inputs compounded monthly"
+            : "Same inputs with continuous compounding",
+        },
+        {
+          label: `Year ${last?.year ?? "—"} balance (schedule)`,
+          value: last ? fmtMoney(last.balance) : "—",
+          hint: n.years > 10 ? "Schedule summarized for first 10 years" : "End of schedule",
+        },
+      ]);
+    },
+  },
+  {
+    slug: "sip",
+    category: "finance",
+    name: "SIP / Recurring Investment",
+    description: "Project future value of a monthly SIP / recurring investment.",
+    keywords: ["sip", "recurring investment", "systematic investment", "mutual fund"],
+    featured: true,
+    popular: true,
+    kind: "form",
+    fields: [
+      { id: "monthly", label: "Monthly investment", type: "number", defaultValue: 500, prefix: "$" },
+      { id: "rate", label: "Expected annual return", type: "number", defaultValue: 12, suffix: "%" },
+      { id: "years", label: "Years", type: "number", defaultValue: 15 },
+    ],
+    related: ["compounding", "retirement", "cagr"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["monthly", "rate", "years"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.monthly < 0 || n.years <= 0) return err("Enter positive tenure and non-negative investment.");
+      const r = sipFutureValue(n.monthly, n.rate, n.years);
+      return ok([
+        { label: "Future value", value: fmtMoney(r.total), emphasize: true },
+        { label: "Total invested", value: fmtMoney(r.invested) },
+        { label: "Estimated gains", value: fmtMoney(r.gains) },
+      ]);
+    },
+  },
+  {
+    slug: "rule-of-72",
+    category: "finance",
+    name: "Rule of 72",
+    description: "Estimate years to double your money at a given annual return.",
+    keywords: ["rule of 72", "doubling time", "investment"],
+    kind: "form",
+    fields: [{ id: "rate", label: "Annual return", type: "number", defaultValue: 8, suffix: "%" }],
+    related: ["compounding", "cagr"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["rate"]);
+      if (!parsed.ok) return err(parsed.error);
+      const years = ruleOf72(parsed.n.rate);
+      if (!Number.isFinite(years)) return err("Rate must be positive.");
+      return ok([
+        { label: "Approx years to double", value: fmtNumber(years, 2), emphasize: true },
+        { label: "Exact (ln2 / ln(1+r))", value: fmtNumber(Math.log(2) / Math.log(1 + parsed.n.rate / 100), 2) },
+      ]);
+    },
+  },
+  {
+    slug: "inflation-adjuster",
+    category: "finance",
+    name: "Inflation Adjuster",
+    description: "Convert an amount forward or backward across years of inflation.",
+    keywords: ["inflation adjuster", "real value", "purchasing power"],
+    kind: "form",
+    fields: [
+      { id: "amount", label: "Amount", type: "number", defaultValue: 1000, prefix: "$" },
+      { id: "rate", label: "Annual inflation", type: "number", defaultValue: 3, suffix: "%" },
+      { id: "years", label: "Years", type: "number", defaultValue: 10 },
+      {
+        id: "direction",
+        label: "Direction",
+        type: "select",
+        defaultValue: "future",
+        options: [
+          { value: "future", label: "Today → future cost" },
+          { value: "past", label: "Future/past sum → today's purchasing power" },
+        ],
+      },
+    ],
+    related: ["inflation", "cagr"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["amount", "rate", "years"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const dir = v.direction === "past" ? "past" : "future";
+      const adj = inflationAdjust(n.amount, n.rate, n.years, dir);
+      return ok([
+        {
+          label: dir === "future" ? "Future equivalent" : "Today's purchasing power",
+          value: fmtMoney(adj),
+          emphasize: true,
+        },
+      ]);
+    },
+  },
+  {
+    slug: "cagr",
+    category: "finance",
+    name: "CAGR Calculator",
+    description: "Compound annual growth rate between a beginning and ending value.",
+    keywords: ["cagr", "compound annual growth rate", "annualized return"],
+    popular: true,
+    kind: "form",
+    fields: [
+      { id: "begin", label: "Beginning value", type: "number", defaultValue: 10000, prefix: "$" },
+      { id: "end", label: "Ending value", type: "number", defaultValue: 25000, prefix: "$" },
+      { id: "years", label: "Years", type: "number", defaultValue: 5 },
+    ],
+    related: ["roi", "compounding", "sip"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["begin", "end", "years"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const rate = cagr(n.begin, n.end, n.years);
+      if (!Number.isFinite(rate)) return err("Beginning value and years must be positive.");
+      return ok([
+        { label: "CAGR", value: fmtPercent(rate), emphasize: true },
+        { label: "Total growth", value: fmtPercent(((n.end - n.begin) / Math.abs(n.begin)) * 100) },
+      ]);
+    },
+  },
+  {
+    slug: "npv",
+    category: "finance",
+    name: "NPV Calculator (Simple)",
+    description: "Net present value of a series of cash flows at a flat discount rate.",
+    keywords: ["npv", "net present value", "discounted cash flow"],
+    kind: "form",
+    fields: [
+      { id: "rate", label: "Discount rate (per period)", type: "number", defaultValue: 10, suffix: "%" },
+      {
+        id: "flows",
+        label: "Cash flows (period 0, 1, 2… comma-separated)",
+        type: "textarea",
+        defaultValue: "-10000, 3000, 4200, 6800",
+        helpText: "Use a negative number for the initial investment.",
+      },
+    ],
+    related: ["roi", "cagr"],
+    compute: (v) => {
+      const rate = parseNum(v.rate);
+      if (!Number.isFinite(rate)) return err("Enter a discount rate.");
+      const flows = parseList(v.flows || "");
+      if (!flows.length) return err("Enter at least one cash flow.");
+      // parseList filters non-finite — but negatives are fine
+      const raw = (v.flows || "")
+        .split(/[\s,;]+/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map(Number);
+      if (raw.some((x) => !Number.isFinite(x))) return err("Invalid cash flow list.");
+      const value = npv(rate, raw);
+      return ok([
+        { label: "NPV", value: fmtMoney(value), emphasize: true },
+        { label: "Periods", value: String(raw.length) },
+        { label: "Sum of undiscounted flows", value: fmtMoney(raw.reduce((a, b) => a + b, 0)) },
+      ]);
+    },
+  },
+  {
+    slug: "salary-hike",
+    category: "finance",
+    name: "Salary Hike Calculator",
+    description: "Compute new salary and raise amount from a hike percentage.",
+    keywords: ["salary hike", "raise", "pay increase", "appraisal"],
+    kind: "form",
+    fields: [
+      { id: "current", label: "Current salary", type: "number", defaultValue: 60000, prefix: "$" },
+      { id: "hike", label: "Hike", type: "number", defaultValue: 10, suffix: "%" },
+    ],
+    related: ["hourly-to-salary", "inflation-adjuster"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["current", "hike"]);
+      if (!parsed.ok) return err(parsed.error);
+      const r = salaryHike(parsed.n.current, parsed.n.hike);
+      return ok([
+        { label: "New salary", value: fmtMoney(r.newSalary), emphasize: true },
+        { label: "Increase", value: fmtMoney(r.increase) },
+        { label: "Monthly (÷12)", value: fmtMoney(r.newSalary / 12) },
+      ]);
+    },
+  },
+  {
+    slug: "emi-extra-payments",
+    category: "finance",
+    name: "EMI with Extra Payments",
+    description: "See how extra monthly payments shorten a loan and reduce total interest.",
+    keywords: ["emi extra", "prepayment", "loan extra payment", "payoff faster"],
+    kind: "form",
+    fields: [
+      { id: "principal", label: "Principal", type: "number", defaultValue: 250000, prefix: "$" },
+      { id: "rate", label: "Annual rate", type: "number", defaultValue: 7, suffix: "%" },
+      { id: "years", label: "Original term", type: "number", defaultValue: 20, suffix: "years" },
+      { id: "extra", label: "Extra monthly payment", type: "number", defaultValue: 200, prefix: "$" },
+    ],
+    related: ["loan-emi", "debt-payoff", "amortization"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["principal", "rate", "years", "extra"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const r = emiWithExtra({
+        principal: n.principal,
+        annualRatePct: n.rate,
+        years: n.years,
+        extraMonthly: n.extra,
+      });
+      if (!Number.isFinite(r.payoffMonths)) {
+        return err("Payment too low to amortize the loan — increase EMI or extra amount.");
+      }
+      return ok([
+        { label: "Base EMI", value: fmtMoney(r.baseEmi) },
+        { label: "Payoff months (with extra)", value: String(r.payoffMonths), emphasize: true },
+        { label: "Months saved", value: String(r.monthsSaved) },
+        { label: "Total interest (with extra)", value: fmtMoney(r.totalInterest) },
+        { label: "Interest saved", value: fmtMoney(r.interestSaved), emphasize: true },
       ]);
     },
   },

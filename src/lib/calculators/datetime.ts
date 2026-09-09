@@ -153,4 +153,65 @@ export const dateTimeCalculators: CalculatorMeta[] = [
       ]);
     },
   },
+  {
+    slug: "hours-minutes-add",
+    category: "date-time",
+    name: "Add Hours & Minutes",
+    description: "Add a duration of hours and minutes to a starting clock time (24h).",
+    keywords: ["add time", "hours minutes", "clock math"],
+    kind: "form",
+    fields: [
+      { id: "startH", label: "Start hour (0–23)", type: "number", defaultValue: 9, min: 0, max: 23 },
+      { id: "startM", label: "Start minute", type: "number", defaultValue: 30, min: 0, max: 59 },
+      { id: "addH", label: "Hours to add", type: "number", defaultValue: 2 },
+      { id: "addM", label: "Minutes to add", type: "number", defaultValue: 45 },
+    ],
+    related: ["date-difference", "timezone-difference"],
+    compute: (v) => {
+      const sh = Number(v.startH);
+      const sm = Number(v.startM);
+      const ah = Number(v.addH);
+      const am = Number(v.addM);
+      if (![sh, sm, ah, am].every(Number.isFinite)) return err("Enter valid numbers.");
+      let total = sh * 60 + sm + ah * 60 + am;
+      const days = Math.floor(total / (24 * 60));
+      total = ((total % (24 * 60)) + 24 * 60) % (24 * 60);
+      const h = Math.floor(total / 60);
+      const m = total % 60;
+      return ok([
+        {
+          label: "Result time",
+          value: `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`,
+          emphasize: true,
+        },
+        { label: "Day offset", value: String(days) },
+      ]);
+    },
+  },
+  {
+    slug: "week-number",
+    category: "date-time",
+    name: "ISO Week Number",
+    description: "Find the ISO-8601 week number for a given date.",
+    keywords: ["week number", "iso week", "calendar week"],
+    kind: "form",
+    fields: [
+      { id: "date", label: "Date", type: "date", defaultValue: "2026-09-09" },
+    ],
+    related: ["date-difference", "business-days"],
+    compute: (v) => {
+      if (!v.date) return err("Enter a date.");
+      const d = new Date(v.date + "T00:00:00Z");
+      if (isNaN(d.getTime())) return err("Invalid date.");
+      const target = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+      const dayNum = target.getUTCDay() || 7;
+      target.setUTCDate(target.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+      const week = Math.ceil(((target.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+      return ok([
+        { label: "ISO week", value: String(week), emphasize: true },
+        { label: "ISO week-year", value: String(target.getUTCFullYear()) },
+      ]);
+    },
+  },
 ];

@@ -9,6 +9,7 @@ import { businessCalculators } from "./business";
 import { statisticsCalculators } from "./statistics";
 import { scienceCalculators } from "./science";
 import { educationCalculators } from "./education";
+import { commoditiesCalculators } from "./commodities";
 
 export const allCalculators: CalculatorMeta[] = [
   ...financeCalculators,
@@ -21,6 +22,7 @@ export const allCalculators: CalculatorMeta[] = [
   ...statisticsCalculators,
   ...scienceCalculators,
   ...educationCalculators,
+  ...commoditiesCalculators,
 ];
 
 const byKey = new Map(

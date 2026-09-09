@@ -22,8 +22,9 @@ export default function DisclaimerPage() {
         </p>
         <p>
           Formulas may use simplifying assumptions. Currency conversion uses static
-          illustrative rates, not live market data. Health metrics such as BMI and body
-          fat estimates are screening tools, not diagnoses.
+          illustrative rates, not live market data. Commodity and metal quotes come from
+          free delayed public feeds and are not executable trade prices. Health metrics
+          such as BMI and body fat estimates are screening tools, not diagnoses.
         </p>
         <p>
           We strive for accuracy but provide the site “as is” without warranties of any

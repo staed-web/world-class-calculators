@@ -74,6 +74,14 @@ export const categories: CategoryMeta[] = [
     icon: "📈",
     color: "bg-fuchsia-100 text-fuchsia-800 border-fuchsia-200",
   },
+  {
+    slug: "commodities",
+    name: "Commodities & Metals",
+    description:
+      "Live gold, silver, platinum, copper, and crude oil quotes plus weight/value tools.",
+    icon: "🪙",
+    color: "bg-yellow-100 text-yellow-900 border-yellow-200",
+  },
 ];
 
 export const categoryMap: Record<CategorySlug, CategoryMeta> = Object.fromEntries(

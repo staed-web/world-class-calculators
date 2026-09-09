@@ -4,6 +4,7 @@ import { categoryMap } from "@/lib/categories";
 import { getCalculatorBySlug, calculatorPath } from "@/lib/calculators/registry";
 import { CalculatorForm } from "./CalculatorForm";
 import { ScientificCalculator } from "./ScientificCalculator";
+import { LiveCommoditiesCalculator } from "./LiveCommoditiesCalculator";
 import { AdSlot } from "./AdSlot";
 import { DisclaimerBanner } from "./DisclaimerBanner";
 import { CalculatorCard } from "./CalculatorCard";
@@ -46,6 +47,14 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <div className="lg:col-span-3 space-y-6">
           {calc.kind === "custom" && calc.customKey === "scientific" ? (
             <ScientificCalculator />
+          ) : calc.kind === "custom" && calc.customKey === "commodities-spot" ? (
+            <LiveCommoditiesCalculator mode="spot" />
+          ) : calc.kind === "custom" && calc.customKey === "commodities-metal-value" ? (
+            <LiveCommoditiesCalculator mode="metal-value" />
+          ) : calc.kind === "custom" && calc.customKey === "commodities-jewelry-melt" ? (
+            <LiveCommoditiesCalculator mode="jewelry-melt" />
+          ) : calc.kind === "custom" && calc.customKey === "commodities-unit" ? (
+            <LiveCommoditiesCalculator mode="commodity-unit" />
           ) : (
             <CalculatorForm category={calc.category} slug={calc.slug} />
           )}

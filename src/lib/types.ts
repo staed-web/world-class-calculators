@@ -8,7 +8,8 @@ export type CategorySlug =
   | "science-engineering"
   | "business"
   | "education"
-  | "statistics";
+  | "statistics"
+  | "commodities";
 
 export type FieldType = "number" | "select" | "date" | "text" | "textarea";
 

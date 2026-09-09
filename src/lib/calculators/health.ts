@@ -7,6 +7,9 @@ import {
   idealWeightRobinson,
   pregnancyDueDate,
   macrosFromCalories,
+  waterIntakeLiters,
+  pregnancyWeightGainRange,
+  waistHipRatio,
 } from "../formulas/health";
 import { requireNums, fmtNumber, fmtDate, err, ok, parseNum } from "./helpers";
 
@@ -300,6 +303,96 @@ export const healthCalculators: CalculatorMeta[] = [
           emphasize: true,
         },
         { label: "Average speed", value: `${fmtNumber(speed, 2)} ${unit}/h` },
+      ]);
+    },
+  },
+  {
+    slug: "water-intake",
+    category: "health-fitness",
+    name: "Water Intake Calculator",
+    description: "Estimate daily water needs from body weight and activity minutes.",
+    keywords: ["water intake", "hydration", "how much water"],
+    popular: true,
+    kind: "form",
+    formulaNote: "Rule-of-thumb only (~33 ml/kg + activity). Individual needs vary.",
+    fields: [
+      { id: "weight", label: "Weight (kg)", type: "number", defaultValue: 70 },
+      { id: "activity", label: "Exercise (minutes/day)", type: "number", defaultValue: 45 },
+    ],
+    related: ["bmi", "tdee"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["weight", "activity"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.weight <= 0) return err("Weight must be positive.");
+      const liters = waterIntakeLiters(n.weight, Math.max(0, n.activity));
+      return ok([
+        { label: "Suggested intake", value: `${fmtNumber(liters, 2)} L/day`, emphasize: true },
+        { label: "Approx cups (240 ml)", value: fmtNumber(liters / 0.24, 1) },
+      ]);
+    },
+  },
+  {
+    slug: "pregnancy-weight-gain",
+    category: "health-fitness",
+    name: "Pregnancy Weight Gain Estimate",
+    description: "IOM-style total pregnancy weight-gain ranges by pre-pregnancy BMI category.",
+    keywords: ["pregnancy weight gain", "gestational weight", "IOM"],
+    kind: "form",
+    formulaNote: "Educational ranges only — follow your clinician's guidance.",
+    fields: [
+      {
+        id: "category",
+        label: "Pre-pregnancy BMI category",
+        type: "select",
+        defaultValue: "normal",
+        options: [
+          { value: "underweight", label: "Underweight (BMI < 18.5)" },
+          { value: "normal", label: "Normal (18.5–24.9)" },
+          { value: "overweight", label: "Overweight (25–29.9)" },
+          { value: "obese", label: "Obese (BMI ≥ 30)" },
+        ],
+      },
+    ],
+    related: ["pregnancy-due-date", "bmi"],
+    compute: (v) => {
+      const r = pregnancyWeightGainRange(v.category || "normal");
+      return ok([
+        {
+          label: "Suggested total gain",
+          value: `${fmtNumber(r.totalKg[0], 1)}–${fmtNumber(r.totalKg[1], 1)} kg`,
+          emphasize: true,
+        },
+        {
+          label: "In pounds (approx)",
+          value: `${fmtNumber(r.totalKg[0] * 2.20462, 0)}–${fmtNumber(r.totalKg[1] * 2.20462, 0)} lb`,
+        },
+        { label: "Note", value: r.note },
+      ]);
+    },
+  },
+  {
+    slug: "waist-hip-ratio",
+    category: "health-fitness",
+    name: "Waist–Hip Ratio",
+    description: "Waist-to-hip ratio with a simple risk band hint.",
+    keywords: ["waist hip ratio", "whr", "body shape"],
+    kind: "form",
+    formulaNote: "Screening hint only — not a medical diagnosis. Cutoffs vary by sex and guideline.",
+    fields: [
+      { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 80 },
+      { id: "hip", label: "Hip (cm)", type: "number", defaultValue: 100 },
+    ],
+    related: ["bmi", "body-fat-navy"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["waist", "hip"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.waist <= 0 || n.hip <= 0) return err("Measurements must be positive.");
+      const r = waistHipRatio(n.waist, n.hip);
+      return ok([
+        { label: "WHR", value: fmtNumber(r.ratio, 3), emphasize: true },
+        { label: "Rough risk band", value: r.risk },
       ]);
     },
   },

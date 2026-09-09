@@ -7,7 +7,7 @@ import {
   salaryToHourly,
 } from "../formulas/business";
 import { roi } from "../formulas/finance";
-import { requireNums, fmtMoney, fmtNumber, fmtPercent, err, ok } from "./helpers";
+import { requireNums, fmtMoney, fmtPercent, err, ok } from "./helpers";
 
 export const businessCalculators: CalculatorMeta[] = [
   {

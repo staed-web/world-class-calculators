@@ -13,6 +13,19 @@ import {
   simplifyFraction,
   ratioSimplify,
   ageFromDob,
+  pythagoras,
+  pythagoras3d,
+  heronArea,
+  distance2d,
+  slope,
+  circleMetrics,
+  sphereVolume,
+  sphereSurface,
+  cylinderMetrics,
+  permutation,
+  combination,
+  fibonacciNth,
+  multiStepPercentage,
 } from "../formulas/math";
 import {
   requireNums,
@@ -452,6 +465,281 @@ export const mathCalculators: CalculatorMeta[] = [
         result = Math.log(x) / Math.log(b);
       }
       return ok([{ label: "Result", value: fmtNumber(result, 8), emphasize: true }]);
+    },
+  },
+  {
+    slug: "pythagoras",
+    category: "math",
+    name: "Pythagoras Theorem Calculator",
+    description:
+      "Find the hypotenuse or a leg of a right triangle; optional 3D space diagonal.",
+    keywords: ["pythagoras", "hypotenuse", "right triangle", "3d diagonal", "pythagorean"],
+    featured: true,
+    popular: true,
+    kind: "form",
+    formulaNote: "a² + b² = c². For 3D: √(a²+b²+c²) is the space diagonal.",
+    fields: [
+      {
+        id: "mode",
+        label: "Mode",
+        type: "select",
+        defaultValue: "hyp",
+        options: [
+          { value: "hyp", label: "Find hypotenuse c from legs a, b" },
+          { value: "leg", label: "Find leg a from b and hypotenuse c" },
+          { value: "3d", label: "3D space diagonal from a, b, c" },
+        ],
+      },
+      { id: "a", label: "Side a", type: "number", defaultValue: 3 },
+      { id: "b", label: "Side b", type: "number", defaultValue: 4 },
+      { id: "c", label: "Side c (hypotenuse when finding a leg)", type: "number", defaultValue: 5 },
+    ],
+    related: ["triangle-area-heron", "distance-formula", "circle"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["a", "b", "c"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (v.mode === "3d") {
+        if (n.a < 0 || n.b < 0 || n.c < 0) return err("Sides must be non-negative.");
+        const d = pythagoras3d(n.a, n.b, n.c);
+        return ok([{ label: "Space diagonal", value: fmtNumber(d, 8), emphasize: true }]);
+      }
+      if (v.mode === "leg") {
+        if (n.b <= 0 || n.c <= 0) return err("b and c must be positive.");
+        if (n.c <= n.b) return err("Hypotenuse c must be greater than leg b.");
+        const a = pythagoras(0, n.b, n.c, "a");
+        if (!Number.isFinite(a)) return err("Invalid triangle.");
+        return ok([
+          { label: "Leg a", value: fmtNumber(a, 8), emphasize: true },
+          { label: "Check c", value: fmtNumber(pythagoras(a, n.b, 0, "c"), 8) },
+        ]);
+      }
+      if (n.a <= 0 || n.b <= 0) return err("Legs must be positive.");
+      const c = pythagoras(n.a, n.b, 0, "c");
+      return ok([
+        { label: "Hypotenuse c", value: fmtNumber(c, 8), emphasize: true },
+        { label: "Perimeter", value: fmtNumber(n.a + n.b + c, 6) },
+      ]);
+    },
+  },
+  {
+    slug: "triangle-area-heron",
+    category: "math",
+    name: "Triangle Area (Heron's Formula)",
+    description: "Compute triangle area from three side lengths using Heron's formula.",
+    keywords: ["heron", "triangle area", "semiperimeter"],
+    kind: "form",
+    fields: [
+      { id: "a", label: "Side a", type: "number", defaultValue: 5 },
+      { id: "b", label: "Side b", type: "number", defaultValue: 6 },
+      { id: "c", label: "Side c", type: "number", defaultValue: 7 },
+    ],
+    related: ["pythagoras", "circle"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["a", "b", "c"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.a <= 0 || n.b <= 0 || n.c <= 0) return err("Sides must be positive.");
+      if (n.a + n.b <= n.c || n.a + n.c <= n.b || n.b + n.c <= n.a) {
+        return err("Sides do not form a valid triangle.");
+      }
+      const area = heronArea(n.a, n.b, n.c);
+      const s = (n.a + n.b + n.c) / 2;
+      return ok([
+        { label: "Area", value: fmtNumber(area, 6), emphasize: true },
+        { label: "Semiperimeter", value: fmtNumber(s, 6) },
+      ]);
+    },
+  },
+  {
+    slug: "distance-formula",
+    category: "math",
+    name: "Distance Formula Calculator",
+    description: "Euclidean distance between two points on a plane.",
+    keywords: ["distance formula", "euclidean", "coordinate geometry"],
+    kind: "form",
+    fields: [
+      { id: "x1", label: "x₁", type: "number", defaultValue: 0 },
+      { id: "y1", label: "y₁", type: "number", defaultValue: 0 },
+      { id: "x2", label: "x₂", type: "number", defaultValue: 3 },
+      { id: "y2", label: "y₂", type: "number", defaultValue: 4 },
+    ],
+    related: ["slope", "pythagoras"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["x1", "y1", "x2", "y2"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const d = distance2d(n.x1, n.y1, n.x2, n.y2);
+      return ok([{ label: "Distance", value: fmtNumber(d, 8), emphasize: true }]);
+    },
+  },
+  {
+    slug: "slope",
+    category: "math",
+    name: "Slope Calculator",
+    description: "Slope (rise/run) of the line through two points, plus angle.",
+    keywords: ["slope", "gradient", "rise over run", "line"],
+    kind: "form",
+    fields: [
+      { id: "x1", label: "x₁", type: "number", defaultValue: 1 },
+      { id: "y1", label: "y₁", type: "number", defaultValue: 2 },
+      { id: "x2", label: "x₂", type: "number", defaultValue: 4 },
+      { id: "y2", label: "y₂", type: "number", defaultValue: 8 },
+    ],
+    related: ["distance-formula"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["x1", "y1", "x2", "y2"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const m = slope(n.x1, n.y1, n.x2, n.y2);
+      if (!Number.isFinite(m)) return err("Vertical line — undefined slope (x₁ = x₂).");
+      const deg = (Math.atan(m) * 180) / Math.PI;
+      return ok([
+        { label: "Slope m", value: fmtNumber(m, 8), emphasize: true },
+        { label: "Angle with +x axis", value: `${fmtNumber(deg, 4)}°` },
+      ]);
+    },
+  },
+  {
+    slug: "circle",
+    category: "math",
+    name: "Circle Calculator",
+    description: "Area, circumference, and diameter from radius.",
+    keywords: ["circle", "area", "circumference", "radius"],
+    popular: true,
+    kind: "form",
+    fields: [{ id: "r", label: "Radius", type: "number", defaultValue: 5, min: 0 }],
+    related: ["sphere-volume", "cylinder"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["r"]);
+      if (!parsed.ok) return err(parsed.error);
+      if (parsed.n.r < 0) return err("Radius must be ≥ 0.");
+      const m = circleMetrics(parsed.n.r);
+      return ok([
+        { label: "Area", value: fmtNumber(m.area, 6), emphasize: true },
+        { label: "Circumference", value: fmtNumber(m.circumference, 6) },
+        { label: "Diameter", value: fmtNumber(m.diameter, 6) },
+      ]);
+    },
+  },
+  {
+    slug: "sphere-volume",
+    category: "math",
+    name: "Sphere Volume & Surface",
+    description: "Volume and surface area of a sphere from radius.",
+    keywords: ["sphere", "volume", "surface area"],
+    kind: "form",
+    fields: [{ id: "r", label: "Radius", type: "number", defaultValue: 3, min: 0 }],
+    related: ["circle", "cylinder"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["r"]);
+      if (!parsed.ok) return err(parsed.error);
+      if (parsed.n.r < 0) return err("Radius must be ≥ 0.");
+      return ok([
+        { label: "Volume", value: fmtNumber(sphereVolume(parsed.n.r), 6), emphasize: true },
+        { label: "Surface area", value: fmtNumber(sphereSurface(parsed.n.r), 6) },
+      ]);
+    },
+  },
+  {
+    slug: "cylinder",
+    category: "math",
+    name: "Cylinder Calculator",
+    description: "Volume and surface area of a right circular cylinder.",
+    keywords: ["cylinder", "volume", "lateral area"],
+    kind: "form",
+    fields: [
+      { id: "r", label: "Radius", type: "number", defaultValue: 2, min: 0 },
+      { id: "h", label: "Height", type: "number", defaultValue: 10, min: 0 },
+    ],
+    related: ["sphere-volume", "circle"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["r", "h"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.r < 0 || n.h < 0) return err("Dimensions must be ≥ 0.");
+      const m = cylinderMetrics(n.r, n.h);
+      return ok([
+        { label: "Volume", value: fmtNumber(m.volume, 6), emphasize: true },
+        { label: "Lateral surface", value: fmtNumber(m.lateral, 6) },
+        { label: "Total surface", value: fmtNumber(m.totalSurface, 6) },
+      ]);
+    },
+  },
+  {
+    slug: "percentage-increase-multistep",
+    category: "math",
+    name: "Multi-Step Percentage Change",
+    description: "Apply a sequence of percent increases/decreases and see the overall change.",
+    keywords: ["percentage increase", "compound percent", "successive percentage"],
+    kind: "form",
+    fields: [
+      { id: "start", label: "Starting value", type: "number", defaultValue: 100 },
+      {
+        id: "steps",
+        label: "Percent steps (comma-separated, e.g. 10, -5, 20)",
+        type: "textarea",
+        defaultValue: "10, -5, 20",
+      },
+    ],
+    related: ["percentage-change", "percentage-of"],
+    compute: (v) => {
+      const start = parseNum(v.start);
+      if (!Number.isFinite(start)) return err("Enter a starting value.");
+      const steps = parseList(v.steps || "");
+      if (!steps.length) return err("Enter at least one percent step.");
+      const r = multiStepPercentage(start, steps);
+      return ok([
+        { label: "Final value", value: fmtNumber(r.final, 6), emphasize: true },
+        { label: "Overall change", value: fmtPercent(r.overallPct) },
+        { label: "Steps applied", value: String(steps.length) },
+      ]);
+    },
+  },
+  {
+    slug: "permutation-combination",
+    category: "math",
+    name: "Permutation & Combination",
+    description: "Compute P(n,r) and C(n,r) for counting problems.",
+    keywords: ["permutation", "combination", "nPr", "nCr", "counting"],
+    popular: true,
+    kind: "form",
+    fields: [
+      { id: "n", label: "n", type: "number", defaultValue: 10, min: 0 },
+      { id: "r", label: "r", type: "number", defaultValue: 3, min: 0 },
+    ],
+    related: ["factorial", "fibonacci"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["n", "r"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = Math.trunc(parsed.n.n);
+      const r = Math.trunc(parsed.n.r);
+      if (n > 1000) return err("n too large for this tool (max 1000).");
+      const p = permutation(n, r);
+      const c = combination(n, r);
+      if (!Number.isFinite(p) || !Number.isFinite(c)) return err("Require 0 ≤ r ≤ n.");
+      return ok([
+        { label: `P(${n},${r})`, value: fmtNumber(p, 0), emphasize: true },
+        { label: `C(${n},${r})`, value: fmtNumber(c, 0), emphasize: true },
+      ]);
+    },
+  },
+  {
+    slug: "fibonacci",
+    category: "math",
+    name: "Fibonacci nth Term",
+    description: "Compute the nth Fibonacci number (0-indexed: F0=0, F1=1).",
+    keywords: ["fibonacci", "sequence", "nth term"],
+    kind: "form",
+    fields: [{ id: "n", label: "n (0–78 for exact JS integers)", type: "number", defaultValue: 20, min: 0, max: 78 }],
+    related: ["factorial", "permutation-combination"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["n"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = Math.trunc(parsed.n.n);
+      if (n < 0 || n > 78) return err("n must be between 0 and 78 for exact integer display.");
+      const f = fibonacciNth(n);
+      return ok([{ label: `F(${n})`, value: fmtNumber(f, 0), emphasize: true }]);
     },
   },
 ];

@@ -179,4 +179,171 @@ export const scienceCalculators: CalculatorMeta[] = [
       return ok([{ label: "Work", value: `${fmtNumber(n.F * n.d, 6)} J`, emphasize: true }]);
     },
   },
+  {
+    slug: "kinetic-energy",
+    category: "science-engineering",
+    name: "Kinetic Energy Calculator",
+    description: "Compute KE = ½mv² and solve for mass or velocity when KE is known.",
+    keywords: ["kinetic energy", "KE", "physics energy"],
+    popular: true,
+    kind: "form",
+    fields: [
+      {
+        id: "solve",
+        label: "Solve for",
+        type: "select",
+        defaultValue: "ke",
+        options: [
+          { value: "ke", label: "Kinetic energy" },
+          { value: "m", label: "Mass" },
+          { value: "v", label: "Velocity" },
+        ],
+      },
+      { id: "m", label: "Mass (kg)", type: "number", defaultValue: 2 },
+      { id: "v", label: "Velocity (m/s)", type: "number", defaultValue: 10 },
+      { id: "ke", label: "Kinetic energy (J)", type: "number", defaultValue: 100 },
+    ],
+    related: ["work-energy", "velocity", "speed-distance-time"],
+    compute: (v) => {
+      if (v.solve === "m") {
+        const parsed = requireNums(v, ["ke", "v"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
+        if (n.v === 0) return err("Velocity cannot be zero.");
+        return ok([{ label: "Mass", value: `${fmtNumber((2 * n.ke) / (n.v * n.v), 6)} kg`, emphasize: true }]);
+      }
+      if (v.solve === "v") {
+        const parsed = requireNums(v, ["ke", "m"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
+        if (n.m <= 0) return err("Mass must be positive.");
+        if (n.ke < 0) return err("KE cannot be negative.");
+        return ok([{ label: "Velocity", value: `${fmtNumber(Math.sqrt((2 * n.ke) / n.m), 6)} m/s`, emphasize: true }]);
+      }
+      const parsed = requireNums(v, ["m", "v"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      return ok([{ label: "Kinetic energy", value: `${fmtNumber(0.5 * n.m * n.v * n.v, 6)} J`, emphasize: true }]);
+    },
+  },
+  {
+    slug: "speed-distance-time",
+    category: "science-engineering",
+    name: "Speed / Distance / Time",
+    description: "Solve for speed, distance, or time given the other two.",
+    keywords: ["speed", "distance", "time", "sdt"],
+    popular: true,
+    kind: "form",
+    fields: [
+      {
+        id: "solve",
+        label: "Solve for",
+        type: "select",
+        defaultValue: "speed",
+        options: [
+          { value: "speed", label: "Speed" },
+          { value: "distance", label: "Distance" },
+          { value: "time", label: "Time" },
+        ],
+      },
+      { id: "speed", label: "Speed", type: "number", defaultValue: 60 },
+      { id: "distance", label: "Distance", type: "number", defaultValue: 120 },
+      { id: "time", label: "Time", type: "number", defaultValue: 2 },
+      {
+        id: "unitNote",
+        label: "Unit system (reference)",
+        type: "select",
+        defaultValue: "kmh",
+        options: [
+          { value: "kmh", label: "km & hours (km/h)" },
+          { value: "ms", label: "m & seconds (m/s)" },
+          { value: "mph", label: "miles & hours (mph)" },
+        ],
+      },
+    ],
+    related: ["velocity", "kinetic-energy", "pace"],
+    compute: (v) => {
+      if (v.solve === "distance") {
+        const parsed = requireNums(v, ["speed", "time"]);
+        if (!parsed.ok) return err(parsed.error);
+        return ok([{ label: "Distance", value: fmtNumber(parsed.n.speed * parsed.n.time, 6), emphasize: true }]);
+      }
+      if (v.solve === "time") {
+        const parsed = requireNums(v, ["distance", "speed"]);
+        if (!parsed.ok) return err(parsed.error);
+        if (parsed.n.speed === 0) return err("Speed cannot be zero.");
+        return ok([{ label: "Time", value: fmtNumber(parsed.n.distance / parsed.n.speed, 6), emphasize: true }]);
+      }
+      const parsed = requireNums(v, ["distance", "time"]);
+      if (!parsed.ok) return err(parsed.error);
+      if (parsed.n.time === 0) return err("Time cannot be zero.");
+      return ok([{ label: "Speed", value: fmtNumber(parsed.n.distance / parsed.n.time, 6), emphasize: true }]);
+    },
+  },
+  {
+    slug: "force-newton",
+    category: "science-engineering",
+    name: "Force (F = ma)",
+    description: "Newton's second law — solve for force, mass, or acceleration.",
+    keywords: ["force", "newton", "f=ma", "acceleration"],
+    kind: "form",
+    fields: [
+      {
+        id: "solve",
+        label: "Solve for",
+        type: "select",
+        defaultValue: "F",
+        options: [
+          { value: "F", label: "Force (N)" },
+          { value: "m", label: "Mass (kg)" },
+          { value: "a", label: "Acceleration (m/s²)" },
+        ],
+      },
+      { id: "F", label: "Force (N)", type: "number", defaultValue: 20 },
+      { id: "m", label: "Mass (kg)", type: "number", defaultValue: 2 },
+      { id: "a", label: "Acceleration (m/s²)", type: "number", defaultValue: 10 },
+    ],
+    related: ["acceleration", "kinetic-energy"],
+    compute: (v) => {
+      if (v.solve === "m") {
+        const parsed = requireNums(v, ["F", "a"]);
+        if (!parsed.ok) return err(parsed.error);
+        if (parsed.n.a === 0) return err("Acceleration cannot be zero.");
+        return ok([{ label: "Mass", value: `${fmtNumber(parsed.n.F / parsed.n.a, 6)} kg`, emphasize: true }]);
+      }
+      if (v.solve === "a") {
+        const parsed = requireNums(v, ["F", "m"]);
+        if (!parsed.ok) return err(parsed.error);
+        if (parsed.n.m === 0) return err("Mass cannot be zero.");
+        return ok([{ label: "Acceleration", value: `${fmtNumber(parsed.n.F / parsed.n.m, 6)} m/s²`, emphasize: true }]);
+      }
+      const parsed = requireNums(v, ["m", "a"]);
+      if (!parsed.ok) return err(parsed.error);
+      return ok([{ label: "Force", value: `${fmtNumber(parsed.n.m * parsed.n.a, 6)} N`, emphasize: true }]);
+    },
+  },
+  {
+    slug: "pressure",
+    category: "science-engineering",
+    name: "Pressure Calculator",
+    description: "Pressure = force / area, with optional unit hints.",
+    keywords: ["pressure", "pascal", "force area"],
+    kind: "form",
+    fields: [
+      { id: "force", label: "Force (N)", type: "number", defaultValue: 100 },
+      { id: "area", label: "Area (m²)", type: "number", defaultValue: 0.5 },
+    ],
+    related: ["force-newton", "density"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["force", "area"]);
+      if (!parsed.ok) return err(parsed.error);
+      if (parsed.n.area === 0) return err("Area cannot be zero.");
+      const p = parsed.n.force / parsed.n.area;
+      return ok([
+        { label: "Pressure", value: `${fmtNumber(p, 6)} Pa`, emphasize: true },
+        { label: "kPa", value: fmtNumber(p / 1000, 6) },
+        { label: "bar", value: fmtNumber(p / 1e5, 8) },
+      ]);
+    },
+  },
 ];

@@ -90,3 +90,44 @@ export function macrosFromCalories(
     fatG: (calories * (fatPct / 100)) / 9,
   };
 }
+
+export function waterIntakeLiters(
+  weightKg: number,
+  activityMinutes: number
+): number {
+  // ~33 ml/kg base + 0.35 L per 30 min activity (rule-of-thumb)
+  const base = (weightKg * 33) / 1000;
+  const extra = (activityMinutes / 30) * 0.35;
+  return base + extra;
+}
+
+/** IOM-style rough pregnancy weight gain ranges by pre-pregnancy BMI category. */
+export function pregnancyWeightGainRange(bmiCategory: string): {
+  totalKg: [number, number];
+  note: string;
+} {
+  switch (bmiCategory) {
+    case "underweight":
+      return { totalKg: [12.5, 18], note: "BMI < 18.5 (IOM guideline range)" };
+    case "normal":
+      return { totalKg: [11.5, 16], note: "BMI 18.5–24.9 (IOM guideline range)" };
+    case "overweight":
+      return { totalKg: [7, 11.5], note: "BMI 25–29.9 (IOM guideline range)" };
+    case "obese":
+      return { totalKg: [5, 9], note: "BMI ≥ 30 (IOM guideline range)" };
+    default:
+      return { totalKg: [11.5, 16], note: "Default normal-BMI range" };
+  }
+}
+
+export function waistHipRatio(
+  waistCm: number,
+  hipCm: number
+): { ratio: number; risk: string } {
+  if (hipCm <= 0) return { ratio: NaN, risk: "Invalid" };
+  const ratio = waistCm / hipCm;
+  let risk = "Low";
+  if (ratio >= 0.9) risk = "High";
+  else if (ratio >= 0.85) risk = "Moderate";
+  return { ratio, risk };
+}

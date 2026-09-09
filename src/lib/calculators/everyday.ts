@@ -1,6 +1,6 @@
 import type { CalculatorMeta } from "../types";
 import { tipAmount } from "../formulas/finance";
-import { requireNums, fmtMoney, fmtNumber, fmtPercent, parseNum, err, ok, parseList } from "./helpers";
+import { requireNums, fmtMoney, fmtNumber, fmtPercent, parseNum, err, ok } from "./helpers";
 
 function passwordScore(pw: string): { score: number; label: string; tips: string[] } {
   let score = 0;
@@ -257,6 +257,206 @@ export const everydayCalculators: CalculatorMeta[] = [
       const dec = n.hours + n.minutes / 60;
       return ok([
         { label: "Decimal hours", value: fmtNumber(dec, 4), emphasize: true },
+      ]);
+    },
+  },
+  {
+    slug: "cooking-converter",
+    category: "everyday-life",
+    name: "Cooking Unit Converter",
+    description: "Convert common cooking volume units (tsp, tbsp, cups, ml, liters).",
+    keywords: ["cooking", "recipe", "cups", "tablespoon", "ml"],
+    popular: true,
+    kind: "form",
+    fields: [
+      { id: "amount", label: "Amount", type: "number", defaultValue: 1 },
+      {
+        id: "from",
+        label: "From",
+        type: "select",
+        defaultValue: "cup",
+        options: [
+          { value: "tsp", label: "Teaspoon (tsp)" },
+          { value: "tbsp", label: "Tablespoon (tbsp)" },
+          { value: "cup", label: "Cup (US)" },
+          { value: "ml", label: "Milliliter (ml)" },
+          { value: "l", label: "Liter (L)" },
+          { value: "floz", label: "Fluid ounce (US)" },
+        ],
+      },
+    ],
+    related: ["tip-tax-combo"],
+    compute: (v) => {
+      const amount = parseNum(v.amount);
+      if (!Number.isFinite(amount) || amount < 0) return err("Enter a non-negative amount.");
+      const toMl: Record<string, number> = {
+        tsp: 4.92892,
+        tbsp: 14.7868,
+        cup: 236.588,
+        ml: 1,
+        l: 1000,
+        floz: 29.5735,
+      };
+      const ml = amount * (toMl[v.from] ?? 1);
+      return ok([
+        { label: "Milliliters", value: fmtNumber(ml, 4), emphasize: true },
+        { label: "Teaspoons", value: fmtNumber(ml / toMl.tsp, 4) },
+        { label: "Tablespoons", value: fmtNumber(ml / toMl.tbsp, 4) },
+        { label: "Cups (US)", value: fmtNumber(ml / toMl.cup, 4) },
+        { label: "Liters", value: fmtNumber(ml / 1000, 6) },
+        { label: "Fl oz (US)", value: fmtNumber(ml / toMl.floz, 4) },
+      ]);
+    },
+  },
+  {
+    slug: "pace-min-km",
+    category: "everyday-life",
+    name: "Pace (min/km) Helper",
+    description: "Convert a target pace in min/km into speed and race finish times.",
+    keywords: ["pace min/km", "running pace", "race time"],
+    kind: "form",
+    fields: [
+      { id: "min", label: "Pace minutes", type: "number", defaultValue: 5 },
+      { id: "sec", label: "Pace seconds", type: "number", defaultValue: 30, min: 0, max: 59 },
+      { id: "distance", label: "Race distance (km)", type: "number", defaultValue: 10 },
+    ],
+    related: ["pace", "fuel-cost"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["min", "sec", "distance"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      const paceMin = n.min + n.sec / 60;
+      if (paceMin <= 0 || n.distance <= 0) return err("Pace and distance must be positive.");
+      const totalMin = paceMin * n.distance;
+      const h = Math.floor(totalMin / 60);
+      const m = Math.floor(totalMin % 60);
+      const s = Math.round((totalMin * 60) % 60);
+      const kmh = 60 / paceMin;
+      return ok([
+        { label: "Speed", value: `${fmtNumber(kmh, 2)} km/h`, emphasize: true },
+        {
+          label: "Finish time",
+          value: `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`,
+          emphasize: true,
+        },
+      ]);
+    },
+  },
+  {
+    slug: "timezone-difference",
+    category: "everyday-life",
+    name: "Time Zone Difference",
+    description: "Approximate hour offset between two IANA time zones right now.",
+    keywords: ["time zone", "utc offset", "world clock difference"],
+    kind: "form",
+    fields: [
+      {
+        id: "from",
+        label: "From zone",
+        type: "select",
+        defaultValue: "Asia/Kolkata",
+        options: [
+          { value: "Asia/Kolkata", label: "Asia/Kolkata (IST)" },
+          { value: "UTC", label: "UTC" },
+          { value: "America/New_York", label: "America/New_York" },
+          { value: "America/Los_Angeles", label: "America/Los_Angeles" },
+          { value: "Europe/London", label: "Europe/London" },
+          { value: "Europe/Paris", label: "Europe/Paris" },
+          { value: "Asia/Dubai", label: "Asia/Dubai" },
+          { value: "Asia/Singapore", label: "Asia/Singapore" },
+          { value: "Asia/Tokyo", label: "Asia/Tokyo" },
+          { value: "Australia/Sydney", label: "Australia/Sydney" },
+        ],
+      },
+      {
+        id: "to",
+        label: "To zone",
+        type: "select",
+        defaultValue: "America/New_York",
+        options: [
+          { value: "Asia/Kolkata", label: "Asia/Kolkata (IST)" },
+          { value: "UTC", label: "UTC" },
+          { value: "America/New_York", label: "America/New_York" },
+          { value: "America/Los_Angeles", label: "America/Los_Angeles" },
+          { value: "Europe/London", label: "Europe/London" },
+          { value: "Europe/Paris", label: "Europe/Paris" },
+          { value: "Asia/Dubai", label: "Asia/Dubai" },
+          { value: "Asia/Singapore", label: "Asia/Singapore" },
+          { value: "Asia/Tokyo", label: "Asia/Tokyo" },
+          { value: "Australia/Sydney", label: "Australia/Sydney" },
+        ],
+      },
+    ],
+    related: ["unix-timestamp", "date-difference"],
+    compute: (v) => {
+      const from = v.from || "UTC";
+      const to = v.to || "UTC";
+      const now = new Date();
+      const fmt = (tz: string) =>
+        new Intl.DateTimeFormat("en-US", {
+          timeZone: tz,
+          timeZoneName: "shortOffset",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).format(now);
+      const offsetMinutes = (tz: string) => {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: tz,
+          timeZoneName: "shortOffset",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).formatToParts(now);
+        const name = parts.find((p) => p.type === "timeZoneName")?.value || "GMT";
+        const m = name.match(/GMT([+-]\d{1,2})(?::?(\d{2}))?/);
+        if (!m) return 0;
+        const sign = m[1].startsWith("-") ? -1 : 1;
+        const hh = Math.abs(parseInt(m[1], 10));
+        const mm = m[2] ? parseInt(m[2], 10) : 0;
+        return sign * (hh * 60 + mm);
+      };
+      try {
+        const diffMin = offsetMinutes(to) - offsetMinutes(from);
+        const hours = diffMin / 60;
+        return ok([
+          { label: "Offset (to − from)", value: `${fmtNumber(hours, 2)} hours`, emphasize: true },
+          { label: `Now in ${from}`, value: fmt(from) },
+          { label: `Now in ${to}`, value: fmt(to) },
+        ]);
+      } catch {
+        return err("Invalid time zone.");
+      }
+    },
+  },
+  {
+    slug: "tip-tax-combo",
+    category: "everyday-life",
+    name: "Tip + Tax Combo",
+    description: "Add sales tax and tip to a bill, with optional per-person split.",
+    keywords: ["tip and tax", "restaurant total", "gratuity tax"],
+    popular: true,
+    kind: "form",
+    fields: [
+      { id: "subtotal", label: "Subtotal", type: "number", defaultValue: 80, prefix: "$", step: 0.01 },
+      { id: "taxPct", label: "Tax %", type: "number", defaultValue: 8, suffix: "%" },
+      { id: "tipPct", label: "Tip % (of subtotal)", type: "number", defaultValue: 18, suffix: "%" },
+      { id: "people", label: "Split between", type: "number", defaultValue: 2, min: 1 },
+    ],
+    related: ["tip", "split-bill", "sales-tax"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["subtotal", "taxPct", "tipPct", "people"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.people < 1) return err("People must be ≥ 1.");
+      const tax = n.subtotal * (n.taxPct / 100);
+      const tip = n.subtotal * (n.tipPct / 100);
+      const total = n.subtotal + tax + tip;
+      return ok([
+        { label: "Tax", value: fmtMoney(tax) },
+        { label: "Tip", value: fmtMoney(tip) },
+        { label: "Grand total", value: fmtMoney(total), emphasize: true },
+        { label: "Per person", value: fmtMoney(total / n.people), emphasize: true },
       ]);
     },
   },

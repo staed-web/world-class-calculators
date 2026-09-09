@@ -13,7 +13,7 @@ const BUTTONS: string[][] = [
 ];
 
 function evaluateExpression(raw: string): number {
-  let expr = raw
+  const expr = raw
     .replace(/π/g, `(${Math.PI})`)
     .replace(/÷/g, "/")
     .replace(/×/g, "*")
@@ -28,7 +28,6 @@ function evaluateExpression(raw: string): number {
     .replace(/\^/g, "**");
 
   // Convert bare trig calls like sin30 → sin(30) not supported; require parentheses via UI.
-  // eslint-disable-next-line no-new-func
   const fn = new Function(`"use strict"; return (${expr});`);
   const result = fn();
   if (typeof result !== "number" || !Number.isFinite(result)) {

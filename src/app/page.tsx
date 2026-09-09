@@ -32,7 +32,7 @@ export default function HomePage() {
             <SearchBar size="lg" />
           </div>
           <div className="mt-6 flex flex-wrap gap-2 text-sm">
-            {["mortgage", "bmi", "compound-interest", "tip", "temperature"].map(
+            {["mortgage", "gold price", "compounding", "pythagoras", "bmi"].map(
               (slug) => (
                 <Link
                   key={slug}
@@ -55,7 +55,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-2xl font-bold text-slate-900">Browse by category</h2>
               <p className="text-slate-500 text-sm mt-1">
-                Ten categories covering finance through statistics.
+                Browse finance, math, health, commodities, and more.
               </p>
             </div>
           </div>

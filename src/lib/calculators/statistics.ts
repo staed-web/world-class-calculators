@@ -1,5 +1,5 @@
 import type { CalculatorMeta } from "../types";
-import { mean, median, mode, stdDeviation } from "../formulas/math";
+import { mean, stdDeviation } from "../formulas/math";
 import { parseList, fmtNumber, fmtPercent, err, ok, requireNums } from "./helpers";
 
 export const statisticsCalculators: CalculatorMeta[] = [
