@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { categories } from "@/lib/categories";
@@ -22,6 +23,11 @@ const mobileQuick = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -34,17 +40,117 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    html.classList.add("nav-drawer-open");
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
     }
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      html.classList.remove("nav-drawer-open");
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
+
+  const drawer =
+    open && mounted
+      ? createPortal(
+          <div
+            id="mobile-nav-drawer"
+            className="lg:hidden fixed inset-0 z-[9999] isolate"
+            style={{ zIndex: 9999 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            <button
+              type="button"
+              className="absolute inset-0 bg-black/50"
+              aria-label="Close menu overlay"
+              onClick={() => setOpen(false)}
+            />
+            <div
+              className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col bg-card text-foreground shadow-2xl border-l border-border pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]"
+              style={{ backgroundColor: "var(--card)" }}
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
+                <p className="font-semibold text-foreground">Menu</p>
+                <button
+                  type="button"
+                  className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-border bg-card"
+                  aria-label="Close menu"
+                  onClick={() => setOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-6">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted mb-2">
+                    Quick tools
+                  </p>
+                  <ul className="grid grid-cols-2 gap-2">
+                    {mobileQuick.map((l) => (
+                      <li key={l.href}>
+                        <Link
+                          href={l.href}
+                          className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-background px-2 text-sm font-medium hover:border-brand hover:text-brand"
+                          onClick={() => setOpen(false)}
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted mb-2">
+                    Categories
+                  </p>
+                  <ul className="space-y-1">
+                    {categories.map((c) => (
+                      <li key={c.slug}>
+                        <Link
+                          href={`/categories/${c.slug}`}
+                          className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-foreground hover:bg-brand-soft/50"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span aria-hidden>{c.icon}</span>
+                          {c.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-1 border-t border-border pt-4">
+                  <Link
+                    href="/about"
+                    className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
+                    onClick={() => setOpen(false)}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
+                    onClick={() => setOpen(false)}
+                  >
+                    Contact
+                  </Link>
+                  <a
+                    href={contactMailto()}
+                    className="flex min-h-11 flex-col justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand"
+                  >
+                    <span>Email us</span>
+                    <span className="text-xs font-normal text-muted break-all">{CONTACT_EMAIL}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
 
   return (
     <header
@@ -157,98 +263,7 @@ export function Header() {
         <SearchBar />
       </div>
 
-      {/* Drawer */}
-      {open && (
-        <div
-          id="mobile-nav-drawer"
-          className="lg:hidden fixed inset-0 z-[60]"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site menu"
-        >
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/40"
-            aria-label="Close menu overlay"
-            onClick={() => setOpen(false)}
-          />
-          <div className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col bg-card shadow-2xl border-l border-border pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-            <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-              <p className="font-semibold text-foreground">Menu</p>
-              <button
-                type="button"
-                className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-border"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-6">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted mb-2">
-                  Quick tools
-                </p>
-                <ul className="grid grid-cols-2 gap-2">
-                  {mobileQuick.map((l) => (
-                    <li key={l.href}>
-                      <Link
-                        href={l.href}
-                        className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-background px-2 text-sm font-medium hover:border-brand hover:text-brand"
-                        onClick={() => setOpen(false)}
-                      >
-                        {l.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted mb-2">
-                  Categories
-                </p>
-                <ul className="space-y-1">
-                  {categories.map((c) => (
-                    <li key={c.slug}>
-                      <Link
-                        href={`/categories/${c.slug}`}
-                        className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-foreground hover:bg-brand-soft/50"
-                        onClick={() => setOpen(false)}
-                      >
-                        <span aria-hidden>{c.icon}</span>
-                        {c.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="space-y-1 border-t border-border pt-4">
-                <Link
-                  href="/about"
-                  className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
-                  onClick={() => setOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
-                  onClick={() => setOpen(false)}
-                >
-                  Contact
-                </Link>
-                <a
-                  href={contactMailto()}
-                  className="flex min-h-11 flex-col justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand"
-                >
-                  <span>Email us</span>
-                  <span className="text-xs font-normal text-muted break-all">{CONTACT_EMAIL}</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {drawer}
     </header>
   );
 }

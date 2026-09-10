@@ -172,7 +172,12 @@ html {
 html,
 body {
   max-width: 100%;
-  overflow-x: clip;
+  /* Do not overflow-x:clip on html/body — it can trap/clip position:fixed portals (mobile nav). */
+}
+
+html.nav-drawer-open,
+html.nav-drawer-open body {
+  overflow: hidden;
 }
 
 .safe-pb {
