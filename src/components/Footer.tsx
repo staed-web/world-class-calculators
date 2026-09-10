@@ -6,7 +6,7 @@ import { AdSlot } from "./AdSlot";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-slate-950 text-slate-300">
+    <footer className="mt-auto border-t border-border bg-slate-950 text-slate-300 pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto max-w-6xl px-4 py-10">
         <AdSlot placement="footer" className="mb-8 bg-slate-900 border-slate-800 no-print" />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -92,7 +92,12 @@ export function Footer() {
         </div>
         <p className="mt-8 border-t border-slate-800 pt-6 text-xs text-slate-500">
           © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
-          professional advice. FX rates are delayed educational quotes.
+          professional advice. FX rates are delayed educational quotes. Guides and
+          FAQs are original MyCalcsWorld copy. Contact{" "}
+          <a href="mailto:hello@mycalcsworld.online" className="text-teal-300 hover:underline">
+            hello@mycalcsworld.online
+          </a>
+          .
         </p>
       </div>
     </footer>

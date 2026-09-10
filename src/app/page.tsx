@@ -13,6 +13,7 @@ import {
   calculatorPath,
 } from "@/lib/calculators/registry";
 import { popularInIndiaSlugs } from "@/lib/seo/calculatorContent";
+import { RecentlyUsedCalculators } from "@/components/RecentlyUsedCalculators";
 
 export default function HomePage() {
   const featured = getFeaturedCalculators().slice(0, 9);
@@ -56,7 +57,7 @@ export default function HomePage() {
             </div>
           </div>
           <h1 className="rise-in max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
-            Free calculators with real guides — not a dusty ad directory.
+            Free calculators with real guides — built for India and the world.
           </h1>
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
             Mortgage, EMI, daily compound interest, BMI, live FX, and{" "}
@@ -92,6 +93,8 @@ export default function HomePage() {
 
       <div className="relative mx-auto max-w-6xl px-4 py-10 space-y-14">
         <AdSlot placement="header" className="no-print" />
+
+        <RecentlyUsedCalculators />
 
         <section className="grid gap-4 sm:grid-cols-3">
           {[

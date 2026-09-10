@@ -166,3 +166,70 @@ html {
     border-color: #ddd;
   }
 }
+
+
+/* —— Mobile-first polish —— */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.safe-pb {
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+}
+
+/* iOS: avoid auto-zoom on focus for inputs under 16px */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch-friendly focus targets */
+button,
+a,
+summary,
+[role="button"] {
+  -webkit-tap-highlight-color: color-mix(in oklab, var(--brand) 18%, transparent);
+}
+
+/* Horizontal rails */
+.touch-rail {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media print {
+  #print-results {
+    break-inside: avoid;
+  }
+}
+
+
+/* Prevent FAQ/details expand from causing page horizontal jump */
+#calculator-guide,
+#calculator-guide details,
+#print-results,
+[data-chart] {
+  overflow-x: clip;
+  max-width: 100%;
+  overflow-anchor: none;
+}
+
+main {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Tables: scroll inside, never widen page */
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}

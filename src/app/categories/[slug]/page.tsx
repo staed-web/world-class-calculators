@@ -46,7 +46,7 @@ export default async function CategoryPage({
   }));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-3 sm:px-4 py-6 sm:py-8 min-w-0 overflow-x-clip">
       <nav className="mb-4 text-sm text-muted">
         <Link href="/" className="hover:text-brand">
           Home

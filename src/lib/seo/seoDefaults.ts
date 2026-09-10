@@ -8,23 +8,74 @@ import type {
 } from "@/lib/types";
 import { categoryMap } from "@/lib/categories";
 
+function fieldList(fields?: FieldDef[], max = 6): string {
+  if (!fields?.length) return "the inputs on the form";
+  return fields
+    .slice(0, max)
+    .map((f) => {
+      const unit = f.suffix ? ` (${f.suffix})` : f.prefix === "$" ? " (money)" : "";
+      return f.label + unit;
+    })
+    .join(", ");
+}
+
 function fieldDefaults(fields?: FieldDef[]): string {
   if (!fields?.length) return "the default inputs shown on the form";
   const bits = fields
     .filter((f) => f.defaultValue !== undefined && f.defaultValue !== null && f.defaultValue !== "")
-    .slice(0, 4)
+    .slice(0, 5)
     .map((f) => {
       const unit = f.suffix ? ` ${f.suffix}` : "";
-      return `${f.label.toLowerCase()} ${f.defaultValue}${unit}`;
+      const pre = f.prefix === "$" ? "" : f.prefix || "";
+      return `${f.label.toLowerCase()} ${pre}${f.defaultValue}${unit}`;
     });
   return bits.length ? bits.join(", ") : "the default inputs shown on the form";
+}
+
+function firstFieldDefaults(fields?: FieldDef[]): { label: string; value: string; suffix: string }[] {
+  if (!fields?.length) return [];
+  return fields
+    .filter((f) => f.defaultValue !== undefined && f.defaultValue !== null && f.defaultValue !== "")
+    .slice(0, 4)
+    .map((f) => ({
+      label: f.label,
+      value: String(f.defaultValue),
+      suffix: f.suffix || (f.prefix === "$" ? "" : ""),
+    }));
+}
+
+function audienceFor(cat: CategorySlug): string {
+  const map: Record<CategorySlug, string> = {
+    finance:
+      "homebuyers, EMI shoppers, SIP investors, freelancers, and anyone comparing a bank quote to an independent worksheet",
+    math: "students, tutors, contest-prep learners, and professionals who need a transparent check against homework or hand math",
+    "health-fitness":
+      "people setting fitness goals, coaches doing quick estimates, and anyone curious about BMI, calories, or training numbers — not a clinic visit",
+    conversion:
+      "engineers, cooks, travelers, students, and DIY folks who need a clean unit swap without hunting conversion tables",
+    "date-time":
+      "HR teams, students, travelers, and planners who need age, day counts, or schedule math without a spreadsheet",
+    "everyday-life":
+      "households splitting bills, road-trippers estimating fuel, DIY planners, and anyone doing practical day-to-day arithmetic",
+    "science-engineering":
+      "lab students, makers, and engineers doing first-cut checks with textbook identities before applying real tolerances",
+    business:
+      "founders, freelancers, analysts, and managers pressure-testing margins, break-even, and hourly↔salary math",
+    education:
+      "students and teachers planning grades, GPA, and “what final do I need?” targets against a real syllabus",
+    statistics:
+      "students and analysts validating means, spreads, combinations, and classical probabilities on small datasets",
+    commodities:
+      "jewelry buyers, bullion curious investors, and anyone estimating melt or spot notionals before talking to a dealer",
+  };
+  return map[cat] || "anyone who wants a clear, browser-based estimate";
 }
 
 function formulaFallback(calc: CalculatorMeta): string {
   const cat = calc.category;
   const map: Partial<Record<CategorySlug, string>> = {
     finance:
-      "Results use standard time-value-of-money and cash-flow relationships implemented in the site formula modules (interest, amortization, growth, and tax helpers). Exact algebraic forms appear on flagship pages; elsewhere the live form is the source of truth for rounding and edge cases. Day-count and compounding conventions can differ from a specific bank product — always cross-check against your Loan Estimate, sanction letter, or prospectus before committing money.",
+      "Results use standard time-value-of-money and cash-flow relationships (interest, amortization, growth, tax helpers) implemented in MyCalcsWorld formula modules. Exact algebraic forms appear on flagship pages; elsewhere the live form is the source of truth for rounding and edge cases. Day-count and compounding conventions can differ from a specific bank product — always cross-check against your Loan Estimate, sanction letter, or prospectus before committing money.",
     math:
       "Outputs follow the usual algebraic / geometric / statistical identities for this tool. Intermediate rounding is limited; final display uses sensible fixed precision so classroom checks stay reproducible. For proofs or contest math, re-derive with the exact symbolic form your course requires.",
     "health-fitness":
@@ -52,74 +103,133 @@ function formulaFallback(calc: CalculatorMeta): string {
   const specific = calc.formulaNote?.trim();
   if (specific && specific.length >= 80) return specific;
   if (specific) return `${specific} ${base}`;
-  return base;
+  return `${base} For the ${calc.name}, the labeled fields (${fieldList(calc.fields, 4)}) drive the live result panel.`;
 }
 
-/** Long-form category intros — used so default pages are not thin boilerplate. */
-const categoryOverviewLead: Record<CategorySlug, string> = {
-  finance:
-    "Finance calculators on MyCalcsWorld are built for quick, transparent money math — loans, interest, investing, taxes, and cash-flow planning — with multi-currency formatting via the currency picker (USD, INR, EUR, GBP, AED, and more).\n\nWhether you are comparing a mortgage quote, checking an EMI, modeling SIP growth, or stress-testing a savings rate, each tool shows live results, charts or tables when the math supports them, and plain-language notes so you can verify against a bank worksheet or spreadsheet. Outputs are educational estimates: day-count conventions, fees, taxes, and product rules vary by lender and country.",
-  math:
-    "Math calculators on MyCalcsWorld cover arithmetic through algebra, geometry, and specialty solvers so students and professionals can check work without opaque “black box” apps.\n\nEvery page keeps inputs labeled, results readable on mobile, and formula notes visible so you can reconcile with a textbook or homework key. Use these for classroom checks, contest practice, or quick engineering sketches — then apply your required significant figures for graded or high-stakes work.",
-  "health-fitness":
-    "Health & fitness tools estimate body metrics, calories, hydration, and training targets from published educational formulas (BMI cutoffs, Mifflin–St Jeor, Navy circumference methods, one-rep-max estimators, and more).\n\nThey are for learning and goal-setting, not diagnosis or treatment. Athletes, pregnancy, pediatric, and clinical populations often need adjusted equations — confirm with a clinician or registered dietitian before changing diet, medication, or training load.",
-  conversion:
-    "Conversion calculators translate between common unit systems with clear factors so engineering, cooking, travel, and schoolwork stay consistent.\n\nPick the quantity you care about (length, mass, temperature, volume, speed, data, …), enter a value, and read the paired unit instantly. Factors follow SI definitions where exact, and commonly published customary constants otherwise — fine for homework and DIY, while metrology labs may need primary standards.",
-  "date-time":
-    "Date & time calculators answer “how long between…?”, age from date of birth, business-day spans, and schedule shifts without spreadsheet gymnastics.\n\nLeap years and weekday filters are handled in the engines behind each form. Holiday calendars are usually not embedded — if your bank, court, or school skips specific public holidays, adjust the result manually.",
-  "everyday-life":
-    "Everyday-life calculators handle tips, bill splits, fuel cost, recipe scaling, DIY quantities, and household planning with practical defaults you can tweak instantly.\n\nThese are convenience tools for dinners out, road trips, and weekend projects. They are not tax software, contractor bids, or legal advice — round up for tips when service warrants it, and verify material lists with a tradesperson for structural work.",
-  "science-engineering":
-    "Science & engineering calculators apply textbook physics and chemistry relationships with SI-friendly inputs for lab, class, and field estimates.\n\nOhm’s law, kinematics, energy, and similar helpers assume idealized conditions unless the page says otherwise. Use them to check homework or size a first-cut design, then apply real-world tolerances, temperature coefficients, and safety factors.",
-  business:
-    "Business calculators quantify margins, markup, break-even, hourly↔salary, and simple ROI so founders and analysts can pressure-test ideas before opening a full model.\n\nThey intentionally stay transparent: no hidden tax packs or inventory modules unless a field asks for them. Pair results with your accounting system and local tax rules before pricing or hiring decisions.",
-  education:
-    "Education calculators help with grades, GPA, and “what final score do I need?” planning using transparent weighting rules you can align to your school’s policy.\n\nAlways match the scale your syllabus publishes (4.0, 10-point, percentage weights, dropped scores). Registrars and exam boards have the final say on transcripts.",
-  statistics:
-    "Statistics calculators compute summaries and classical probabilities so you can validate homework or exploratory analysis quickly.\n\nMeans, medians, modes, spreads, combinations, and simple distributions are covered with classical definitions. For inference, A/B tests, or publication-grade analysis, use a full stats package and report assumptions explicitly.",
-  commodities:
-    "Commodities tools estimate metal and commodity notionals from weight, purity, and reference prices — including live spot helpers where available.\n\nQuotes are delayed educational feeds, not executable exchange or dealer prices. Jewelry and bullion tickets add making charges, premiums, taxes, and spreads — never treat a melt-value estimate as a buy/sell offer.",
+const categoryWhenToUse: Record<CategorySlug, (name: string) => string[]> = {
+  finance: (name) => [
+    `Use the ${name} when you want a second opinion on a bank, broker, or app quote before you sign.`,
+    "Compare two scenarios side by side (rate, tenure, contribution) by changing one input at a time.",
+    "Stress-test a worse rate or shorter horizon so the payment or growth figure is not a surprise later.",
+  ],
+  math: (name) => [
+    `Use the ${name} to check homework, contest practice, or a quick engineering sketch.`,
+    "Mirror the same numbers on paper using the formula notes when exams ban calculators.",
+    "Explore how each coefficient or dimension moves the answer before you commit to a write-up.",
+  ],
+  "health-fitness": (name) => [
+    `Use the ${name} for educational goal-setting and coach-style ballparks — not diagnosis.`,
+    "Re-run with honest activity or measurement inputs to see a planning range, not a single magic number.",
+    "Bring the output to a clinician or dietitian if you plan major diet or training changes.",
+  ],
+  conversion: (name) => [
+    `Use the ${name} when a recipe, drawing, or travel doc mixes unit systems.`,
+    "Convert once, then convert back to confirm the factor round-trips cleanly.",
+    "Prefer this over mental math when a wrong unit family (oz vs lb, cm vs in) would be costly.",
+  ],
+  "date-time": (name) => [
+    `Use the ${name} for age, day counts, or schedule spans without spreadsheet gymnastics.`,
+    "Confirm inclusive vs exclusive day counting against the institution that sets the deadline.",
+    "Adjust manually for public holidays when your bank, court, or school skips them.",
+  ],
+  "everyday-life": (name) => [
+    `Use the ${name} for dinner splits, trips, DIY lists, and other practical planning.`,
+    "Treat the number as a plan, then round in a way your group or project agrees on.",
+    "Verify structural or tax-critical numbers with a professional when stakes are high.",
+  ],
+  "science-engineering": (name) => [
+    `Use the ${name} for homework checks and first-cut design estimates under textbook assumptions.`,
+    "Keep SI (or the form’s stated units) consistent — a wrong unit ruins precision.",
+    "Apply safety factors and real component tolerances before anything safety-critical.",
+  ],
+  business: (name) => [
+    `Use the ${name} to pressure-test pricing, staffing, or ROI before opening a full spreadsheet model.`,
+    "Separate margin from markup when pricing products so you do not undercharge.",
+    "Add taxes, benefits, and financing yourself unless the form already asks for them.",
+  ],
+  education: (name) => [
+    `Use the ${name} to plan GPA or “final needed” targets against your syllabus weights.`,
+    "Match your school’s scale (4.0, 10-point, percentage) exactly before trusting a target.",
+    "Ask the registrar or teacher when curves, dropped scores, or policies are unclear.",
+  ],
+  statistics: (name) => [
+    `Use the ${name} to validate homework summaries or exploratory stats on small samples.`,
+    "State sample vs population formulas before comparing to a textbook key.",
+    "Move to a full stats package for inference, A/B tests, or publication work.",
+  ],
+  commodities: (name) => [
+    `Use the ${name} to estimate melt or spot notionals before you visit a dealer.`,
+    "Verify karat/fineness hallmarks — purity errors dominate jewelry estimates.",
+    "Expect retail tickets to add making charges, premiums, and taxes on top of melt value.",
+  ],
 };
 
-const categoryHowToExtra: Partial<Record<CategorySlug, string[]>> = {
-  finance: [
-    "Use the currency picker when you think in INR, USD, EUR, or another display currency — formulas stay the same; only formatting changes (except on the live FX converter).",
-    "Stress-test a worse rate, higher fee, or shorter horizon before you treat a result as a plan.",
-    "If a chart or amortization/schedule table appears, scroll it — lifetime interest and early-year interest-heavy payments are easier to see visually than in a single headline number.",
+const categoryMistakes: Record<CategorySlug, (name: string, fields: string) => string[]> = {
+  finance: (name, fields) => [
+    `Entering APR when the ${name} expects a nominal note rate (or the reverse) — that quietly skews payments.`,
+    "Forgetting fees, insurance, GST, or escrow that your real product includes outside the core fields: " + fields + ".",
+    "Treating display currency as FX conversion — use the dedicated converter when you need an actual rate.",
+    "Ignoring that early loan years are interest-heavy; the schedule matters as much as the EMI headline.",
   ],
-  "health-fitness": [
-    "Enter measurements in the units shown on each field (the form labels metric vs customary clearly).",
-    "If you are under medical care, confirm targets with a clinician before changing diet or training.",
-    "Re-run with honest activity levels — optimistic inputs produce optimistic calorie targets.",
+  math: (name, fields) => [
+    `Mixing degrees and radians, or skipping parentheses, when the ${name} assumes a specific convention.`,
+    "Comparing rounded display values to an answer key that wants exact fractions.",
+    "Entering the wrong field order among: " + fields + ".",
+    "Assuming a unique root when the equation can have two (or none).",
   ],
-  math: [
-    "Double-check that parentheses, degrees vs radians, and units match the problem statement before comparing to an answer key.",
-    "Use the formula notes to recreate the same steps on paper for exams that ban calculators.",
+  "health-fitness": (name, fields) => [
+    "Mixing cm/in or kg/lb on fields: " + fields + " — unit mix-ups swing BMI and calorie outputs hard.",
+    "Optimistic activity levels that produce calorie targets you cannot sustain.",
+    `Using the ${name} as a diagnosis instead of an educational estimate.`,
+    "Applying adult formulas to pediatric, pregnant, or clinical populations without guidance.",
   ],
-  conversion: [
-    "Confirm you picked the correct pair (e.g. kg vs lb, not oz) — wrong unit families are the most common conversion mistake.",
+  conversion: (name, fields) => [
+    "Picking the wrong unit family (e.g. oz vs lb, ml vs fl oz) among: " + fields + ".",
+    "Scaling temperatures as if °C were a simple ratio like kelvin differences.",
+    "Expecting volume↔weight without density for cooking ingredients.",
+    `Assuming the ${name} is a legal-metrology certificate — labs need primary standards.`,
   ],
-  "date-time": [
-    "Use the same timezone convention for both dates when crossing midnight or travel days matters.",
+  "date-time": (name, fields) => [
+    "Crossing timezones or midnight without matching the convention on: " + fields + ".",
+    "Forgetting leap days on long age or anniversary spans.",
+    "Assuming business-day mode removes public holidays (most tools only skip weekends).",
+    `Using the ${name} as a court or bank deadline without confirming their calendar.`,
   ],
-  "everyday-life": [
-    "Round tip and split results in a way your group agrees on — the math is exact; social norms vary.",
+  "everyday-life": (name, fields) => [
+    "Forgetting to agree how to round coins or tip when splitting among friends.",
+    "Ignoring waste factors on DIY quantities when the form labels them separately.",
+    "Treating fuel math as exact when traffic and driving style change real consumption.",
+    "Misreading fields: " + fields + ".",
   ],
-  "science-engineering": [
-    "Keep SI base units consistent (meters, kilograms, seconds) unless the form explicitly accepts other units.",
+  "science-engineering": (name, fields) => [
+    "Mixing SI and customary units across: " + fields + ".",
+    "Ignoring that textbook models omit friction, temperature drift, or non-ohmic behavior.",
+    "Trusting excessive decimal places when the input precision was coarse.",
+    `Skipping safety factors after the ${name} gives an idealized first cut.`,
   ],
-  business: [
-    "Separate margin (profit ÷ revenue) from markup (profit ÷ cost) — mixing them up misprices products.",
+  business: (name, fields) => [
+    "Confusing margin (profit ÷ revenue) with markup (profit ÷ cost).",
+    "Leaving taxes, benefits, or inventory out of: " + fields + " when they matter to the decision.",
+    "Using break-even as a cash forecast without working-capital timing.",
+    `Treating the ${name} as accounting software instead of transparent management math.`,
   ],
-  education: [
-    "Match your syllabus weights exactly; a 5% error in weight assumptions swings “final needed” scores a lot.",
+  education: (name, fields) => [
+    "Wrong weight percentages among: " + fields + " — a 5% weight error swings “final needed” a lot.",
+    "Mixing 4.0 and 10-point GPA scales.",
+    "Ignoring dropped scores or curves your syllabus actually uses.",
+    `Relying on the ${name} over the registrar when transcript rules conflict.`,
   ],
-  statistics: [
-    "State whether you need sample or population formulas before comparing to a textbook answer.",
+  statistics: (name, fields) => [
+    "Using population variance when the homework wants the sample formula (or reverse).",
+    "Typing unsorted or incomplete lists into: " + fields + ".",
+    "Generalizing a tiny sample as if it were a population claim.",
+    `Expecting the ${name} to run a full hypothesis test suite.`,
   ],
-  commodities: [
-    "Treat live prices as delayed reference quotes; dealers add premiums, making charges, and taxes.",
-    "Purity/karat mistakes dominate jewelry melt estimates — verify hallmarks before trusting a number.",
+  commodities: (name, fields) => [
+    "Wrong karat/fineness on: " + fields + " — the #1 jewelry melt error.",
+    "Treating delayed educational spot quotes as tradeable dealer bids.",
+    "Forgetting making charges, premiums, and GST/sales tax on retail tickets.",
+    `Using the ${name} as investment advice instead of a notional estimate.`,
   ],
 };
 
@@ -192,16 +302,64 @@ const categoryInterpret: Record<CategorySlug, string[]> = {
   ],
 };
 
+const categoryHowToExtra: Partial<Record<CategorySlug, string[]>> = {
+  finance: [
+    "Use the currency picker when you think in INR, USD, EUR, or another display currency — formulas stay the same; only formatting changes (except on the live FX converter).",
+    "Stress-test a worse rate, higher fee, or shorter horizon before you treat a result as a plan.",
+    "If a chart or amortization/schedule table appears, scroll it — lifetime interest and early-year interest-heavy payments are easier to see visually than in a single headline number.",
+  ],
+  "health-fitness": [
+    "Enter measurements in the units shown on each field (the form labels metric vs customary clearly).",
+    "If you are under medical care, confirm targets with a clinician before changing diet or training.",
+    "Re-run with honest activity levels — optimistic inputs produce optimistic calorie targets.",
+  ],
+  math: [
+    "Double-check that parentheses, degrees vs radians, and units match the problem statement before comparing to an answer key.",
+    "Use the formula notes to recreate the same steps on paper for exams that ban calculators.",
+  ],
+  conversion: [
+    "Confirm you picked the correct pair (e.g. kg vs lb, not oz) — wrong unit families are the most common conversion mistake.",
+  ],
+  "date-time": [
+    "Use the same timezone convention for both dates when crossing midnight or travel days matters.",
+  ],
+  "everyday-life": [
+    "Round tip and split results in a way your group agrees on — the math is exact; social norms vary.",
+  ],
+  "science-engineering": [
+    "Keep SI base units consistent (meters, kilograms, seconds) unless the form explicitly accepts other units.",
+  ],
+  business: [
+    "Separate margin (profit ÷ revenue) from markup (profit ÷ cost) — mixing them up misprices products.",
+  ],
+  education: [
+    "Match your syllabus weights exactly; a 5% error in weight assumptions swings “final needed” scores a lot.",
+  ],
+  statistics: [
+    "State whether you need sample or population formulas before comparing to a textbook answer.",
+  ],
+  commodities: [
+    "Treat live prices as delayed reference quotes; dealers add premiums, making charges, and taxes.",
+    "Purity/karat mistakes dominate jewelry melt estimates — verify hallmarks before trusting a number.",
+  ],
+};
+
 function buildFaqs(calc: CalculatorMeta): FaqItem[] {
   const catName = categoryMap[calc.category]?.name || calc.category;
+  const fields = fieldList(calc.fields, 5);
+  const defaults = fieldDefaults(calc.fields);
   const faqs: FaqItem[] = [
     {
-      question: `What does the ${calc.name} do?`,
-      answer: `${calc.description} It runs entirely in your browser on MyCalcsWorld — free, with no signup — and shows results as soon as you change an input. Scroll for how-to steps, interpretation tips, a worked example, formula notes, and FAQs so the page stays useful beyond a single number.`,
+      question: `What does the ${calc.name} on MyCalcsWorld actually compute?`,
+      answer: `${calc.description} You enter ${fields}, and the result panel updates in your browser — free, no signup. Below the form you will find when-to-use tips, common mistakes, a worked example, formula notes, and FAQs written for this specific tool (not a generic category blurb).`,
     },
     {
-      question: "How do I use this calculator step by step?",
-      answer: `Fill each labeled field (defaults are sensible starting points), review the live result panel (including any chart or table), then scroll for formula notes, a worked example, and FAQs. Related tools in the ${catName} category appear in the sidebar and “You might also like” section if you need a neighboring calculation.`,
+      question: `How do I use the ${calc.name} step by step?`,
+      answer: `Start from the defaults (${defaults}) or type your own values into ${fields}. Watch the live results (and any chart or table). Then scroll to interpretation tips and the worked example before you rely on the figure for a real decision. Related ${catName} tools sit in the sidebar and “You might also like” section.`,
+    },
+    {
+      question: `Who is the ${calc.name} for?`,
+      answer: `It helps ${audienceFor(calc.category)}. If your case needs a neighboring metric, jump to a related tool rather than forcing the wrong inputs into this form.`,
     },
     {
       question: "Is this result financial, medical, or professional advice?",
@@ -211,25 +369,20 @@ function buildFaqs(calc: CalculatorMeta): FaqItem[] {
     {
       question: "Will my numbers be stored on a server?",
       answer:
-        "Calculations run locally in your browser session. We do not require an account to use this tool. See the Privacy page for how the site handles general analytics and ads.",
-    },
-    {
-      question: "Why does MyCalcsWorld include guides and FAQs on every calculator?",
-      answer:
-        "A raw number without context is easy to misread. Each page aims for the depth people expect from flagship tools: what the inputs mean, how to interpret outputs, a worked example you can mirror, and clear limitations — so you can cross-check bank worksheets, homework keys, or other sites with confidence.",
+        "Calculations run locally in your browser session. We do not require an account to use this tool. Recently-used shortcuts (if you enable them on the home page) stay in your device’s localStorage only. See the Privacy page for analytics and ads.",
     },
   ];
 
   if (calc.category === "finance") {
     faqs.push({
-      question: "Can I switch currency display?",
+      question: "Can I switch currency display (INR, USD, EUR…)?",
       answer:
-        "Yes. Use the currency picker on finance tools to format money in USD, INR, EUR, GBP, and other supported codes. This changes display symbols, not FX conversion of the underlying inputs (unless you are on the dedicated converter).",
+        "Yes. Use the currency picker on finance tools to format money in USD, INR, EUR, GBP, AED, and other supported codes. This changes display symbols, not FX conversion of the underlying inputs (unless you are on the dedicated converter).",
     });
     faqs.push({
-      question: "Why might my bank or broker show a slightly different figure?",
+      question: `Why might my bank show a different figure than this ${calc.name}?`,
       answer:
-        "Live products may use different day-count conventions, compounding schedules, fees, taxes, or rounding. Treat this page as an independent cross-check, then confirm with your statement or advisor.",
+        "Live products may use different day-count conventions, compounding schedules, fees, taxes, or rounding. Treat this page as an independent cross-check, then confirm with your statement, sanction letter, or advisor.",
     });
   } else if (calc.category === "health-fitness") {
     faqs.push({
@@ -266,14 +419,9 @@ function buildFaqs(calc: CalculatorMeta): FaqItem[] {
       answer:
         "Usually not. Textbook identities assume ideal conditions unless a field asks for efficiency, friction, or tolerance. Apply your own safety factors for designs that affect safety or compliance.",
     });
-  } else if (calc.category === "business" || calc.category === "education") {
-    faqs.push({
-      question: `When should I use another ${catName} calculator instead?`,
-      answer: `If your problem needs a different primary output (for example a schedule, a unit change, or a related identity), pick a related tool from the sidebar or search MyCalcsWorld — each page stays focused so inputs stay unambiguous.`,
-    });
   } else {
     faqs.push({
-      question: `When should I use another ${catName} calculator instead?`,
+      question: `When should I use another ${catName} calculator instead of ${calc.name}?`,
       answer: `If your problem needs a different primary output (for example a schedule, a unit change, or a related identity), pick a related tool from the sidebar or search MyCalcsWorld — each page stays focused so inputs stay unambiguous.`,
     });
   }
@@ -286,11 +434,20 @@ function buildFaqs(calc: CalculatorMeta): FaqItem[] {
     });
   }
 
+  faqs.push({
+    question: `What are common mistakes on the ${calc.name}?`,
+    answer: `The biggest gotchas are covered in the “Common mistakes” section on this page — usually wrong units, mixing similar definitions, or ignoring fees/assumptions outside ${fields}. Skim that list before you screenshot a result.`,
+  });
+
   return faqs.slice(0, 8);
 }
 
 function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
   const defaults = fieldDefaults(calc.fields);
+  const pairs = firstFieldDefaults(calc.fields);
+  const pairLines = pairs.map(
+    (p) => `${p.label} = ${p.value}${p.suffix ? ` ${p.suffix}` : ""}`
+  );
   const catTips: Partial<Record<CategorySlug, string>> = {
     finance:
       "Optional: switch currency display and re-run with a ±1% rate shock to see payment or growth sensitivity.",
@@ -300,18 +457,26 @@ function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
     conversion: "Optional: convert back the other direction to confirm the factor round-trips cleanly.",
     "date-time": "Optional: flip start/end or change the as-of date by one day to see inclusive/exclusive behavior.",
     commodities: "Optional: change purity/karat by one step to see how sensitive melt value is to fineness.",
+    business: "Optional: toggle margin vs markup thinking and confirm you did not mix the two definitions.",
+    education: "Optional: nudge a weight by 5% to see how sensitive “final needed” is to syllabus assumptions.",
+    statistics: "Optional: add or remove one data point to see how mean/spread move.",
+    "everyday-life": "Optional: change the split or tip percent by a small step to match your group’s norm.",
+    "science-engineering": "Optional: scale one input by 10% and confirm the output moves in the expected direction.",
   };
+  const steps = [
+    `Open the ${calc.name} and note the starting defaults (${defaults}). These are realistic demos, not recommendations.`,
+    pairLines.length
+      ? `Read the labeled inputs: ${pairLines.join("; ")}. Change one field at a time so you can see each effect on the headline output.`
+      : "Enter your values into each labeled field, changing one at a time so you can see each effect.",
+    "Watch the result panel update. If a chart or table appears, skim the pattern (growth curve, amortization mix, snapshots) — not only the top-line number.",
+    `Compare the output to a hand calculation or spreadsheet using the formula notes for ${calc.name}.`,
+    catTips[calc.category] ||
+      "Optional: open a related tool from the sidebar if your real scenario needs a neighboring metric.",
+  ];
   return {
     title: `Worked example — ${calc.name}`,
-    steps: [
-      `Start from the on-page defaults (${defaults}). These are realistic starting points, not recommendations.`,
-      "Change one input at a time and watch the result panel update so you can see each field’s effect on the headline output.",
-      "If a chart or table appears, skim it for the pattern (growth curve, amortization mix, snapshots) — not only the top-line number.",
-      "Compare the output to a hand calculation or spreadsheet using the formula notes on this page.",
-      catTips[calc.category] ||
-        "Optional: open a related tool from the sidebar if your real scenario needs a neighboring metric.",
-    ],
-    result: `With the default inputs, the live ${calc.name} shows the authoritative rounded result for this build of MyCalcsWorld. Re-run with your own numbers for a personalized estimate — illustrative only, not professional advice.`,
+    steps,
+    result: `With the default inputs (${defaults}), the live ${calc.name} on MyCalcsWorld shows the authoritative rounded result for this build. Re-run with your own numbers for a personalized estimate — illustrative only, not professional advice.`,
   };
 }
 
@@ -320,22 +485,23 @@ function buildHowTo(calc: CalculatorMeta): {
   howToUseUS: string[];
   howToUseIndia: string[];
 } {
+  const fields = fieldList(calc.fields, 6);
   const howToUse = [
-    `Open the ${calc.name} and review the labeled input fields and any unit hints.`,
+    `Open the ${calc.name} and review the labeled fields: ${fields}.`,
     "Enter your values (or start from the defaults) — results update as you type or when you press Calculate.",
-    "Read the primary result(s) in the panel, including any chart or table when shown.",
-    "Scroll to How to interpret, the worked example, formula notes, and FAQs before relying on the figure for a real decision.",
+    "Read the primary result(s) in the panel, including any chart or table when shown. Use Copy / Share if you want a plain-text summary.",
+    "Scroll to When to use, Common mistakes, How to interpret, the worked example, formula notes, and FAQs before relying on the figure.",
     "Use Related tools / You might also like if you need a neighboring calculation in the same category.",
   ];
   const extra = categoryHowToExtra[calc.category] || [];
   const howToUseUS = [
-    `Use ${calc.name} with the units and conventions commonly quoted in U.S. / global English docs for this topic.`,
+    `Use ${calc.name} with the units and conventions commonly quoted in U.S. / global English docs for this topic (${fields}).`,
     ...howToUse.slice(1, 3),
     "If a bank, insurer, school, or lab uses a different definition of an input, match their definition before comparing.",
     ...extra.slice(0, 2),
   ];
   const howToUseIndia = [
-    `Use ${calc.name} with India-relevant units where applicable (INR via the currency picker on money tools, metric measures, financial-year or academic-year context).`,
+    `Use ${calc.name} with India-relevant units where applicable (INR via the currency picker on money tools, metric measures, financial-year or academic-year context). Fields: ${fields}.`,
     ...howToUse.slice(1, 3),
     "Confirm bank/NBFC, CBSE/university, clinic, or BIS-style conventions when your institution publishes its own method.",
     ...extra.slice(0, 2),
@@ -343,15 +509,45 @@ function buildHowTo(calc: CalculatorMeta): {
   return { howToUse, howToUseUS, howToUseIndia };
 }
 
+function buildOverview(calc: CalculatorMeta): string {
+  const cat = categoryMap[calc.category];
+  const fields = fieldList(calc.fields, 6);
+  const keywords =
+    calc.keywords?.slice(0, 5).join(", ") || calc.slug.replace(/-/g, " ");
+  const desc = calc.description.replace(/\.$/, "");
+
+  const openings: Partial<Record<CategorySlug, string>> = {
+    finance: `Money math should be transparent. The ${calc.name} on MyCalcsWorld gives you a browser-side estimate you can compare to a bank worksheet — with INR/USD/EUR formatting via the currency picker when money fields appear.`,
+    math: `Clear math beats a black-box app. The ${calc.name} on MyCalcsWorld keeps inputs labeled and formula notes visible so you can reconcile with a textbook or homework key.`,
+    "health-fitness": `Fitness numbers are starting points, not diagnoses. The ${calc.name} on MyCalcsWorld uses published educational formulas so you can plan goals — then confirm with a clinician when it matters.`,
+    conversion: `Unit mix-ups are expensive. The ${calc.name} on MyCalcsWorld applies clear SI / customary factors so homework, DIY, and travel docs stay consistent.`,
+    "date-time": `Date math without spreadsheet gymnastics. The ${calc.name} on MyCalcsWorld handles the calendar details the form documents (including leap years where relevant).`,
+    "everyday-life": `Practical planning, not paperwork. The ${calc.name} on MyCalcsWorld is built for dinners, trips, and weekend projects with numbers you can tweak instantly.`,
+    "science-engineering": `Textbook physics/chemistry, SI-friendly. The ${calc.name} on MyCalcsWorld is for homework checks and first-cut estimates under idealized assumptions unless noted.`,
+    business: `Management math you can explain. The ${calc.name} on MyCalcsWorld keeps margin, markup, break-even, and similar identities transparent before you open a full model.`,
+    education: `Syllabus-aware planning. The ${calc.name} on MyCalcsWorld helps you align weights and scales to your school’s published policy.`,
+    statistics: `Classical stats, no mystery. The ${calc.name} on MyCalcsWorld uses textbook definitions so homework checks stay reproducible.`,
+    commodities: `Melt and spot notionals, not dealer tickets. The ${calc.name} on MyCalcsWorld estimates weight × purity × reference price — retail still adds premiums and taxes.`,
+  };
+
+  const lead =
+    openings[calc.category] ||
+    `The ${calc.name} on MyCalcsWorld is a free, no-signup tool that runs entirely in your browser.`;
+
+  return `${lead}
+
+What it does: ${desc}. Typical inputs: ${fields || "the fields on the form"}. People often land here searching for ${keywords}.
+
+Who it helps: ${audienceFor(calc.category)}.
+
+Below the live form you get MyCalcsWorld-specific guidance — when to use this tool, common mistakes, how to interpret results, India and U.S./global how-to steps, a worked example with real numbers, formula notes, and FAQs. Charts and tables appear in the results panel whenever this engine provides them. ${cat?.name || "Category"} related tools are linked so you can jump without starting from search.`;
+}
+
 /** Substantial default SEO/detail sections for any registry calculator. */
 export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoContent {
   const cat = categoryMap[calc.category];
-  const lead =
-    categoryOverviewLead[calc.category] ||
-    "MyCalcsWorld calculators run in your browser with clear inputs and educational disclaimers.";
   const { howToUse, howToUseUS, howToUseIndia } = buildHowTo(calc);
-  const keywords =
-    calc.keywords?.slice(0, 6).join(", ") || calc.slug.replace(/-/g, " ");
+  const fields = fieldList(calc.fields, 5);
   const interpret =
     categoryInterpret[calc.category] || [
       "Primary outputs appear at the top of the result panel; secondary breakdowns, charts, and tables follow when the tool supports them.",
@@ -359,14 +555,30 @@ export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoCo
       "Re-run with optimistic and pessimistic inputs to see sensitivity before making a decision.",
       "Educational estimate only — verify critical numbers with a qualified professional or primary source.",
     ];
+  const whenFn = categoryWhenToUse[calc.category];
+  const mistFn = categoryMistakes[calc.category];
 
   return {
     seoTitle: `${calc.name} — Free Online Tool with Guide & FAQ`,
-    seoDescription: `${calc.description} Free ${cat?.name || "online"} calculator on MyCalcsWorld with step-by-step how-to, worked example, formula notes, and FAQs — no signup, mobile-friendly.`.replace(
+    seoDescription: `${calc.description} Free ${cat?.name || "online"} calculator on MyCalcsWorld with step-by-step how-to, worked example, common mistakes, and FAQs — no signup, mobile-friendly.`.replace(
       /\s+/g,
       " "
     ).trim(),
-    overview: `${lead}\n\nThe ${calc.name} ${calc.description.replace(/\.$/, "")}. People often find this page by searching for ${keywords}.\n\nBelow the live form you get interpretation tips, region-aware how-to steps (India and U.S./global where relevant), a worked example you can mirror, formula notes, and FAQs — written so the page stays useful even when you are comparing against bank worksheets, homework keys, lab manuals, or other calculator sites. Charts and tables appear in the results panel whenever this tool’s engine provides them.`,
+    overview: buildOverview(calc),
+    whenToUse: whenFn
+      ? whenFn(calc.name)
+      : [
+          `Reach for the ${calc.name} when you need a clear, browser-based estimate for this topic.`,
+          "Change one input at a time to learn sensitivity before you decide.",
+          "Cross-check critical outcomes with a primary source or professional.",
+        ],
+    commonMistakes: mistFn
+      ? mistFn(calc.name, fields)
+      : [
+          `Entering values in the wrong units among: ${fields}.`,
+          "Trusting a single run without a sensitivity check.",
+          "Treating an educational estimate as professional advice.",
+        ],
     howToUse,
     howToUseUS,
     howToUseIndia,
@@ -428,6 +640,12 @@ export function mergeCalculatorSeo(
     seoTitle: override.seoTitle || defaults.seoTitle,
     seoDescription: override.seoDescription || defaults.seoDescription,
     overview,
+    whenToUse: preferLongerSteps(override.whenToUse, defaults.whenToUse, 3),
+    commonMistakes: preferLongerSteps(
+      override.commonMistakes,
+      defaults.commonMistakes,
+      3
+    ),
     howToUse: preferLongerSteps(override.howToUse, defaults.howToUse, 4),
     howToUseUS: preferLongerSteps(override.howToUseUS, defaults.howToUseUS, 3),
     howToUseIndia: preferLongerSteps(

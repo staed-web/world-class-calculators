@@ -19,6 +19,7 @@ import {
   FaqJsonLd,
   TrustStrip,
 } from "./seo/CalculatorGuide";
+import { TrackRecentCalculator } from "./TrackRecentCalculator";
 import {
   Function3DCalculator,
   Pythagoras3DCalculator,
@@ -83,23 +84,36 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
   const related = relatedFor(calc);
   const seo = getCalculatorSeoContent(calc.slug);
   const pageUrl = `${siteUrl}${calculatorPath(calc)}`;
+  const href = calculatorPath(calc);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
+    <div className="mx-auto max-w-6xl px-3 sm:px-4 py-5 sm:py-8 min-w-0 w-full overflow-x-clip">
+      <TrackRecentCalculator
+        slug={calc.slug}
+        category={calc.category}
+        name={calc.name}
+        href={href}
+      />
       {seo?.faqs && seo.faqs.length > 0 && (
         <FaqJsonLd faqs={seo.faqs} pageUrl={pageUrl} name={calc.name} />
       )}
 
-      <nav className="mb-4 text-sm text-muted" aria-label="Breadcrumb">
-        <Link href="/" className="hover:text-brand">
-          Home
-        </Link>
-        <span className="mx-2">/</span>
-        <Link href={`/categories/${calc.category}`} className="hover:text-brand">
-          {cat?.name}
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-foreground">{calc.name}</span>
+      <nav className="mb-4 text-sm text-muted overflow-x-auto" aria-label="Breadcrumb">
+        <ol className="flex flex-wrap items-center gap-x-1">
+          <li>
+            <Link href="/" className="hover:text-brand">
+              Home
+            </Link>
+          </li>
+          <li aria-hidden className="px-1">/</li>
+          <li>
+            <Link href={`/categories/${calc.category}`} className="hover:text-brand">
+              {cat?.name}
+            </Link>
+          </li>
+          <li aria-hidden className="px-1">/</li>
+          <li className="text-foreground">{calc.name}</li>
+        </ol>
       </nav>
 
       <div className="mb-5 sm:mb-6">
@@ -108,7 +122,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         >
           {cat?.icon} {cat?.name}
         </span>
-        <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-balance">
           {calc.name}
         </h1>
         <p className="mt-2 max-w-3xl text-muted text-sm sm:text-base leading-relaxed">
@@ -116,24 +130,36 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         </p>
         <TrustStrip />
         {seo && (
-          <div className="mt-4 flex flex-wrap gap-2 no-print">
+          <div className="mt-4 flex gap-2 overflow-x-auto overscroll-x-contain no-print pb-1 [-webkit-overflow-scrolling:touch]" aria-label="Page shortcuts">
             <a
               href="#calculator-guide"
-              className="inline-flex items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-1.5 text-xs font-semibold text-brand hover:bg-brand/10 transition"
+              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-2 text-xs font-semibold text-brand hover:bg-brand/10 transition"
             >
-              Jump to guide & FAQ ↓
+              Guide & FAQ ↓
+            </a>
+            <a
+              href="#guide-when"
+              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+            >
+              When to use
             </a>
             <a
               href="#guide-example"
-              className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
-              Worked example
+              Example
+            </a>
+            <a
+              href="#guide-mistakes"
+              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+            >
+              Mistakes
             </a>
             <a
               href="#guide-formula"
-              className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
-              Formula notes
+              Formula
             </a>
           </div>
         )}
@@ -141,8 +167,8 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
 
       <AdSlot placement="header" className="mb-6 no-print" />
 
-      <div className="grid gap-8 lg:grid-cols-4">
-        <div className="lg:col-span-3 space-y-8">
+      <div className="grid gap-8 lg:grid-cols-4 min-w-0">
+        <div className="lg:col-span-3 space-y-8 min-w-0">
           {renderCalc(calc)}
           <AdSlot placement="in-content" className="no-print" />
           {seo && (
@@ -178,7 +204,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
                   <li key={r.slug}>
                     <Link
                       href={calculatorPath(r)}
-                      className="block rounded-xl border border-border bg-background px-3 py-2 text-sm hover:border-brand transition"
+                      className="block rounded-xl border border-border bg-background px-3 py-2.5 text-sm hover:border-brand transition min-h-11"
                     >
                       {r.name}
                     </Link>
@@ -195,6 +221,24 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
           )}
         </aside>
       </div>
+
+      {/* Mobile related rail (desktop has sidebar) */}
+      {related.length > 0 && (
+        <section className="mt-8 lg:hidden no-print" aria-label="Related tools">
+          <h2 className="mb-3 text-lg font-bold text-foreground">Related tools</h2>
+          <div className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 [-webkit-overflow-scrolling:touch]">
+            {related.map((r) => (
+              <Link
+                key={r.slug}
+                href={calculatorPath(r)}
+                className="shrink-0 inline-flex min-h-11 items-center rounded-full border border-border bg-card px-3.5 py-2 text-sm font-medium hover:border-brand"
+              >
+                {r.name}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="mt-10 sm:mt-12 no-print">

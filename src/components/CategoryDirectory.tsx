@@ -35,7 +35,7 @@ export function CategoryDirectory({ items }: { items: DirectoryItem[] }) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search within this category…"
-          className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+          className="w-full rounded-xl border border-border bg-card px-3 py-3 text-base sm:text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)] min-h-11"
         />
         <p className="mt-2 text-xs text-muted">
           Showing {filtered.length} of {items.length}

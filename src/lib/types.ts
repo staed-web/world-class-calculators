@@ -119,6 +119,10 @@ export interface WorkedExample {
 export interface CalculatorSeoContent {
   /** Longer on-page explainer (flagship pages). */
   overview?: string;
+  /** Situations / audiences that benefit from this tool. */
+  whenToUse?: string[];
+  /** Common input/interpretation gotchas for this tool. */
+  commonMistakes?: string[];
   /** Short numbered steps shown as “How to use”. */
   howToUse?: string[];
   /** US-oriented how-to steps when relevant. */

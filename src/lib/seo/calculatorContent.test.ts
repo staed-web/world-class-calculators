@@ -20,7 +20,7 @@ const FLAGSHIPS = [
 
 describe("calculator SEO content", () => {
   it("covers 30+ commercial slug overrides with real FAQs", () => {
-    expect(seoContentSlugs.length).toBeGreaterThanOrEqual(50);
+    expect(seoContentSlugs.length).toBeGreaterThanOrEqual(75);
     for (const slug of seoContentSlugs) {
       const c = calculatorSeoContent[slug];
       expect(c.faqs?.length ?? 0).toBeGreaterThanOrEqual(4);
@@ -63,6 +63,8 @@ describe("calculator SEO content", () => {
       expect((c!.workedExample?.steps.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
       expect((c!.formulaNote?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(40);
       expect((c!.seoDescription?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(40);
+      expect((c!.whenToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
+      expect((c!.commonMistakes?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
     }
   });
 });

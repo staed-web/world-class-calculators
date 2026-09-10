@@ -38,7 +38,7 @@ export function SearchBar({
     router.push(`/search?q=${encodeURIComponent(query)}`);
   }
 
-  const pad = size === "lg" ? "px-5 py-3.5 text-base" : "px-3 py-2 text-sm";
+  const pad = size === "lg" ? "px-5 py-3.5 text-base min-h-12" : "px-3 py-2.5 text-base sm:text-sm min-h-11";
 
   return (
     <form onSubmit={onSubmit} className="relative flex w-full gap-2" role="search">

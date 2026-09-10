@@ -37,10 +37,9 @@ export function CalculatorForm({
       category === "business"
   );
 
-  // Recompute when currency changes so fmtMoney picks up the new code
   const display = useMemo(() => {
     if (!calc?.compute || !showResults) return null;
-    void currency; // dependency
+    void currency;
     return calc.compute(values);
   }, [calc, values, showResults, currency]);
 
@@ -60,6 +59,10 @@ export function CalculatorForm({
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setShowResults(true);
+    document.getElementById("calc-results")?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   }
 
   function onReset() {
@@ -82,11 +85,14 @@ export function CalculatorForm({
     return prefix;
   }
 
+  const inputClass =
+    "w-full rounded-xl border border-border bg-card py-3 text-base sm:text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)] min-h-11";
+
   return (
-    <div className="grid gap-6 lg:grid-cols-5">
+    <div className="grid gap-6 lg:grid-cols-5 min-w-0 w-full">
       <form
         onSubmit={onSubmit}
-        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-5 sm:p-6"
+        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-4 sm:p-6 min-w-0 w-full"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -107,7 +113,7 @@ export function CalculatorForm({
               : "";
           return (
             <div key={f.id}>
-              <label htmlFor={f.id} className="mb-1 block text-sm font-medium text-foreground">
+              <label htmlFor={f.id} className="mb-1.5 block text-sm font-medium text-foreground">
                 {f.label}
                 {labelUnit && !f.suffix ? (
                   <span className="text-muted font-normal">{labelUnit}</span>
@@ -118,7 +124,7 @@ export function CalculatorForm({
                   id={f.id}
                   value={values[f.id] ?? ""}
                   onChange={(e) => setField(f.id, e.target.value)}
-                  className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+                  className={`${inputClass} px-3`}
                 >
                   {f.options?.map((o) => (
                     <option key={o.value} value={o.value}>
@@ -133,7 +139,7 @@ export function CalculatorForm({
                   onChange={(e) => setField(f.id, e.target.value)}
                   rows={4}
                   placeholder={f.placeholder}
-                  className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+                  className={`${inputClass} px-3`}
                 />
               ) : (
                 <div className="relative">
@@ -145,13 +151,14 @@ export function CalculatorForm({
                   <input
                     id={f.id}
                     type={f.type}
+                    inputMode={f.type === "number" ? "decimal" : undefined}
                     value={values[f.id] ?? ""}
                     onChange={(e) => setField(f.id, e.target.value)}
                     min={f.min}
                     max={f.max}
                     step={f.step ?? "any"}
                     placeholder={f.placeholder}
-                    className={`w-full rounded-xl border border-border bg-card py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)] ${
+                    className={`${inputClass} ${
                       prefix ? "pl-9 pr-3" : f.suffix ? "pl-3 pr-14" : "px-3"
                     }`}
                   />
@@ -166,28 +173,32 @@ export function CalculatorForm({
             </div>
           );
         })}
-        <div className="sticky bottom-3 z-10 flex gap-2 pt-2 no-print">
+        <div className="sticky bottom-3 z-10 flex gap-2 pt-2 no-print safe-pb">
           <button
             type="submit"
-            className="flex-1 rounded-xl bg-brand py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
+            className="flex-1 min-h-12 rounded-xl bg-brand py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
           >
             Calculate
           </button>
           <button
             type="button"
             onClick={onReset}
-            className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:border-brand transition"
+            className="min-h-12 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:border-brand transition"
           >
             Reset
           </button>
         </div>
       </form>
 
-      <div className="lg:col-span-2 space-y-3">
-        <ResultsPanel output={output} currency={usesMoney ? currency : undefined} />
+      <div id="calc-results" className="lg:col-span-2 space-y-3 scroll-mt-28 min-w-0 w-full">
+        <ResultsPanel
+          output={output}
+          currency={usesMoney ? currency : undefined}
+          calcName={calc.name}
+        />
         {calc.formulaNote && (
           <details className="rounded-2xl border border-border bg-card p-4 text-sm">
-            <summary className="cursor-pointer font-semibold text-foreground">
+            <summary className="cursor-pointer font-semibold text-foreground min-h-11 flex items-center">
               Formula / how it works
             </summary>
             <p className="mt-2 text-muted leading-relaxed whitespace-pre-wrap">
@@ -200,42 +211,127 @@ export function CalculatorForm({
   );
 }
 
+function summarizeResults(
+  output: ResultItem[],
+  calcName: string,
+  currency?: string
+): string {
+  const lines = [
+    `${calcName} — MyCalcsWorld`,
+    currency ? `Currency: ${currency}` : null,
+    ...output.map((item) => `${item.label}: ${item.value}${item.hint ? ` (${item.hint})` : ""}`),
+    "",
+    "Educational estimate only — not professional advice.",
+    "https://mycalcsworld.online",
+  ].filter(Boolean) as string[];
+  return lines.join("\n");
+}
+
 function ResultsPanel({
   output,
   currency,
+  calcName,
 }: {
   output: ResultItem[] | { error: string } | null;
   currency?: string;
+  calcName: string;
 }) {
+  const [copied, setCopied] = useState(false);
+  const [shareMsg, setShareMsg] = useState("");
+
   if (!output) {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card/60 p-6 text-sm text-muted text-center">
         <p className="font-medium text-foreground mb-1">Ready when you are</p>
-        Enter values on the left — results appear here instantly.
+        Enter values on the left — results appear here instantly. On phones, tap
+        Calculate to jump to this panel.
       </div>
     );
   }
   if ("error" in output) {
     return (
-      <div className="rounded-2xl border border-rose-300 bg-rose-50 p-6 text-sm text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200">
-        {output.error}
+      <div
+        role="alert"
+        className="rounded-2xl border border-rose-300 bg-rose-50 p-5 sm:p-6 text-sm text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200"
+      >
+        <p className="font-semibold text-rose-900 dark:text-rose-100 mb-1">
+          Check your inputs
+        </p>
+        <p>{output.error}</p>
+        <p className="mt-3 text-xs opacity-90">
+          Tip: clear empty fields, use numbers only where asked, and match the
+          units labeled on each input. Then tap Calculate again.
+        </p>
       </div>
     );
   }
+
+  async function copySummary() {
+    const text = summarizeResults(output as ResultItem[], calcName, currency);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setShareMsg("Copy blocked — select the results and copy manually.");
+      setTimeout(() => setShareMsg(""), 3000);
+    }
+  }
+
+  async function shareSummary() {
+    const text = summarizeResults(output as ResultItem[], calcName, currency);
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: calcName, text });
+        return;
+      } catch {
+        // user cancelled or share failed — fall through to copy
+      }
+    }
+    await copySummary();
+  }
+
   return (
-    <div className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-6 shadow-sm backdrop-blur-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30">
-      <div className="mb-3 flex items-center justify-between gap-2">
+    <div
+      id="print-results"
+      className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-4 sm:p-6 shadow-sm backdrop-blur-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30 min-w-0 overflow-hidden"
+    >
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
           Results{currency ? ` · ${currency}` : ""}
         </h2>
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="no-print text-xs font-medium text-teal-700 hover:underline dark:text-teal-300"
-        >
-          Print / Share
-        </button>
+        <div className="no-print flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            onClick={copySummary}
+            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            aria-label="Copy results summary"
+          >
+            {copied ? "Copied ✓" : "Copy"}
+          </button>
+          <button
+            type="button"
+            onClick={shareSummary}
+            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            aria-label="Share results summary"
+          >
+            Share
+          </button>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            aria-label="Print results"
+          >
+            Print
+          </button>
+        </div>
       </div>
+      {shareMsg && (
+        <p className="mb-2 text-xs text-amber-800 dark:text-amber-200" role="status">
+          {shareMsg}
+        </p>
+      )}
       <dl className="space-y-3">
         {output.map((item) => (
           <div key={item.label}>
@@ -251,9 +347,11 @@ function ResultsPanel({
               </div>
             )}
             {item.lineChart && (
-              <div className="mt-4">
+              <div className="mt-4 overflow-x-auto">
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted">Chart</p>
-                <ResultLineChartView data={item.lineChart} variant="area" />
+                <div className="min-w-[260px]">
+                  <ResultLineChartView data={item.lineChart} variant="area" />
+                </div>
               </div>
             )}
             {item.table && (
@@ -290,12 +388,12 @@ function MiniBars({ data }: { data: ResultChartBar[] }) {
 
 function ResultTableView({ table }: { table: ResultTable }) {
   return (
-    <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+    <div className="table-scroll mt-3 rounded-xl border border-border">
       <table className="min-w-full text-left text-xs">
         <thead className="bg-slate-50 dark:bg-slate-900/60">
           <tr>
             {table.headers.map((h) => (
-              <th key={h} className="px-2 py-1.5 font-semibold text-muted">
+              <th key={h} className="px-2 py-2 font-semibold text-muted whitespace-nowrap">
                 {h}
               </th>
             ))}
