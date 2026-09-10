@@ -62,7 +62,7 @@ export default function HomePage() {
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
             Mortgage, EMI, daily compound interest, BMI, live FX, and{" "}
             {calculatorCount}+ guided tools — how-to steps, worked examples, formula
-            notes, and FAQs on every page. Mobile-first, no signup. Search with{" "}
+            notes, and FAQs on every page. Works great on phones, no signup. Search with{" "}
             <span className="font-semibold">⌘K</span> /{" "}
             <span className="font-semibold">Ctrl+K</span>.
           </p>

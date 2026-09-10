@@ -14,11 +14,10 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="text-3xl font-bold text-foreground">About MyCalcsWorld</h1>
       <p className="mt-2 text-sm text-muted">
-        Last updated: September 10, 2026 (IST) · Reviewed for accuracy of scope &amp; contact
-        details
+        Last updated: September 10, 2026 (IST)
       </p>
       <p className="mt-1 text-xs text-muted">
-        Operated independently · Formulas documented on each tool · Contact{" "}
+        Operated independently · Contact{" "}
         <a href={contactMailto()} className="text-brand hover:underline break-all">
           {CONTACT_EMAIL}
         </a>
@@ -26,31 +25,30 @@ export default function AboutPage() {
 
       <div className="mt-6 space-y-4 text-muted leading-relaxed">
         <p>
-          MyCalcsWorld is a free online hub of {calculatorCount}+ working calculators spanning
-          finance, math, health &amp; fitness, unit conversion, dates, everyday life, science
-          &amp; engineering, business, education, statistics, and commodities.
+          MyCalcsWorld is a free collection of {calculatorCount}+ calculators for everyday
+          decisions — finance, math, health &amp; fitness, unit conversion, dates, science,
+          business, education, statistics, and more.
         </p>
         <p>
-          We are a <strong className="text-foreground">growing suite</strong> — not a claim to
-          match every niche tool on the internet. The goal is clear UX, honest formulas, charts
-          where they help (mortgage amortization, SIP growth), and SEO-friendly explainers so
-          pages are useful beyond a bare form. Built for everyone, worldwide.
+          We keep things simple: clear inputs, readable results, charts where they help (like
+          mortgage schedules or SIP growth), and short guides so you understand the numbers —
+          not just punch them in. Built for people everywhere.
         </p>
       </div>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Global by design</h2>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">For a worldwide audience</h2>
       <p className="mt-2 text-muted leading-relaxed">
-        Tools cover everyday planning workflows people use everywhere:{" "}
+        Tools cover planning people do everywhere:{" "}
         <strong className="text-foreground">loan EMI</strong>,{" "}
         <strong className="text-foreground">SIP / recurring investing</strong>,{" "}
         <strong className="text-foreground">GST / VAT / sales tax</strong>, mortgages, tips, BMI,
-        science helpers, and a multi-currency picker (USD, EUR, INR, GBP, AED, and more). Use the
-        units and currency that match your situation — the site does not assume one country.
+        science helpers, and a multi-currency picker (USD, EUR, INR, GBP, AED, and more). Pick the
+        units and currency that fit your situation — we do not assume one country.
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Privacy &amp; client-side math</h2>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">Privacy &amp; how math runs</h2>
       <p className="mt-2 text-muted leading-relaxed">
-        Core calculator math runs in your browser. We do not require an account. Hosting logs and
+        Core calculator math runs in your browser. No account is required. Hosting logs and
         advertising (when shown) follow standard web practice — see{" "}
         <Link href="/privacy" className="text-brand hover:underline">
           Privacy
@@ -58,14 +56,14 @@ export default function AboutPage() {
         .
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Who operates this site</h2>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">Who we are</h2>
       <p className="mt-2 text-muted leading-relaxed">
-        MyCalcsWorld is an independently operated calculator project published at{" "}
+        MyCalcsWorld is an independently operated project at{" "}
         <a href="https://mycalcsworld.online" className="text-brand hover:underline">
           mycalcsworld.online
         </a>
-        . We do not pretend to be a bank, brokerage, clinic, or government portal. Results are
-        educational estimates — not professional financial, tax, medical, or legal advice.
+        . We are not a bank, brokerage, clinic, or government portal. Results are educational
+        estimates — not professional financial, tax, medical, or legal advice.
       </p>
       <p className="mt-2 text-muted leading-relaxed">
         Reach us at{" "}
@@ -79,12 +77,12 @@ export default function AboutPage() {
         .
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">What this site is</h2>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">What you will find here</h2>
       <ul className="mt-2 list-disc pl-5 text-muted space-y-1">
-        <li>A polished hub with search, categories, charts, and related tools</li>
-        <li>A growing catalog of real calculators (not stubs)</li>
-        <li>Deep FAQ / how-to content on high-traffic commercial pages</li>
-        <li>An extension-friendly registry so new tools are easy to add</li>
+        <li>A growing library of free, working calculators</li>
+        <li>Search and categories so you can find the right tool quickly</li>
+        <li>Short how-tos, examples, and formula notes on each calculator page</li>
+        <li>Related tools when you want to dig a little deeper</li>
       </ul>
 
       <h2 className="mt-8 text-xl font-semibold text-foreground">What this site is not</h2>
@@ -94,52 +92,24 @@ export default function AboutPage() {
         quotes are delayed educational references with fallbacks — not executable market orders.
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Why trust MyCalcsWorld</h2>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">Why people use MyCalcsWorld</h2>
       <ul className="mt-2 list-disc pl-5 text-muted space-y-2">
         <li>
-          <strong className="text-foreground">Client-side math</strong> — core calculations run in
-          your browser; we do not require an account to use a tool.
+          <strong className="text-foreground">Runs in your browser</strong> — core calculations
+          stay on your device; no signup needed to use a tool.
         </li>
         <li>
-          <strong className="text-foreground">Guides on every calculator</strong> — when to use,
-          how-to steps, common mistakes, worked examples, formula notes, and FAQs written for
-          MyCalcsWorld (not scraped competitor blurbs).
+          <strong className="text-foreground">Guides with every calculator</strong> — when to use
+          it, simple steps, common mistakes, worked examples, formula notes, and FAQs written for
+          this site.
         </li>
         <li>
           <strong className="text-foreground">Worldwide tools</strong> — EMI, SIP, GST/VAT,
-          mortgage, tip, BMI, science, and live FX with a multi-currency picker — described in
-          global language.
+          mortgage, tip, BMI, science, and live FX with a multi-currency picker.
         </li>
         <li>
-          <strong className="text-foreground">Honest scope</strong> — educational estimates with
-          clear disclaimers; contact us at{" "}
-          <a href={contactMailto()} className="text-brand hover:underline break-all">
-            {CONTACT_EMAIL}
-          </a>{" "}
-          when something looks wrong.
-        </li>
-      </ul>
-
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Editorial standards (E-E-A-T)</h2>
-      <ul className="mt-2 list-disc pl-5 text-muted space-y-2 text-sm leading-relaxed">
-        <li>
-          <strong className="text-foreground">Experience</strong> — tools are built around real
-          planning workflows (EMI, SIP, mortgage, BMI, unit conversion) used worldwide, with clear
-          how-tos on flagship pages.
-        </li>
-        <li>
-          <strong className="text-foreground">Expertise</strong> — each calculator ships formula
-          notes and worked examples; math runs from documented helpers in our open codebase, not
-          opaque black-box widgets.
-        </li>
-        <li>
-          <strong className="text-foreground">Authoritativeness</strong> — we do not pose as a
-          bank, clinic, or government portal. Scope limits and “educational estimate” labels are
-          intentional.
-        </li>
-        <li>
-          <strong className="text-foreground">Trust</strong> — no account required for core math;
-          privacy policy and disclaimer are linked in the footer; corrections via{" "}
+          <strong className="text-foreground">Honest about limits</strong> — educational estimates
+          with clear disclaimers. If something looks wrong, tell us at{" "}
           <a href={contactMailto()} className="text-brand hover:underline break-all">
             {CONTACT_EMAIL}
           </a>
@@ -147,13 +117,29 @@ export default function AboutPage() {
         </li>
       </ul>
 
-      <div className="mt-8 rounded-2xl border border-border bg-card p-5 text-sm text-muted leading-relaxed">
-        <p className="font-semibold text-foreground">Mobile-first</p>
-        <p className="mt-1">
-          Forms, charts, tables, and guides are tuned for phones: larger tap targets, no horizontal
-          page overflow, readable results, and in-flow ads only (no sticky mobile bottom bars).
-        </p>
-      </div>
+      <h2 className="mt-8 text-xl font-semibold text-foreground">Our standards</h2>
+      <ul className="mt-2 list-disc pl-5 text-muted space-y-2 text-sm leading-relaxed">
+        <li>
+          <strong className="text-foreground">Practical tools</strong> — built around real planning
+          needs (loans, investing, mortgages, health basics, unit conversion) with clear how-tos.
+        </li>
+        <li>
+          <strong className="text-foreground">Transparent math</strong> — each calculator includes
+          formula notes and worked examples so you can see how results are produced.
+        </li>
+        <li>
+          <strong className="text-foreground">Clear boundaries</strong> — we do not pose as a bank,
+          clinic, or government portal. “Educational estimate” labels are intentional.
+        </li>
+        <li>
+          <strong className="text-foreground">Open to feedback</strong> — no account required for
+          core math; privacy policy and disclaimer are linked in the footer; corrections welcome at{" "}
+          <a href={contactMailto()} className="text-brand hover:underline break-all">
+            {CONTACT_EMAIL}
+          </a>
+          .
+        </li>
+      </ul>
     </div>
   );
 }
