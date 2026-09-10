@@ -1,6 +1,6 @@
 /* MyCalcsWorld service worker — shell cache + network-first for HTML/API.
    Versioned caches; never cache ad networks. */
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const SHELL_CACHE = `mcw-shell-${CACHE_VERSION}`;
 const STATIC_CACHE = `mcw-static-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";
