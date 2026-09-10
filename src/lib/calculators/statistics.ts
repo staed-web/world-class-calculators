@@ -85,9 +85,11 @@ export const statisticsCalculators: CalculatorMeta[] = [
     ],
     related: ["standard-deviation", "average"],
     compute: (v) => {
-      const score = Number(v.score);
+      const parsed = requireNums(v, ["score"]);
+      if (!parsed.ok) return err(parsed.error);
+      const score = parsed.n.score;
       const nums = parseList(v.nums || "");
-      if (!Number.isFinite(score) || !nums.length) return err("Invalid input.");
+      if (!nums.length) return err("Invalid input.");
       const below = nums.filter((n) => n < score).length;
       const equal = nums.filter((n) => n === score).length;
       const pct = ((below + 0.5 * equal) / nums.length) * 100;

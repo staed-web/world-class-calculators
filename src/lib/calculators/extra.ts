@@ -75,6 +75,7 @@ import { mortgagePayment, apyFromApr } from "../formulas/finance";
 import { idealWeightRobinson } from "../formulas/health";
 import {
   requireNums,
+  optionalNum,
   fmtMoney,
   fmtNumber,
   fmtPercent,
@@ -1539,11 +1540,12 @@ export const extraCalculators: CalculatorMeta[] = [
     related: ["discount", "discount-stack", "sales-tax"],
     kind: "form",
     compute: (v) => {
-      const parsed = requireNums(v, ["price","d1","d2","d3"]);
+      const parsed = requireNums(v, ["price","d1","d2"]);
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
+      const d3 = optionalNum(v, "d3") ?? 0;
       let p = n.price;
-      for (const d of [n.d1, n.d2, n.d3]) p *= 1 - d / 100;
+      for (const d of [n.d1, n.d2, d3]) p *= 1 - d / 100;
       return ok([
         { label: "Final price", value: fmtMoney(p), emphasize: true },
         { label: "Total savings", value: fmtMoney(n.price - p) },
@@ -1582,16 +1584,19 @@ export const extraCalculators: CalculatorMeta[] = [
     related: ["margin-markup", "profit-margin"],
     kind: "form",
     compute: (v) => {
-      const parsed = requireNums(v, ["margin","cost"]);
+      const parsed = requireNums(v, ["margin"]);
       if (!parsed.ok) return err(parsed.error);
       const m = parsed.n.margin / 100;
       if (m >= 1) return err("Margin must be under 100%.");
       const markup = (m / (1 - m)) * 100;
-      const price = parsed.n.cost / (1 - m);
-      return ok([
+      const cost = optionalNum(v, "cost");
+      const items: { label: string; value: string; emphasize?: boolean }[] = [
         { label: "Required markup", value: fmtPercent(markup), emphasize: true },
-        { label: "Selling price", value: fmtMoney(price) },
-      ]);
+      ];
+      if (cost !== undefined) {
+        items.push({ label: "Selling price", value: fmtMoney(cost / (1 - m)) });
+      }
+      return ok(items);
     },
   },
   {

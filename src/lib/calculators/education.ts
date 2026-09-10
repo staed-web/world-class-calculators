@@ -91,9 +91,11 @@ export const educationCalculators: CalculatorMeta[] = [
     ],
     related: ["final-grade"],
     compute: (v) => {
-      const hours = Number(v.hours);
+      const parsed = requireNums(v, ["hours"]);
+      if (!parsed.ok) return err(parsed.error);
+      const hours = parsed.n.hours;
       const weights = parseList(v.weights || "");
-      if (!Number.isFinite(hours) || hours < 0 || !weights.length) return err("Invalid input.");
+      if (hours < 0 || !weights.length) return err("Invalid input.");
       const sum = weights.reduce((a, b) => a + b, 0);
       if (sum <= 0) return err("Weights must sum to a positive number.");
       return ok(

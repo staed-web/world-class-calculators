@@ -1,6 +1,7 @@
 import type { CalculatorMeta } from "../types";
 import {
   requireNums,
+  optionalNum,
   fmtMoney,
   fmtNumber,
   fmtPercent,
@@ -544,9 +545,10 @@ export const wave2Calculators: CalculatorMeta[] = [
     ],
     related: ["distance-3d", "pythagoras"],
     compute: (v) => {
-      const parsed = requireNums(v, ["x","y","z"]);
+      const parsed = requireNums(v, ["x","y"]);
       if (!parsed.ok) return err(parsed.error);
-      const m = vectorMagnitude(parsed.n.x, parsed.n.y, parsed.n.z);
+      const z = optionalNum(v, "z") ?? 0;
+      const m = vectorMagnitude(parsed.n.x, parsed.n.y, z);
       return ok([{ label: "Magnitude", value: fmtNumber(m, 6), emphasize: true }]);
     },
   },

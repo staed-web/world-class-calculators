@@ -7,7 +7,7 @@ import {
   salaryToHourly,
 } from "../formulas/business";
 import { roi } from "../formulas/finance";
-import { requireNums, fmtMoney, fmtPercent, err, ok } from "./helpers";
+import { requireNums, optionalNum, fmtMoney, fmtPercent, err, ok } from "./helpers";
 
 export const businessCalculators: CalculatorMeta[] = [
   {
@@ -59,11 +59,10 @@ export const businessCalculators: CalculatorMeta[] = [
     ],
     related: ["profit-margin", "break-even"],
     compute: (v) => {
-      const cost = Number(v.cost);
       if (v.mode === "fromCostPrice") {
         const parsed = requireNums(v, ["cost", "price"]);
-      if (!parsed.ok) return err(parsed.error);
-      const n = parsed.n;
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
         const r = marginFromCostPrice(n.cost, n.price);
         return ok([
           { label: "Profit", value: fmtMoney(r.profit), emphasize: true },
@@ -73,8 +72,8 @@ export const businessCalculators: CalculatorMeta[] = [
       }
       if (v.mode === "fromCostMargin") {
         const parsed = requireNums(v, ["cost", "marginPct"]);
-      if (!parsed.ok) return err(parsed.error);
-      const n = parsed.n;
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
         const price = priceFromMargin(n.cost, n.marginPct);
         if (!Number.isFinite(price)) return err("Margin must be below 100%.");
         return ok([
@@ -88,7 +87,7 @@ export const businessCalculators: CalculatorMeta[] = [
       const price = priceFromMarkup(n.cost, n.markupPct);
       return ok([
         { label: "Selling price", value: fmtMoney(price), emphasize: true },
-        { label: "Profit", value: fmtMoney(price - cost) },
+        { label: "Profit", value: fmtMoney(price - n.cost) },
       ]);
     },
   },
@@ -139,29 +138,48 @@ export const businessCalculators: CalculatorMeta[] = [
           { value: "salary", label: "Salary → Hourly" },
         ],
       },
-      { id: "hourly", label: "Hourly rate", type: "number", defaultValue: 35, prefix: "$", step: 0.01 },
-      { id: "yearly", label: "Yearly salary", type: "number", defaultValue: 72800, prefix: "$" },
+      {
+        id: "hourly",
+        label: "Hourly rate",
+        type: "number",
+        defaultValue: 35,
+        prefix: "$",
+        step: 0.01,
+        visibleWhen: { field: "mode", in: ["hourly"] },
+      },
+      {
+        id: "yearly",
+        label: "Yearly salary",
+        type: "number",
+        defaultValue: 72800,
+        prefix: "$",
+        visibleWhen: { field: "mode", in: ["salary"] },
+      },
       { id: "hoursPerWeek", label: "Hours / week", type: "number", defaultValue: 40 },
       { id: "weeksPerYear", label: "Weeks / year", type: "number", defaultValue: 52 },
     ],
     related: ["hours-to-decimal"],
     compute: (v) => {
-      const hours = Number(v.hoursPerWeek);
-      const weeks = Number(v.weeksPerYear);
-      if (!Number.isFinite(hours) || !Number.isFinite(weeks) || hours <= 0 || weeks <= 0) {
+      const parsedHW = requireNums(v, ["hoursPerWeek", "weeksPerYear"]);
+      if (!parsedHW.ok) return err(parsedHW.error);
+      const hours = parsedHW.n.hoursPerWeek;
+      const weeks = parsedHW.n.weeksPerYear;
+      if (hours <= 0 || weeks <= 0) {
         return err("Invalid hours/weeks.");
       }
       if (v.mode === "salary") {
-        const yearly = Number(v.yearly);
-        if (!Number.isFinite(yearly)) return err("Enter yearly salary.");
+        const parsed = requireNums(v, ["yearly"]);
+        if (!parsed.ok) return err(parsed.error);
+        const yearly = parsed.n.yearly;
         const hourly = salaryToHourly(yearly, hours, weeks);
         return ok([
           { label: "Hourly equivalent", value: fmtMoney(hourly), emphasize: true },
           { label: "Weekly", value: fmtMoney(hourly * hours) },
         ]);
       }
-      const hourly = Number(v.hourly);
-      if (!Number.isFinite(hourly)) return err("Enter hourly rate.");
+      const parsed = requireNums(v, ["hourly"]);
+      if (!parsed.ok) return err(parsed.error);
+      const hourly = parsed.n.hourly;
       const r = hourlyToSalary(hourly, hours, weeks);
       return ok([
         { label: "Weekly", value: fmtMoney(r.weekly) },
@@ -207,13 +225,14 @@ export const businessCalculators: CalculatorMeta[] = [
     ],
     related: ["hourly-to-salary"],
     compute: (v) => {
-      const parsed = requireNums(v, ["sales", "rate", "base"]);
+      const parsed = requireNums(v, ["sales", "rate"]);
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
+      const base = optionalNum(v, "base") ?? 0;
       const commission = n.sales * (n.rate / 100);
       return ok([
         { label: "Commission", value: fmtMoney(commission), emphasize: true },
-        { label: "Total pay", value: fmtMoney(commission + n.base) },
+        { label: "Total pay", value: fmtMoney(commission + base) },
       ]);
     },
   },

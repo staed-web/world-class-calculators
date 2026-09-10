@@ -1,6 +1,6 @@
 import type { CalculatorMeta } from "../types";
 import { ageFromDob } from "../formulas/math";
-import { err, ok, fmtDate, fmtNumber } from "./helpers";
+import { err, ok, fmtDate, fmtNumber, requireNums } from "./helpers";
 
 export const dateTimeCalculators: CalculatorMeta[] = [
   {
@@ -44,9 +44,10 @@ export const dateTimeCalculators: CalculatorMeta[] = [
     compute: (v) => {
       if (!v.date) return err("Enter a date.");
       const d = new Date(v.date + "T00:00:00");
-      const days = Number(v.days);
-      if (isNaN(d.getTime()) || !Number.isFinite(days)) return err("Invalid input.");
-      d.setDate(d.getDate() + days);
+      if (isNaN(d.getTime())) return err("Invalid input.");
+      const parsed = requireNums(v, ["days"]);
+      if (!parsed.ok) return err(parsed.error);
+      d.setDate(d.getDate() + parsed.n.days);
       return ok([
         { label: "Resulting date", value: fmtDate(d), emphasize: true },
         { label: "ISO", value: d.toISOString().slice(0, 10) },
@@ -131,8 +132,20 @@ export const dateTimeCalculators: CalculatorMeta[] = [
           { value: "toTs", label: "Date → Timestamp" },
         ],
       },
-      { id: "timestamp", label: "Unix timestamp (seconds)", type: "number", defaultValue: 1788883200 },
-      { id: "date", label: "Date (YYYY-MM-DD)", type: "date", defaultValue: "2026-09-09" },
+      {
+        id: "timestamp",
+        label: "Unix timestamp (seconds)",
+        type: "number",
+        defaultValue: 1788883200,
+        visibleWhen: { field: "mode", in: ["toDate"] },
+      },
+      {
+        id: "date",
+        label: "Date (YYYY-MM-DD)",
+        type: "date",
+        defaultValue: "2026-09-09",
+        visibleWhen: { field: "mode", in: ["toTs"] },
+      },
     ],
     related: ["date-difference"],
     compute: (v) => {
@@ -144,9 +157,9 @@ export const dateTimeCalculators: CalculatorMeta[] = [
           { label: "Unix timestamp (UTC midnight)", value: String(Math.floor(d.getTime() / 1000)), emphasize: true },
         ]);
       }
-      const ts = Number(v.timestamp);
-      if (!Number.isFinite(ts)) return err("Enter a timestamp.");
-      const d = new Date(ts * 1000);
+      const parsed = requireNums(v, ["timestamp"]);
+      if (!parsed.ok) return err(parsed.error);
+      const d = new Date(parsed.n.timestamp * 1000);
       return ok([
         { label: "UTC date", value: d.toISOString(), emphasize: true },
         { label: "Local string", value: d.toString() },
@@ -168,11 +181,12 @@ export const dateTimeCalculators: CalculatorMeta[] = [
     ],
     related: ["date-difference", "timezone-difference"],
     compute: (v) => {
-      const sh = Number(v.startH);
-      const sm = Number(v.startM);
-      const ah = Number(v.addH);
-      const am = Number(v.addM);
-      if (![sh, sm, ah, am].every(Number.isFinite)) return err("Enter valid numbers.");
+      const parsed = requireNums(v, ["startH", "startM", "addH", "addM"]);
+      if (!parsed.ok) return err(parsed.error);
+      const sh = parsed.n.startH;
+      const sm = parsed.n.startM;
+      const ah = parsed.n.addH;
+      const am = parsed.n.addM;
       let total = sh * 60 + sm + ah * 60 + am;
       const days = Math.floor(total / (24 * 60));
       total = ((total % (24 * 60)) + 24 * 60) % (24 * 60);
