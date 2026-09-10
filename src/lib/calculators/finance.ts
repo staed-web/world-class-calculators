@@ -1,6 +1,7 @@
 import type { CalculatorMeta } from "../types";
 import {
   mortgagePayment,
+  amortizeSchedule,
   simpleInterest,
   compoundInterest,
   refinanceSavings,
@@ -45,28 +46,95 @@ export const financeCalculators: CalculatorMeta[] = [
     category: "finance",
     name: "Mortgage Calculator",
     description:
-      "Estimate monthly principal & interest payments for a fixed-rate mortgage.",
-    keywords: ["mortgage", "home loan", "monthly payment", "house"],
+      "Estimate monthly principal & interest for a fixed-rate mortgage or home loan — with full amortization chart and year-by-year table (US + India EMI-style).",
+    keywords: [
+      "mortgage",
+      "home loan",
+      "monthly payment",
+      "house",
+      "EMI",
+      "amortization",
+      "India home loan",
+    ],
     featured: true,
     popular: true,
     kind: "form",
-    formulaNote: "Standard amortizing loan formula. Taxes and insurance not included.",
+    formulaNote:
+      "Standard amortizing loan: M = P · r(1+r)^n / ((1+r)^n − 1), where r is monthly rate and n is months. Taxes, insurance, PMI, and HOA are not included. Same math family as Indian home-loan EMI.",
     fields: [
       { id: "principal", label: "Loan amount", type: "number", defaultValue: 300000, prefix: "$", min: 0 },
       { id: "rate", label: "Annual interest rate", type: "number", defaultValue: 6.5, suffix: "%", step: 0.01, min: 0 },
       { id: "years", label: "Loan term", type: "number", defaultValue: 30, suffix: "years", min: 1 },
     ],
-    related: ["amortization", "refinance", "loan-emi"],
+    related: ["amortization", "refinance", "loan-emi", "emi-extra-payments"],
     compute: (v) => {
       const parsed = requireNums(v, ["principal", "rate", "years"]);
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       const pmt = mortgagePayment(n.principal, n.rate, n.years);
+      if (!Number.isFinite(pmt)) return err("Enter a valid loan amount, rate, and term.");
       const total = pmt * n.years * 12;
+      const yearly = amortizeYearlySummary(n.principal, n.rate, n.years);
+      const totalInterest = yearly.reduce((s, r) => s + r.interest, 0);
+      const monthly = amortizeSchedule(n.principal, n.rate, n.years, 12);
+      const y1 = yearly[0];
       return ok([
-        { label: "Monthly payment (P&I)", value: fmtMoney(pmt), emphasize: true },
+        { label: "Monthly payment (P&I / EMI)", value: fmtMoney(pmt), emphasize: true },
         { label: "Total of payments", value: fmtMoney(total) },
-        { label: "Total interest", value: fmtMoney(total - n.principal) },
+        { label: "Total interest", value: fmtMoney(totalInterest || total - n.principal) },
+        {
+          label: "Year 1 snapshot",
+          value: y1
+            ? `Interest ${fmtMoney(y1.interest)} · Principal ${fmtMoney(y1.principal)} · End bal ${fmtMoney(y1.endBalance)}`
+            : "—",
+          hint: "Early years are interest-heavy on long fixed-rate loans",
+        },
+        {
+          label: "Amortization chart",
+          value: `${yearly.length} years`,
+          lineChart: {
+            xKey: "year",
+            series: [
+              { key: "principal", label: "Principal", color: "#0d9488" },
+              { key: "interest", label: "Interest", color: "#f43f5e" },
+              { key: "balance", label: "Balance", color: "#6366f1" },
+            ],
+            points: yearly.map((r) => ({
+              year: r.year,
+              principal: Math.round(r.principal * 100) / 100,
+              interest: Math.round(r.interest * 100) / 100,
+              balance: Math.round(r.endBalance * 100) / 100,
+            })),
+          },
+        },
+        {
+          label: "First 12 months (monthly)",
+          value: `${monthly.length} payments`,
+          table: {
+            headers: ["Month", "Payment", "Principal", "Interest", "Balance"],
+            rows: monthly.map((r) => [
+              String(r.period),
+              fmtMoney(r.payment),
+              fmtMoney(r.principal),
+              fmtMoney(r.interest),
+              fmtMoney(r.balance),
+            ]),
+          },
+        },
+        {
+          label: "Full annual amortization schedule",
+          value: `${yearly.length} years — scroll to review every year`,
+          table: {
+            headers: ["Year", "Payments", "Principal", "Interest", "End balance"],
+            rows: yearly.map((r) => [
+              String(r.year),
+              fmtMoney(r.payment),
+              fmtMoney(r.principal),
+              fmtMoney(r.interest),
+              fmtMoney(r.endBalance),
+            ]),
+          },
+        },
       ]);
     },
   },
@@ -74,26 +142,89 @@ export const financeCalculators: CalculatorMeta[] = [
     slug: "loan-emi",
     category: "finance",
     name: "Loan / EMI Calculator",
-    description: "Calculate equated monthly installment (EMI) for personal or auto loans.",
-    keywords: ["emi", "loan", "installment", "auto loan", "personal loan"],
-    popular: true,
-    kind: "form",
-    fields: [
-      { id: "principal", label: "Principal", type: "number", defaultValue: 10000, prefix: "$", min: 0 },
-      { id: "rate", label: "Annual rate", type: "number", defaultValue: 8, suffix: "%", step: 0.01 },
-      { id: "months", label: "Tenure", type: "number", defaultValue: 36, suffix: "months", min: 1 },
+    description:
+      "Calculate EMI for personal, auto, or home loans (India + global) with interest breakdown, chart, and yearly schedule.",
+    keywords: [
+      "emi",
+      "loan",
+      "installment",
+      "auto loan",
+      "personal loan",
+      "India EMI",
+      "home loan EMI",
     ],
-    related: ["mortgage", "amortization", "debt-payoff"],
+    popular: true,
+    featured: true,
+    kind: "form",
+    formulaNote:
+      "EMI = P · r(1+r)^n / ((1+r)^n − 1) with monthly rate r = annual%/12/100 and n = tenure months. Reducing-balance amortization — the same family as US mortgage P&I.",
+    fields: [
+      { id: "principal", label: "Principal", type: "number", defaultValue: 500000, prefix: "$", min: 0 },
+      { id: "rate", label: "Annual rate", type: "number", defaultValue: 10, suffix: "%", step: 0.01 },
+      { id: "months", label: "Tenure", type: "number", defaultValue: 60, suffix: "months", min: 1 },
+    ],
+    related: ["mortgage", "amortization", "debt-payoff", "emi-extra-payments", "sip"],
     compute: (v) => {
       const parsed = requireNums(v, ["principal", "rate", "months"]);
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
+      if (n.months < 1) return err("Tenure must be at least 1 month.");
       const years = n.months / 12;
       const pmt = mortgagePayment(n.principal, n.rate, years);
+      if (!Number.isFinite(pmt)) return err("Enter a valid principal, rate, and tenure.");
+      const yearly = amortizeYearlySummary(n.principal, n.rate, Math.max(Math.ceil(years), 1));
+      // For fractional years, yearly summary still helps; also show first-year monthly rows
+      const monthlyRows = amortizeSchedule(n.principal, n.rate, years, Math.min(n.months, 12));
       return ok([
         { label: "Monthly EMI", value: fmtMoney(pmt), emphasize: true },
         { label: "Total payment", value: fmtMoney(pmt * n.months) },
         { label: "Total interest", value: fmtMoney(pmt * n.months - n.principal) },
+        {
+          label: "EMI paydown chart",
+          value: `${yearly.length} year buckets`,
+          lineChart: {
+            xKey: "year",
+            series: [
+              { key: "principal", label: "Principal", color: "#0d9488" },
+              { key: "interest", label: "Interest", color: "#f43f5e" },
+              { key: "balance", label: "Balance", color: "#6366f1" },
+            ],
+            points: yearly.map((r) => ({
+              year: r.year,
+              principal: Math.round(r.principal * 100) / 100,
+              interest: Math.round(r.interest * 100) / 100,
+              balance: Math.round(r.endBalance * 100) / 100,
+            })),
+          },
+        },
+        {
+          label: "First 12 months",
+          value: `${monthlyRows.length} payments`,
+          table: {
+            headers: ["Month", "EMI", "Principal", "Interest", "Balance"],
+            rows: monthlyRows.map((r) => [
+              String(r.period),
+              fmtMoney(r.payment),
+              fmtMoney(r.principal),
+              fmtMoney(r.interest),
+              fmtMoney(r.balance),
+            ]),
+          },
+        },
+        {
+          label: "Annual schedule",
+          value: `${yearly.length} years`,
+          table: {
+            headers: ["Year", "Payments", "Principal", "Interest", "End balance"],
+            rows: yearly.map((r) => [
+              String(r.year),
+              fmtMoney(r.payment),
+              fmtMoney(r.principal),
+              fmtMoney(r.interest),
+              fmtMoney(r.endBalance),
+            ]),
+          },
+        },
       ]);
     },
   },
@@ -735,8 +866,16 @@ export const financeCalculators: CalculatorMeta[] = [
     slug: "sip",
     category: "finance",
     name: "SIP / Recurring Investment",
-    description: "Project future value of a monthly SIP / recurring investment.",
-    keywords: ["sip", "recurring investment", "systematic investment", "mutual fund"],
+    description:
+      "Project SIP / recurring investment maturity with invested-vs-portfolio chart — popular for Indian mutual funds and global DCA.",
+    keywords: [
+      "sip",
+      "recurring investment",
+      "systematic investment",
+      "mutual fund",
+      "India SIP",
+      "SIP calculator",
+    ],
     featured: true,
     popular: true,
     kind: "form",

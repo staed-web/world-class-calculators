@@ -7,13 +7,19 @@ import { AdSlot } from "@/components/AdSlot";
 import { HomeScientificWidget } from "@/components/HomeScientificWidget";
 import {
   calculatorCount,
+  getCalculatorBySlug,
   getFeaturedCalculators,
   getPopularCalculators,
+  calculatorPath,
 } from "@/lib/calculators/registry";
+import { popularInIndiaSlugs } from "@/lib/seo/calculatorContent";
 
 export default function HomePage() {
   const featured = getFeaturedCalculators().slice(0, 9);
   const popular = getPopularCalculators().slice(0, 12);
+  const indiaPopular = popularInIndiaSlugs
+    .map((slug) => getCalculatorBySlug(slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
     <div className="relative">
@@ -128,6 +134,36 @@ export default function HomePage() {
         </section>
 
         <AdSlot placement="in-content" className="no-print" />
+
+        <section>
+          <div className="mb-5 flex items-end justify-between gap-3">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Popular in India</h2>
+              <p className="text-sm text-muted mt-1">
+                EMI, SIP, GST, INR FX, gold — everyday planning tools.
+              </p>
+            </div>
+            <Link href="/calculators/finance/loan-emi" className="text-sm font-medium text-brand hover:underline shrink-0">
+              EMI calculator →
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {indiaPopular.slice(0, 6).map((c) => (
+              <CalculatorCard key={`${c.category}/${c.slug}`} calc={c} />
+            ))}
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {indiaPopular.slice(6).map((c) => (
+              <Link
+                key={c.slug}
+                href={calculatorPath(c)}
+                className="rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted hover:border-brand hover:text-brand"
+              >
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        </section>
 
         <section>
           <h2 className="mb-5 text-2xl font-bold tracking-tight text-foreground">Popular</h2>

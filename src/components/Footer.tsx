@@ -60,6 +60,16 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/contact" className="hover:text-teal-300">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <a href="mailto:hello@mycalcsworld.online" className="hover:text-teal-300">
+                  hello@mycalcsworld.online
+                </a>
+              </li>
+              <li>
                 <Link href="/privacy" className="hover:text-teal-300">
                   Privacy
                 </Link>

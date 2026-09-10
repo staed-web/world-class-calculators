@@ -274,7 +274,7 @@ export const wave2Calculators: CalculatorMeta[] = [
     slug: "salary-after-tax-in",
     category: "finance",
     name: "Salary After Tax (India Rough)",
-    description: "Rough India new-regime style income tax + cess estimate. Educational only.",
+    description: "Rough India salary after-tax / take-home sketch (educational). Pair with FAQs — not the official tax utility.",
     keywords: ["india tax", "income tax", "new regime", "take home"],
     kind: "form",
     formulaNote: "Simplified slabs with illustrative rebate under ~₹7L. Not tax advice; ignore deductions/exemptions nuance.",

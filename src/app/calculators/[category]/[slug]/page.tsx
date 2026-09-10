@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { allCalculators, getCalculator } from "@/lib/calculators/registry";
+import { getCalculatorSeoContent } from "@/lib/seo/calculatorContent";
 import { CalculatorView } from "@/components/CalculatorView";
 
 export function generateStaticParams() {
@@ -18,9 +19,10 @@ export async function generateMetadata({
   const { category, slug } = await params;
   const calc = getCalculator(category, slug);
   if (!calc) return { title: "Calculator" };
+  const seo = getCalculatorSeoContent(calc.slug);
   return {
-    title: calc.name,
-    description: calc.description,
+    title: seo?.seoTitle || calc.name,
+    description: seo?.seoDescription || calc.description,
     keywords: calc.keywords,
   };
 }

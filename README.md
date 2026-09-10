@@ -42,7 +42,7 @@ npm run lint
 | `/categories/[slug]` | Dense category directory + search-within-category |
 | `/calculators/[category]/[slug]` | Individual calculator (inputs + live results + formula accordion + related) |
 | `/search?q=` | Catalog search |
-| `/about` `/privacy` `/disclaimer` | Site info & legal |
+| `/about` `/contact` `/privacy` `/disclaimer` | Site info, trust & legal |
 | `/api/fx` | Cached FX rates (USD base)
 | `/sitemap.xml` `/robots.txt` | SEO |
 
@@ -78,6 +78,12 @@ High-traffic additions this pass include credit-card payoff, lease vs buy, rent 
 4. For special UIs, use `kind: "custom"` + `customKey` and wire the component in `CalculatorView`.
 5. Run `npm test`, `npm run lint`, and `npm run build`.
 
+## Contact email (mailbox setup)
+
+Public contact address: **hello@mycalcsworld.online** (also linked from `/contact`, header/footer, and About).
+
+**Ops note:** create or forward this mailbox at your DNS / email provider (Google Workspace, Cloudflare Email Routing, ImprovMX, etc.). The site uses `mailto:` drafts — it does not host an inbound mail server.
+
 ## AdSense
 
 | Variable | Purpose |
@@ -92,7 +98,7 @@ Results are **estimates for education only** — not professional financial, med
 
 ## Known gaps vs Omni
 
-Omni’s thousands of niche calculators and deep educational explainers are not replicated here. This hub focuses on **high-traffic tools**, working math, and a superior day-to-day UX shell. Future passes can deepen explainers and expand long-tail tools category by category.
+Omni’s thousands of niche calculators and deep educational explainers are not replicated here. This hub focuses on **high-traffic tools**, working math, and a superior day-to-day UX shell. Flagship commercial pages now ship FAQs, how-tos, worked examples, and FAQPage JSON-LD; continue expanding long-tail explainers category by category.
 
 ## License
 

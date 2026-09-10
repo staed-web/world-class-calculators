@@ -30,8 +30,15 @@ export default function PrivacyPage() {
         </p>
         <h2 className="text-lg font-semibold text-slate-900 pt-2">Contact</h2>
         <p>
-          For privacy questions about this open project, open an issue on the GitHub
-          repository.
+          For privacy questions, email{" "}
+          <a href="mailto:hello@mycalcsworld.online" className="underline">
+            hello@mycalcsworld.online
+          </a>{" "}
+          or use the{" "}
+          <a href="/contact" className="underline">
+            contact page
+          </a>
+          .
         </p>
       </div>
     </div>

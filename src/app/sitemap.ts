@@ -6,7 +6,7 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/search", "/about", "/privacy", "/disclaimer"].map(
+  const staticRoutes = ["", "/search", "/about", "/contact", "/privacy", "/disclaimer"].map(
     (path) => ({
       url: `${siteUrl}${path || "/"}`,
       lastModified: new Date(),

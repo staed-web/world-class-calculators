@@ -104,3 +104,37 @@ export interface CategoryMeta {
   icon: string;
   color: string;
 }
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface WorkedExample {
+  title: string;
+  steps: string[];
+  result: string;
+}
+
+export interface CalculatorSeoContent {
+  /** Longer on-page explainer (flagship pages). */
+  overview?: string;
+  /** Short numbered steps shown as “How to use”. */
+  howToUse?: string[];
+  /** US-oriented how-to steps when relevant. */
+  howToUseUS?: string[];
+  /** India-oriented how-to steps when relevant. */
+  howToUseIndia?: string[];
+  /** Guidance on reading the outputs. */
+  howToInterpret?: string[];
+  /** Concrete worked example with steps + result. */
+  workedExample?: WorkedExample;
+  /** 4–8 FAQ pairs for FAQPage JSON-LD + on-page accordion. */
+  faqs?: FaqItem[];
+  /** Overrides or fills formulaNote when the registry entry lacks one. */
+  formulaNote?: string;
+  /** Unique <title> override (without site suffix). */
+  seoTitle?: string;
+  /** Unique meta description override. */
+  seoDescription?: string;
+}

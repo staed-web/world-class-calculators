@@ -46,6 +46,9 @@ export function Header() {
           <Link href="/about" className="hover:text-brand transition">
             About
           </Link>
+          <Link href="/contact" className="hover:text-brand transition">
+            Contact
+          </Link>
         </nav>
         <CurrencyPicker compact className="shrink-0" />
         <ThemeToggle />
