@@ -138,7 +138,7 @@ export function Header() {
                         >
                           <span
                             aria-hidden
-                            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-[10px] font-bold uppercase tracking-wide text-[var(--accent)]"
+                            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-sm leading-none"
                           >
                             {c.icon}
                           </span>
@@ -185,23 +185,23 @@ export function Header() {
       style={{ background: "var(--header)" }}
     >
       {/* Compact top bar — always */}
-      <div className="mx-auto flex max-w-6xl items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5">
+      <div className="mx-auto flex max-w-6xl items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-2.5 sm:gap-3 font-bold text-base sm:text-lg tracking-tight min-h-10"
+          className="group flex min-w-0 shrink items-center gap-2 sm:gap-2.5 font-bold tracking-tight min-h-10"
           aria-label="MyCalcsWorld home"
           onClick={() => setOpen(false)}
         >
           <Image
             src="/logo-mark.png"
             alt=""
-            width={36}
-            height={36}
-            className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover shadow-sm ring-1 ring-[#07234a]/20 transition group-hover:ring-[#07234a]/40"
+            width={40}
+            height={40}
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover shadow-sm ring-1 ring-[#07234a]/20 transition group-hover:ring-[#07234a]/40"
             priority
           />
           <BrandWordmark
-            className="hidden min-[360px]:inline-flex"
+            className="hidden min-[360px]:inline-flex min-w-0"
             size="md"
           />
         </Link>
@@ -237,27 +237,30 @@ export function Header() {
           </Link>
         </nav>
 
-        <CurrencyPicker compact className="shrink-0 ml-auto md:ml-0" />
-        <ThemeToggle />
+        {/* Trailing controls — theme keeps ~40px tap; currency stays compact on mobile */}
+        <div className="ml-auto md:ml-0 flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <CurrencyPicker compact className="shrink-0" />
+          <ThemeToggle />
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          className="lg:hidden inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-border bg-card text-foreground"
-          aria-expanded={open}
-          aria-controls="mobile-nav-drawer"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="sr-only">{open ? "Close" : "Menu"}</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-            {open ? (
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            ) : (
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            )}
-          </svg>
-        </button>
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            className="lg:hidden inline-flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded-xl border border-border bg-card text-foreground"
+            aria-expanded={open}
+            aria-controls="mobile-nav-drawer"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="sr-only">{open ? "Close" : "Menu"}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+              {open ? (
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Desktop category strip — wrap (up to two rows); no clipped overflow scrollbar */}
@@ -276,7 +279,7 @@ export function Header() {
             >
               <span
                 aria-hidden
-                className="mr-1.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded bg-brand-soft/70 px-1 text-[9px] font-bold uppercase tracking-wide text-[var(--accent)]"
+                className="mr-1.5 inline-flex h-5 w-5 items-center justify-center rounded bg-brand-soft/70 text-[13px] leading-none"
               >
                 {c.icon}
               </span>

@@ -11,7 +11,8 @@ type Props = {
 
 const sizeClass = {
   sm: "text-base sm:text-[17px]",
-  md: "text-xl sm:text-[1.35rem]",
+  /* Slightly refined vs prior text-xl so it balances a larger header mark */
+  md: "text-[1.125rem] sm:text-[1.3rem]",
   lg: "text-2xl sm:text-[1.75rem]",
 } as const;
 
@@ -33,12 +34,12 @@ export function BrandWordmark({
 
   return (
     <span
-      className={`inline-flex items-baseline gap-[0.32em] leading-none ${sizeClass[size]} ${color} ${className}`}
+      className={`inline-flex items-baseline gap-[0.28em] leading-none ${sizeClass[size]} ${color} ${className}`}
       style={tone === "light" ? undefined : { color: "var(--foreground)" }}
     >
       <span className="font-serif font-semibold tracking-tight">MyCalcs</span>
       <span
-        className={`font-sans text-[0.58em] font-bold uppercase tracking-[0.2em] ${worldTone}`}
+        className={`font-sans text-[0.58em] font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] ${worldTone}`}
         style={
           tone === "light"
             ? undefined

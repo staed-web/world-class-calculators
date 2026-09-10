@@ -146,7 +146,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         >
           <span
             aria-hidden
-            className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded bg-white/70 px-1 text-[9px] font-bold uppercase tracking-wide dark:bg-black/25"
+            className="inline-flex h-5 w-5 items-center justify-center rounded bg-white/70 text-[13px] leading-none dark:bg-black/25"
           >
             {cat?.icon}
           </span>

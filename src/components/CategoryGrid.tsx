@@ -16,7 +16,7 @@ export function CategoryGrid() {
             <div className="flex items-start justify-between gap-2">
               <div
                 aria-hidden
-                className="mb-2 inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-current/15 bg-white/55 px-2 text-[11px] font-bold uppercase tracking-[0.12em] dark:bg-black/20"
+                className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-lg border border-current/15 bg-white/55 text-lg leading-none dark:bg-black/20"
               >
                 {c.icon}
               </div>
