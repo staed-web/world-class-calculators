@@ -65,7 +65,7 @@ export function CalculatorForm({
     });
   }
 
-  function onReset() {
+  function onLoadExample() {
     const init: Record<string, string> = {};
     for (const f of fields) {
       init[f.id] =
@@ -75,6 +75,15 @@ export function CalculatorForm({
     }
     setValues(init);
     setShowResults(true);
+  }
+
+  function onReset() {
+    const init: Record<string, string> = {};
+    for (const f of fields) {
+      init[f.id] = "";
+    }
+    setValues(init);
+    setShowResults(false);
   }
 
   const output = display;
@@ -173,7 +182,7 @@ export function CalculatorForm({
             </div>
           );
         })}
-        <div className="sticky bottom-3 z-10 flex gap-2 pt-2 no-print safe-pb">
+        <div className="sticky bottom-3 z-10 flex flex-wrap gap-2 pt-2 no-print safe-pb">
           <button
             type="submit"
             className="flex-1 min-h-12 rounded-xl bg-brand py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
@@ -182,8 +191,16 @@ export function CalculatorForm({
           </button>
           <button
             type="button"
+            onClick={onLoadExample}
+            className="min-h-12 rounded-xl border border-teal-200/80 bg-teal-50 px-4 py-3 text-sm font-semibold text-teal-900 hover:border-teal-400 transition dark:border-teal-900 dark:bg-teal-950/40 dark:text-teal-100"
+            title="Load the demo numbers from this tool’s worked example"
+          >
+            Try example
+          </button>
+          <button
+            type="button"
             onClick={onReset}
-            className="min-h-12 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:border-brand transition"
+            className="min-h-12 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground hover:border-brand transition"
           >
             Reset
           </button>
@@ -242,9 +259,15 @@ function ResultsPanel({
   if (!output) {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card/60 p-6 text-sm text-muted text-center">
-        <p className="font-medium text-foreground mb-1">Ready when you are</p>
-        Enter values on the left — results appear here instantly. On phones, tap
-        Calculate to jump to this panel.
+        <p className="font-medium text-foreground mb-1">Results appear here</p>
+        <p>
+          Enter values in the form — the panel updates as you type. On phones, tap{" "}
+          <span className="font-semibold text-foreground">Calculate</span> to jump here.
+        </p>
+        <p className="mt-2 text-xs">
+          Stuck? Tap <span className="font-semibold text-foreground">Try example</span> to
+          load the demo numbers from this tool’s worked example.
+        </p>
       </div>
     );
   }
@@ -334,7 +357,14 @@ function ResultsPanel({
       )}
       <dl className="space-y-3">
         {output.map((item) => (
-          <div key={item.label}>
+          <div
+            key={item.label}
+            className={
+              item.emphasize
+                ? "rounded-xl border border-teal-200/70 bg-white/70 px-3 py-2.5 dark:border-teal-900 dark:bg-teal-950/30"
+                : undefined
+            }
+          >
             <dt className="text-xs text-muted">{item.label}</dt>
             <dd>
               <AnimatedNumber value={item.value} emphasize={item.emphasize} />

@@ -206,6 +206,26 @@ summary,
 @media print {
   #print-results {
     break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+  }
+  /* Print: keep calculator identity */
+  h1 {
+    break-after: avoid;
+  }
+  #calculator-guide {
+    break-before: page;
+  }
+  a[href]::after {
+    content: none !important;
+  }
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  .result-panel dd {
+    font-size: 14pt;
   }
 }
 

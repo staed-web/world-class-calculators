@@ -39,21 +39,57 @@ export default async function SearchPage({
           </>
         ) : (
           <div className="mt-6 rounded-2xl border border-dashed border-border p-8 text-center">
-            <p className="text-sm text-muted">
-              No calculators match “{q}”. Try a shorter keyword, or browse categories.
+            <p className="text-base font-semibold text-foreground">
+              No calculators match “{q}”
             </p>
+            <p className="mt-2 text-sm text-muted max-w-md mx-auto">
+              Try a shorter keyword (emi, bmi, tip, sip), check spelling, or pick a
+              popular tool below.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              {[
+                ["Mortgage", "/calculators/finance/mortgage"],
+                ["EMI", "/calculators/finance/loan-emi"],
+                ["SIP", "/calculators/finance/sip"],
+                ["BMI", "/calculators/health-fitness/bmi"],
+                ["FX", "/calculators/finance/currency-converter"],
+                ["Tip", "/calculators/finance/tip"],
+                ["Scientific", "/calculators/math/scientific"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="inline-flex min-h-11 items-center rounded-full border border-border bg-card px-3.5 py-2 text-sm font-medium hover:border-brand hover:text-brand"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
             <Link
               href="/#categories"
-              className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-brand hover:underline"
+              className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-brand hover:underline"
             >
-              Browse categories →
+              Browse all categories →
             </Link>
           </div>
         )
       ) : (
-        <p className="text-muted mt-6 text-sm">
-          Type a keyword to search the catalog (mortgage, BMI, SIP, tip…).
-        </p>
+        <div className="mt-6 space-y-4">
+          <p className="text-muted text-sm">
+            Type a keyword to search the catalog (mortgage, BMI, SIP, tip…).
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {["mortgage", "emi", "sip", "bmi", "tip", "compound interest", "gpa"].map((s) => (
+              <Link
+                key={s}
+                href={`/search?q=${encodeURIComponent(s)}`}
+                className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand"
+              >
+                {s}
+              </Link>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

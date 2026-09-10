@@ -14,6 +14,7 @@ import {
 } from "@/lib/calculators/registry";
 import { popularPlanningSlugs } from "@/lib/seo/calculatorContent";
 import { RecentlyUsedCalculators } from "@/components/RecentlyUsedCalculators";
+import { FavoriteCalculators } from "@/components/FavoriteCalculators";
 
 export default function HomePage() {
   const featured = getFeaturedCalculators().slice(0, 9);
@@ -62,9 +63,13 @@ export default function HomePage() {
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
             Mortgage, EMI, daily compound interest, BMI, live FX, and{" "}
             {calculatorCount}+ guided tools — how-to steps, worked examples, formula
-            notes, and FAQs on every page. Works great on phones, no signup. Search with{" "}
-            <span className="font-semibold">⌘K</span> /{" "}
-            <span className="font-semibold">Ctrl+K</span>.
+            notes, and FAQs on every page. Works great on phones, no signup.
+            <span className="hidden sm:inline">
+              {" "}
+              On desktop, press{" "}
+              <span className="font-semibold">⌘K</span> /{" "}
+              <span className="font-semibold">Ctrl+K</span> to focus search.
+            </span>
           </p>
           <div className="rise-in mt-8 max-w-xl" style={{ animationDelay: "120ms" }}>
             <SearchBar size="lg" showShortcut />
@@ -95,12 +100,46 @@ export default function HomePage() {
         <AdSlot placement="header" className="no-print" />
 
         <RecentlyUsedCalculators />
+        <FavoriteCalculators />
+
+        <section aria-label="Browse by goal">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              What do you want to figure out?
+            </h2>
+            <p className="text-sm text-muted mt-1">
+              Jump by goal — not by engineering jargon.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { href: "/calculators/finance/mortgage", t: "Plan a home payment", d: "Mortgage P&I, tenure, and interest at a glance." },
+              { href: "/calculators/finance/loan-emi", t: "Estimate a loan EMI", d: "Personal, auto, or home-style equated installments." },
+              { href: "/calculators/finance/sip", t: "Project monthly investing", d: "SIP / recurring investment growth illustrations." },
+              { href: "/calculators/finance/daily-compound-interest", t: "See daily compounding", d: "Day-by-day interest stacking for savings math." },
+              { href: "/calculators/finance/currency-converter", t: "Convert currencies", d: "Live educational FX for travel and freelancing." },
+              { href: "/calculators/health-fitness/bmi", t: "Check BMI & calories", d: "BMI, BMR, TDEE — educational fitness numbers." },
+              { href: "/calculators/math/scientific", t: "Do scientific math", d: "Trig, logs, powers — plus 3D viz nearby." },
+              { href: "/calculators/finance/tip", t: "Split a bill & tip", d: "Tip percent and even splits without mental math." },
+              { href: "/calculators/finance/break-even", t: "Find break-even units", d: "Fixed costs, price, and contribution margin." },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="rounded-2xl border border-border bg-card/80 p-4 transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md"
+              >
+                <h3 className="font-semibold text-foreground">{g.t}</h3>
+                <p className="mt-1 text-sm text-muted">{g.d}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         <section className="grid gap-4 sm:grid-cols-3">
           {[
             { t: "Live FX & money", d: "Pick USD, EUR, GBP, INR, AED and more — results format in your currency." },
             { t: "Charts & schedules", d: "Amortization tables, SIP curves, daily-compound snapshots — in results when supported." },
-            { t: `${calculatorCount}+ guided tools`, d: "Every calculator includes how-to, worked example, formula notes, and FAQs." },
+            { t: `${calculatorCount}+ guided tools`, d: "Every page includes how-to steps, a worked example, formula notes, and FAQs." },
           ].map((x) => (
             <div key={x.t} className="rounded-2xl surface-card glass-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
               <h2 className="font-semibold text-foreground">{x.t}</h2>

@@ -439,7 +439,63 @@ function buildFaqs(calc: CalculatorMeta): FaqItem[] {
     answer: `The biggest gotchas are covered in the “Common mistakes” section on this page — usually wrong units, mixing similar definitions, or ignoring fees/assumptions outside ${fields}. Skim that list before you screenshot a result.`,
   });
 
+  const computed = summarizeCompute(calc);
+  if (computed) {
+    faqs.push({
+      question: `What do the default numbers show on the ${calc.name}?`,
+      answer: `With the demo defaults (${defaults}), the live panel currently shows: ${computed.headline}. Treat that as a worked illustration — replace the defaults with your own figures for a personalized estimate.`,
+    });
+  }
+
+  if (calc.formulaNote?.trim()) {
+    faqs.push({
+      question: `Where is the formula for the ${calc.name}?`,
+      answer: `Open the Formula notes section on this page (and the “Formula / how it works” disclosure next to results when present). Registry note: ${calc.formulaNote.trim().slice(0, 220)}${calc.formulaNote.trim().length > 220 ? "…" : ""}`,
+    });
+  }
+
   return faqs.slice(0, 8);
+}
+
+function defaultValuesRecord(fields?: FieldDef[]): Record<string, string> {
+  const init: Record<string, string> = {};
+  if (!fields) return init;
+  for (const f of fields) {
+    init[f.id] =
+      f.defaultValue !== undefined && f.defaultValue !== null
+        ? String(f.defaultValue)
+        : "";
+  }
+  return init;
+}
+
+function summarizeCompute(
+  calc: CalculatorMeta
+): { lines: string[]; headline: string } | null {
+  if (!calc.compute || !calc.fields?.length) return null;
+  try {
+    const values = defaultValuesRecord(calc.fields);
+    const out = calc.compute(values);
+    if (!out || "error" in out) return null;
+    const primary = out.filter((r) => r.emphasize).slice(0, 3);
+    const pick = (primary.length ? primary : out).slice(0, 4);
+    if (!pick.length) return null;
+    const lines = pick.map((r) => {
+      const hint = r.hint ? ` — ${r.hint}` : "";
+      return `${r.label}: ${r.value}${hint}`;
+    });
+    const headline = pick
+      .slice(0, 2)
+      .map((r) => `${r.label} ${r.value}`)
+      .join("; ");
+    return { lines, headline };
+  } catch {
+    return null;
+  }
+}
+
+function slugCue(slug: string): string {
+  return slug.replace(/-/g, " ");
 }
 
 function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
@@ -448,6 +504,7 @@ function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
   const pairLines = pairs.map(
     (p) => `${p.label} = ${p.value}${p.suffix ? ` ${p.suffix}` : ""}`
   );
+  const computed = summarizeCompute(calc);
   const catTips: Partial<Record<CategorySlug, string>> = {
     finance:
       "Optional: switch currency display and re-run with a ±1% rate shock to see payment or growth sensitivity.",
@@ -463,20 +520,33 @@ function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
     "everyday-life": "Optional: change the split or tip percent by a small step to match your group’s norm.",
     "science-engineering": "Optional: scale one input by 10% and confirm the output moves in the expected direction.",
   };
+
+  const inputLine = pairLines.length
+    ? `Use these labeled inputs (the form defaults): ${pairLines.join("; ")}.`
+    : `Enter realistic values into each labeled field on the ${calc.name}.`;
+
   const steps = [
-    `Open the ${calc.name} and note the starting defaults (${defaults}). These are realistic demos, not recommendations.`,
-    pairLines.length
-      ? `Read the labeled inputs: ${pairLines.join("; ")}. Change one field at a time so you can see each effect on the headline output.`
-      : "Enter your values into each labeled field, changing one at a time so you can see each effect.",
-    "Watch the result panel update. If a chart or table appears, skim the pattern (growth curve, amortization mix, snapshots) — not only the top-line number.",
-    `Compare the output to a hand calculation or spreadsheet using the formula notes for ${calc.name}.`,
+    `Open the ${calc.name} (${slugCue(calc.slug)}) and note the starting defaults (${defaults}). These are demo numbers — not recommendations.`,
+    inputLine,
+    computed
+      ? `Read the live result panel. With those defaults, MyCalcsWorld currently reports: ${computed.lines.join(" · ")}.`
+      : "Watch the result panel update. If a chart or table appears, skim the pattern (growth curve, schedule mix, snapshots) — not only the top-line number.",
+    `Sanity-check against a hand calculation or spreadsheet using the formula notes for this ${calc.name}.`,
     catTips[calc.category] ||
       "Optional: open a related tool from the sidebar if your real scenario needs a neighboring metric.",
   ];
+
+  const result = computed
+    ? `With defaults (${defaults}), the ${calc.name} shows: ${computed.headline}. Re-run with your own numbers for a personalized estimate — illustrative only, not professional advice.`
+    : `With the default inputs (${defaults}), the live ${calc.name} on MyCalcsWorld shows the authoritative rounded result for this build. Re-run with your own numbers for a personalized estimate — illustrative only, not professional advice.`;
+
+  const titleBits = pairLines.slice(0, 2).join(", ");
   return {
-    title: `Worked example — ${calc.name}`,
+    title: titleBits
+      ? `Worked example — ${calc.name} (${titleBits})`
+      : `Worked example — ${calc.name}`,
     steps,
-    result: `With the default inputs (${defaults}), the live ${calc.name} on MyCalcsWorld shows the authoritative rounded result for this build. Re-run with your own numbers for a personalized estimate — illustrative only, not professional advice.`,
+    result,
   };
 }
 
@@ -511,15 +581,26 @@ function buildHowTo(calc: CalculatorMeta): {
   return { howToUse: merged };
 }
 
+function relatedHint(calc: CalculatorMeta): string {
+  if (!calc.related?.length) return "";
+  const names = calc.related
+    .slice(0, 3)
+    .map((s) => s.replace(/-/g, " "))
+    .join(", ");
+  return ` Nearby tools people often open next: ${names}.`;
+}
+
 function buildOverview(calc: CalculatorMeta): string {
   const cat = categoryMap[calc.category];
   const fields = fieldList(calc.fields, 6);
   const keywords =
     calc.keywords?.slice(0, 5).join(", ") || calc.slug.replace(/-/g, " ");
   const desc = calc.description.replace(/\.$/, "");
+  const defaults = fieldDefaults(calc.fields);
+  const computed = summarizeCompute(calc);
 
   const openings: Partial<Record<CategorySlug, string>> = {
-    finance: `Money math should be transparent. The ${calc.name} on MyCalcsWorld gives you a browser-side estimate you can compare to a bank worksheet — with multi-currency formatting (USD, EUR, INR, GBP, AED, and more) via the currency picker when money fields appear.`,
+    finance: `Money math should be transparent. The ${calc.name} on MyCalcsWorld gives you a browser-side estimate you can compare to a bank or broker worksheet — with multi-currency formatting (USD, EUR, INR, GBP, AED, and more) via the currency picker when money fields appear.`,
     math: `Clear math beats a black-box app. The ${calc.name} on MyCalcsWorld keeps inputs labeled and formula notes visible so you can reconcile with a textbook or homework key.`,
     "health-fitness": `Fitness numbers are starting points, not diagnoses. The ${calc.name} on MyCalcsWorld uses published educational formulas so you can plan goals — then confirm with a clinician when it matters.`,
     conversion: `Unit mix-ups are expensive. The ${calc.name} on MyCalcsWorld applies clear SI / customary factors so homework, DIY, and travel docs stay consistent.`,
@@ -536,53 +617,122 @@ function buildOverview(calc: CalculatorMeta): string {
     openings[calc.category] ||
     `The ${calc.name} on MyCalcsWorld is a free, no-signup tool that runs entirely in your browser.`;
 
+  const demo = computed
+    ? ` Demo defaults (${defaults}) currently resolve to ${computed.headline} in the live panel — change any field to explore sensitivity.`
+    : ` Start from the demo defaults (${defaults}) or type your own values; the result panel updates as you go.`;
+
   return `${lead}
 
-What it does: ${desc}. Typical inputs: ${fields || "the fields on the form"}. People often land here searching for ${keywords}.
+What it does: ${desc}. Typical inputs: ${fields || "the fields on the form"}. People often land here searching for ${keywords}.${demo}
 
-Who it helps: ${audienceFor(calc.category)}.
+Who it helps: ${audienceFor(calc.category)}.${relatedHint(calc)}
 
-Below the live form you get MyCalcsWorld-specific guidance — when to use this tool, common mistakes, how to interpret results, step-by-step how-to, a worked example with real numbers, formula notes, and FAQs. Charts and tables appear in the results panel whenever this engine provides them. ${cat?.name || "Category"} related tools are linked so you can jump without starting from search.`;
+Below the live form you get MyCalcsWorld-specific guidance — when to use this ${calc.name}, common mistakes, how to interpret results, step-by-step how-to, a worked example with real numbers, formula notes, and FAQs. Charts and tables appear in the results panel whenever this engine provides them. ${cat?.name || "Category"} related tools are linked so you can jump without starting from search.`;
+}
+
+function toolSpecificWhen(calc: CalculatorMeta): string[] {
+  const name = calc.name;
+  const fields = fieldList(calc.fields, 4);
+  const base = categoryWhenToUse[calc.category]?.(name) || [
+    `Reach for the ${name} when you need a clear, browser-based estimate for this topic.`,
+    "Change one input at a time to learn sensitivity before you decide.",
+    "Cross-check critical outcomes with a primary source or professional.",
+  ];
+  const extra: string[] = [
+    `Reach for this page when your question is specifically about “${slugCue(calc.slug)}” rather than a neighboring ${categoryMap[calc.category]?.name || "category"} metric.`,
+  ];
+  if (fields && fields !== "the inputs on the form") {
+    extra.push(
+      `Have ${fields} ready — those labeled fields are what drive the ${name} result panel.`
+    );
+  }
+  if (calc.related?.length) {
+    extra.push(
+      `If you need ${calc.related[0].replace(/-/g, " ")} instead, jump via Related tools rather than forcing the wrong inputs here.`
+    );
+  }
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of [...base, ...extra]) {
+    const k = s.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(s);
+    if (out.length >= 5) break;
+  }
+  return out;
+}
+
+function toolSpecificMistakes(calc: CalculatorMeta): string[] {
+  const name = calc.name;
+  const fields = fieldList(calc.fields, 5);
+  const base =
+    categoryMistakes[calc.category]?.(name, fields) || [
+      `Entering values in the wrong units among: ${fields}.`,
+      "Trusting a single run without a sensitivity check.",
+      "Treating an educational estimate as professional advice.",
+    ];
+  const extras: string[] = [
+    `Leaving a required field blank among ${fields} — the ${name} cannot invent missing inputs.`,
+    `Comparing the ${name} headline to a product that uses a different definition of the same label (rate type, inclusive days, sample vs population, margin vs markup).`,
+  ];
+  if (calc.fields?.some((f) => f.suffix || f.prefix === "$")) {
+    extras.push(
+      "Ignoring the unit suffix / currency prefix printed on each field — the most common silent error on this form."
+    );
+  }
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of [...base, ...extras]) {
+    const k = s.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(s);
+    if (out.length >= 5) break;
+  }
+  return out;
+}
+
+function toolSpecificInterpret(calc: CalculatorMeta): string[] {
+  const base = categoryInterpret[calc.category] || [
+    "Primary outputs appear at the top of the result panel; secondary breakdowns, charts, and tables follow when the tool supports them.",
+    "If a hint appears under a result, it explains a definition (for example what was included or excluded).",
+    "Re-run with optimistic and pessimistic inputs to see sensitivity before making a decision.",
+    "Educational estimate only — verify critical numbers with a qualified professional or primary source.",
+  ];
+  const extras = [
+    `On the ${calc.name}, read emphasized metrics first — those are the primary answers this tool is built to show.`,
+    calc.fields?.length
+      ? `Each result is driven only by the labeled inputs (${fieldList(calc.fields, 4)}); anything not on the form (fees, holidays, clinical adjustments) is outside this estimate.`
+      : `Anything not collected on this form is outside the ${calc.name} estimate.`,
+  ];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of [...extras, ...base]) {
+    const k = s.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(s);
+    if (out.length >= 5) break;
+  }
+  return out;
 }
 
 /** Substantial default SEO/detail sections for any registry calculator. */
 export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoContent {
   const cat = categoryMap[calc.category];
   const { howToUse } = buildHowTo(calc);
-  const fields = fieldList(calc.fields, 5);
-  const interpret =
-    categoryInterpret[calc.category] || [
-      "Primary outputs appear at the top of the result panel; secondary breakdowns, charts, and tables follow when the tool supports them.",
-      "If a hint appears under a result, it explains a definition (for example what was included or excluded).",
-      "Re-run with optimistic and pessimistic inputs to see sensitivity before making a decision.",
-      "Educational estimate only — verify critical numbers with a qualified professional or primary source.",
-    ];
-  const whenFn = categoryWhenToUse[calc.category];
-  const mistFn = categoryMistakes[calc.category];
-
   return {
     seoTitle: `${calc.name} — Free Online Tool with Guide & FAQ`,
-    seoDescription: `${calc.description} Free ${cat?.name || "online"} calculator on MyCalcsWorld with step-by-step how-to, worked example, common mistakes, and FAQs — no signup, mobile-friendly.`.replace(
+    seoDescription: `${calc.description} Free ${cat?.name || "online"} calculator on MyCalcsWorld with step-by-step how-to, worked example, common mistakes, and FAQs — no signup.`.replace(
       /\s+/g,
       " "
     ).trim(),
     overview: buildOverview(calc),
-    whenToUse: whenFn
-      ? whenFn(calc.name)
-      : [
-          `Reach for the ${calc.name} when you need a clear, browser-based estimate for this topic.`,
-          "Change one input at a time to learn sensitivity before you decide.",
-          "Cross-check critical outcomes with a primary source or professional.",
-        ],
-    commonMistakes: mistFn
-      ? mistFn(calc.name, fields)
-      : [
-          `Entering values in the wrong units among: ${fields}.`,
-          "Trusting a single run without a sensitivity check.",
-          "Treating an educational estimate as professional advice.",
-        ],
+    whenToUse: toolSpecificWhen(calc),
+    commonMistakes: toolSpecificMistakes(calc),
     howToUse,
-    howToInterpret: interpret,
+    howToInterpret: toolSpecificInterpret(calc),
     workedExample: buildWorkedExample(calc),
     faqs: buildFaqs(calc),
     formulaNote: formulaFallback(calc),

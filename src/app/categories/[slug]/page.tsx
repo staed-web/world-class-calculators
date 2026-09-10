@@ -63,6 +63,19 @@ export default async function CategoryPage({
         {calcs.length} tools in this category — each calculator page includes how-to steps,
         a worked example, formula notes, and FAQs (not just a bare form).
       </p>
+      <div className="mt-4 flex flex-wrap gap-2" aria-label="Other categories">
+        {categories
+          .filter((c) => c.slug !== cat.slug)
+          .map((c) => (
+            <Link
+              key={c.slug}
+              href={`/categories/${c.slug}`}
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand"
+            >
+              {c.icon} {c.name}
+            </Link>
+          ))}
+      </div>
 
       <AdSlot placement="header" className="my-6 no-print" />
 

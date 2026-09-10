@@ -20,6 +20,7 @@ import {
   TrustStrip,
 } from "./seo/CalculatorGuide";
 import { TrackRecentCalculator } from "./TrackRecentCalculator";
+import { FavoriteButton } from "./FavoriteButton";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 import {
   Function3DCalculator,
@@ -39,11 +40,33 @@ function relatedFor(calc: CalculatorMeta): CalculatorMeta[] {
   const seen = new Set(fromMeta.map((c) => c.slug));
   seen.add(calc.slug);
   const padded = [...fromMeta];
-  for (const c of getCalculatorsByCategory(calc.category)) {
+
+  const keys = new Set(
+    [calc.slug, ...calc.keywords, calc.name]
+      .join(" ")
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length > 2)
+  );
+
+  const scored = getCalculatorsByCategory(calc.category)
+    .filter((c) => !seen.has(c.slug))
+    .map((c) => {
+      const hay = [c.slug, c.name, ...c.keywords].join(" ").toLowerCase();
+      let score = 0;
+      for (const k of keys) {
+        if (hay.includes(k)) score += 1;
+      }
+      if (c.popular || c.featured) score += 0.5;
+      return { c, score };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  for (const { c } of scored) {
     if (seen.has(c.slug)) continue;
     padded.push(c);
     seen.add(c.slug);
-    if (padded.length >= 6) break;
+    if (padded.length >= 8) break;
   }
   return padded.slice(0, 8);
 }
@@ -130,6 +153,14 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
           {seo?.seoDescription || calc.description}
         </p>
         <TrustStrip />
+        <div className="mt-3 flex flex-wrap items-center gap-2 no-print">
+          <FavoriteButton
+            slug={calc.slug}
+            category={calc.category}
+            name={calc.name}
+            href={href}
+          />
+        </div>
         {seo && (
           <div
             className="mt-4 flex flex-wrap gap-2 no-print"

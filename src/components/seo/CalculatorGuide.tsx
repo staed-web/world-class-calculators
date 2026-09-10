@@ -83,8 +83,9 @@ export function CalculatorGuide({
             Detailed guide
           </p>
           <p className="mt-1 text-sm text-muted max-w-2xl">
-            Written for this tool on MyCalcsWorld — when to use it, how-to steps,
-            common mistakes, a worked example, formula notes, and FAQs.
+            A plain-language guide for this tool — when it helps, how to use it,
+            how to read the numbers, common mistakes, a worked example, formula
+            notes, and FAQs.
           </p>
         </div>
       </div>
@@ -176,6 +177,11 @@ export function CalculatorGuide({
               Result:{" "}
             </span>
             {content.workedExample.result}
+          </p>
+          <p className="mt-3 text-xs text-muted no-print">
+            Want these demo numbers in the form? Tap{" "}
+            <span className="font-semibold text-foreground">Try example</span> above
+            the Calculate button.
           </p>
         </div>
       )}

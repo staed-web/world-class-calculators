@@ -22,7 +22,11 @@ export function requireNums(
   for (const k of keys) {
     const num = parseNum(values[k]);
     if (!Number.isFinite(num)) {
-      return { ok: false, error: `Please enter a valid number for ${k}.` };
+      const label = k.replace(/-/g, " ").replace(/_/g, " ");
+      return {
+        ok: false,
+        error: `Enter a valid number for “${label}”. Clear the field if it should be empty, and avoid letters or symbols.`,
+      };
     }
     out[k] = num;
   }

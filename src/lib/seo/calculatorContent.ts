@@ -4,6 +4,7 @@ import {
   buildDefaultCalculatorSeo,
   mergeCalculatorSeo,
 } from "./seoDefaults";
+import { calculatorSeoExtra } from "./overridesExtra";
 
 /** High-ROI FAQ / how-to / SEO overlays keyed by calculator slug. */
 export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
@@ -100,8 +101,8 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "Banks may use day-count conventions, fee capitalization, or floating-rate resets. This tool uses the standard reducing-balance EMI formula for education and planning.",
       },
       {
-        question: "Can I use INR amounts?",
-        answer: "Yes. Pick INR in the currency picker — inputs and money results format in your selected currency. The EMI formula itself is currency-agnostic.",
+        question: "Can I use my local currency?",
+        answer: "Yes. Pick USD, EUR, GBP, INR, AED, or another supported code in the currency picker — inputs and money results format in your selected currency. The EMI formula itself is currency-agnostic.",
       },
       {
         question: "How do I reduce my EMI or total interest?",
@@ -2370,6 +2371,12 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
   },
 
 };
+
+// Merge deep extras (extras win on overlapping keys for richer popular pages).
+for (const [slug, extra] of Object.entries(calculatorSeoExtra)) {
+  const prev = calculatorSeoContent[slug];
+  calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
+}
 
 export const seoContentSlugs = Object.keys(calculatorSeoContent);
 
