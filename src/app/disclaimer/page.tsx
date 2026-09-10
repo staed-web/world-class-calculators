@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 export default function DisclaimerPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold text-slate-900">Disclaimer</h1>
-      <div className="mt-6 space-y-4 text-slate-600 leading-relaxed">
+      <h1 className="text-3xl font-bold text-foreground">Disclaimer</h1>
+      <div className="mt-6 space-y-4 text-muted leading-relaxed">
         <p>
           All calculators and results on MyCalcsWorld are provided for
           general educational and informational purposes only. They are{" "}
@@ -21,8 +21,9 @@ export default function DisclaimerPage() {
           before making decisions that affect your money, health, or legal rights.
         </p>
         <p>
-          Formulas may use simplifying assumptions. Currency conversion uses static
-          illustrative rates, not live market data. Commodity and metal quotes come from
+          Formulas may use simplifying assumptions. Currency conversion uses periodically
+          refreshed reference FX rates (with a static fallback if the feed is down) — not
+          executable trade prices. Commodity and metal quotes come from
           free delayed public feeds and are not executable trade prices. Health metrics
           such as BMI and body fat estimates are screening tools, not diagnoses.
         </p>

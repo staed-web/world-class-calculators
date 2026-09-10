@@ -9,6 +9,7 @@ import {
 import { CalculatorForm } from "./CalculatorForm";
 import { ScientificCalculator } from "./ScientificCalculator";
 import { LiveCommoditiesCalculator } from "./LiveCommoditiesCalculator";
+import { LiveCurrencyConverter } from "./LiveCurrencyConverter";
 import { AdSlot } from "./AdSlot";
 import { DisclaimerBanner } from "./DisclaimerBanner";
 import { CalculatorCard } from "./CalculatorCard";
@@ -36,12 +37,44 @@ function relatedFor(calc: CalculatorMeta): CalculatorMeta[] {
   return padded.slice(0, 8);
 }
 
+function renderCalc(calc: CalculatorMeta) {
+  if (calc.kind === "custom") {
+    switch (calc.customKey) {
+      case "scientific":
+        return <ScientificCalculator />;
+      case "commodities-spot":
+        return <LiveCommoditiesCalculator mode="spot" />;
+      case "commodities-metal-value":
+        return <LiveCommoditiesCalculator mode="metal-value" />;
+      case "commodities-jewelry-melt":
+        return <LiveCommoditiesCalculator mode="jewelry-melt" />;
+      case "commodities-unit":
+        return <LiveCommoditiesCalculator mode="commodity-unit" />;
+      case "currency-live":
+        return <LiveCurrencyConverter />;
+      case "3d-function":
+        return <Function3DCalculator />;
+      case "pythagoras-3d":
+        return <Pythagoras3DCalculator />;
+      case "sphere-3d":
+        return <Sphere3DCalculator />;
+      case "cylinder-3d":
+        return <Cylinder3DCalculator />;
+      case "compound-3d":
+        return <Compound3DCalculator />;
+      default:
+        break;
+    }
+  }
+  return <CalculatorForm category={calc.category} slug={calc.slug} />;
+}
+
 export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
   const cat = categoryMap[calc.category];
   const related = relatedFor(calc);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
       <nav className="mb-4 text-sm text-muted" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-brand">
           Home
@@ -54,59 +87,40 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <span className="text-foreground">{calc.name}</span>
       </nav>
 
-      <div className="mb-6">
+      <div className="mb-5 sm:mb-6">
         <span
           className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
         >
           {cat?.icon} {cat?.name}
         </span>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           {calc.name}
         </h1>
-        <p className="mt-2 max-w-2xl text-muted">{calc.description}</p>
+        <p className="mt-2 max-w-2xl text-muted text-sm sm:text-base">{calc.description}</p>
       </div>
 
+      {/* Above-the-fold banner — single, not stacked */}
       <AdSlot placement="header" className="mb-6 no-print" />
 
       <div className="grid gap-8 lg:grid-cols-4">
         <div className="lg:col-span-3 space-y-6">
-          {calc.kind === "custom" && calc.customKey === "scientific" ? (
-            <ScientificCalculator />
-          ) : calc.kind === "custom" && calc.customKey === "commodities-spot" ? (
-            <LiveCommoditiesCalculator mode="spot" />
-          ) : calc.kind === "custom" && calc.customKey === "commodities-metal-value" ? (
-            <LiveCommoditiesCalculator mode="metal-value" />
-          ) : calc.kind === "custom" && calc.customKey === "commodities-jewelry-melt" ? (
-            <LiveCommoditiesCalculator mode="jewelry-melt" />
-          ) : calc.kind === "custom" && calc.customKey === "commodities-unit" ? (
-            <LiveCommoditiesCalculator mode="commodity-unit" />
-          ) : calc.kind === "custom" && calc.customKey === "3d-function" ? (
-            <Function3DCalculator />
-          ) : calc.kind === "custom" && calc.customKey === "pythagoras-3d" ? (
-            <Pythagoras3DCalculator />
-          ) : calc.kind === "custom" && calc.customKey === "sphere-3d" ? (
-            <Sphere3DCalculator />
-          ) : calc.kind === "custom" && calc.customKey === "cylinder-3d" ? (
-            <Cylinder3DCalculator />
-          ) : calc.kind === "custom" && calc.customKey === "compound-3d" ? (
-            <Compound3DCalculator />
-          ) : (
-            <CalculatorForm category={calc.category} slug={calc.slug} />
-          )}
+          {renderCalc(calc)}
+          {/* High-viewability in-content after results */}
           <AdSlot placement="in-content" className="no-print" />
           <DisclaimerBanner />
         </div>
-        <aside className="space-y-4 no-print">
+        <aside className="hidden lg:block space-y-4 no-print">
+          {/* Sticky sidebar ad on calculator pages at lg+ */}
           <AdSlot placement="sidebar" />
           {related.length > 0 && (
-            <div className="rounded-2xl surface-card p-4">
+            <div className="rounded-2xl surface-card p-4 sticky top-[28rem]">
               <h2 className="mb-3 text-sm font-semibold text-foreground">Related tools</h2>
               <ul className="space-y-2">
                 {related.map((r) => (
                   <li key={r.slug}>
                     <Link
                       href={calculatorPath(r)}
-                      className="block rounded-xl border border-border bg-background px-3 py-2 text-sm hover:border-brand"
+                      className="block rounded-xl border border-border bg-background px-3 py-2 text-sm hover:border-brand transition"
                     >
                       {r.name}
                     </Link>
@@ -119,7 +133,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
       </div>
 
       {related.length > 0 && (
-        <section className="mt-12 no-print">
+        <section className="mt-10 sm:mt-12 no-print">
           <h2 className="mb-4 text-xl font-bold text-foreground">You might also like</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {related.slice(0, 6).map((r) => (

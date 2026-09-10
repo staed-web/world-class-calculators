@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { CalculatorCard } from "@/components/CalculatorCard";
@@ -29,16 +30,31 @@ export default function HomePage() {
         <div className="hero-orb -left-10 top-8 h-56 w-56 bg-teal-300/40" />
         <div className="hero-orb right-0 top-20 h-64 w-64 bg-indigo-400/35" style={{ animationDelay: "1.5s" }} />
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_15%_20%,white,transparent_42%),radial-gradient(circle_at_85%_10%,#a5b4fc,transparent_35%)]" />
-        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-22">
-          <p className="rise-in mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-teal-100">
-            {calculatorCount}+ free calculators · interactive charts · 3D math
-          </p>
+        <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-20">
+          <div className="rise-in mb-5 flex items-center gap-3">
+            <Image
+              src="/logo-mark.png"
+              alt="MyCalcsWorld"
+              width={56}
+              height={56}
+              className="h-14 w-14 rounded-2xl shadow-lg ring-2 ring-white/20"
+              priority
+            />
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-100">
+                MyCalcsWorld
+              </p>
+              <p className="text-xs text-teal-50/90">
+                {calculatorCount}+ free calculators · live FX · charts · 3D math
+              </p>
+            </div>
+          </div>
           <h1 className="rise-in max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
             Calculators that feel like a modern product — not a dusty directory.
           </h1>
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
-            Finance charts, SIP growth, amortization curves, and showcase 3D math —
-            accurate, mobile-first, and fast. Search with{" "}
+            Finance charts, multi-currency results, SIP growth, amortization curves,
+            and showcase 3D math — accurate, mobile-first, and fast. Search with{" "}
             <span className="font-semibold">⌘K</span> /{" "}
             <span className="font-semibold">Ctrl+K</span>.
           </p>
@@ -47,12 +63,12 @@ export default function HomePage() {
           </div>
           <div className="mt-6 flex flex-wrap gap-2 text-sm">
             {[
-              "amortization chart",
+              "mortgage",
+              "currency converter",
               "sip growth",
-              "3d function",
               "bmi",
-              "projectile",
-              "one rep max",
+              "3d function",
+              "amortization",
             ].map((q) => (
               <Link
                 key={q}
@@ -71,11 +87,11 @@ export default function HomePage() {
 
         <section className="grid gap-4 sm:grid-cols-3">
           {[
+            { t: "Live FX & money", d: "Pick USD, EUR, INR, AED and more — results format in your currency." },
             { t: "Interactive charts", d: "Amortization, SIP, trajectories, and more via Recharts." },
-            { t: "Showcase 3D", d: "Surface plots, Pythagoras space diagonal, spheres & growth bars." },
             { t: `${calculatorCount}+ tools`, d: "Finance, math, health, construction, science — all working." },
           ].map((x) => (
-            <div key={x.t} className="rounded-2xl surface-card glass-card p-5">
+            <div key={x.t} className="rounded-2xl surface-card glass-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
               <h2 className="font-semibold text-foreground">{x.t}</h2>
               <p className="mt-1 text-sm text-muted">{x.d}</p>
             </div>
@@ -100,8 +116,8 @@ export default function HomePage() {
         <section>
           <div className="mb-5 flex items-end justify-between gap-3">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">Featured</h2>
-            <Link href="/categories/math" className="text-sm font-medium text-brand hover:underline">
-              Try 3D math →
+            <Link href="/calculators/finance/currency-converter" className="text-sm font-medium text-brand hover:underline">
+              Try live FX →
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

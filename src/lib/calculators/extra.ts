@@ -208,7 +208,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Project future value with starting principal, return rate, and monthly contributions.",
     keywords: ["investment", "return", "portfolio", "growth"],
     popular: true,
-    fields: [{ id: "principal", label: "Starting amount", type: "number", defaultValue: 10000, prefix: "$" }, { id: "rate", label: "Annual return", type: "number", defaultValue: 8, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 15 }, { id: "monthly", label: "Monthly contribution", type: "number", defaultValue: 300, prefix: "$" }],
+    fields: [{ id: "principal", label: "Starting amount", type: "number", defaultValue: 10000, prefix: "$" }, { id: "rate", label: "Annual return", type: "number", defaultValue: 8, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 15 , suffix: "years"}, { id: "monthly", label: "Monthly contribution", type: "number", defaultValue: 300, prefix: "$" }],
     related: ["compound-interest", "sip", "cagr"],
     kind: "form",
     compute: (v) => {
@@ -230,7 +230,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Current yield and approximate yield-to-maturity for a simple coupon bond.",
     keywords: ["bond", "yield", "ytm", "coupon"],
     formulaNote: "YTM uses the common textbook approximation.",
-    fields: [{ id: "face", label: "Face value", type: "number", defaultValue: 1000, prefix: "$" }, { id: "price", label: "Market price", type: "number", defaultValue: 950, prefix: "$" }, { id: "coupon", label: "Annual coupon", type: "number", defaultValue: 50, prefix: "$" }, { id: "years", label: "Years to maturity", type: "number", defaultValue: 10 }],
+    fields: [{ id: "face", label: "Face value", type: "number", defaultValue: 1000, prefix: "$" }, { id: "price", label: "Market price", type: "number", defaultValue: 950, prefix: "$" }, { id: "coupon", label: "Annual coupon", type: "number", defaultValue: 50, prefix: "$" }, { id: "years", label: "Years to maturity", type: "number", defaultValue: 10 , suffix: "years"}],
     related: ["dividend-yield", "pe-ratio", "investment-return"],
     kind: "form",
     compute: (v) => {
@@ -426,7 +426,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Rough future value of 401(k)-style contributions with employer match.",
     keywords: ["401k", "retirement", "match"],
     formulaNote: "Ignores contribution limits and tax treatment \u2014 educational only.",
-    fields: [{ id: "salary", label: "Annual salary", type: "number", defaultValue: 80000, prefix: "$" }, { id: "employeePct", label: "Your contribution", type: "number", defaultValue: 6, suffix: "%" }, { id: "matchPct", label: "Employer match of salary", type: "number", defaultValue: 3, suffix: "%" }, { id: "returnPct", label: "Expected return", type: "number", defaultValue: 7, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 25 }],
+    fields: [{ id: "salary", label: "Annual salary", type: "number", defaultValue: 80000, prefix: "$" }, { id: "employeePct", label: "Your contribution", type: "number", defaultValue: 6, suffix: "%" }, { id: "matchPct", label: "Employer match of salary", type: "number", defaultValue: 3, suffix: "%" }, { id: "returnPct", label: "Expected return", type: "number", defaultValue: 7, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 25 , suffix: "years"}],
     related: ["retirement", "investment-return", "sip"],
     kind: "form",
     compute: (v) => {
@@ -766,7 +766,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Convert step count to distance and estimate calories burned.",
     keywords: ["steps", "miles", "walking", "calories"],
     popular: true,
-    fields: [{ id: "steps", label: "Steps", type: "number", defaultValue: 10000 }, { id: "stride", label: "Stride length", type: "number", defaultValue: 0.78, suffix: "m", step: 0.01, helpText: "Typical adult ~0.7\u20130.85 m" }],
+    fields: [{ id: "steps", label: "Steps", type: "number", defaultValue: 10000 , suffix: "steps"}, { id: "stride", label: "Stride length", type: "number", defaultValue: 0.78, suffix: "m", step: 0.01, helpText: "Typical adult ~0.7\u20130.85 m" }],
     related: ["pace", "calories-burned", "tdee"],
     kind: "form",
     compute: (v) => {
@@ -787,7 +787,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Karvonen-style training zones from age and resting heart rate.",
     keywords: ["heart rate", "zones", "training", "cardio"],
     formulaNote: "Zones use heart-rate reserve (Karvonen). Educational only.",
-    fields: [{ id: "age", label: "Age", type: "number", defaultValue: 35 }, { id: "resting", label: "Resting HR", type: "number", defaultValue: 60, suffix: "bpm" }],
+    fields: [{ id: "age", label: "Age", type: "number", defaultValue: 35 , suffix: "years"}, { id: "resting", label: "Resting HR", type: "number", defaultValue: 60, suffix: "bpm" }],
     related: ["bmi", "tdee", "calories-burned"],
     kind: "form",
     compute: (v) => {
@@ -915,7 +915,7 @@ export const extraCalculators: CalculatorMeta[] = [
     name: "Square Footage Calculator",
     description: "Compute area from length and width in feet or meters.",
     keywords: ["square footage", "area", "room"],
-    fields: [{ id: "length", label: "Length", type: "number", defaultValue: 12 }, { id: "width", label: "Width", type: "number", defaultValue: 10 }, { id: "units", label: "Units", type: "select", defaultValue: "ft", options: [{ value: "ft", label: "Feet" }, { value: "m", label: "Meters" }] }],
+    fields: [{ id: "length", label: "Length", type: "number", defaultValue: 12 , suffix: "ft"}, { id: "width", label: "Width", type: "number", defaultValue: 10 , suffix: "ft"}, { id: "units", label: "Units", type: "select", defaultValue: "ft", options: [{ value: "ft", label: "Feet" }, { value: "m", label: "Meters" }] }],
     related: ["paint-coverage", "tile-calculator", "flooring-cost"],
     kind: "form",
     compute: (v) => {
@@ -1650,7 +1650,7 @@ export const extraCalculators: CalculatorMeta[] = [
     name: "Future Value of Annuity",
     description: "Future value of equal periodic deposits at a fixed rate.",
     keywords: ["annuity", "future value", "deposits"],
-    fields: [{ id: "pmt", label: "Payment per period", type: "number", defaultValue: 500, prefix: "$" }, { id: "rate", label: "Annual rate", type: "number", defaultValue: 6, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 10 }, { id: "perYear", label: "Payments / year", type: "number", defaultValue: 12 }],
+    fields: [{ id: "pmt", label: "Payment per period", type: "number", defaultValue: 500, prefix: "$" }, { id: "rate", label: "Annual rate", type: "number", defaultValue: 6, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 10 , suffix: "years"}, { id: "perYear", label: "Payments / year", type: "number", defaultValue: 12 }],
     related: ["investment-return", "sip", "savings-goal"],
     kind: "form",
     compute: (v) => {
@@ -1673,7 +1673,7 @@ export const extraCalculators: CalculatorMeta[] = [
     name: "Present Value Calculator",
     description: "Discount a future lump sum to present value.",
     keywords: ["present value", "discount", "pv"],
-    fields: [{ id: "fv", label: "Future value", type: "number", defaultValue: 10000, prefix: "$" }, { id: "rate", label: "Discount rate", type: "number", defaultValue: 5, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 5 }],
+    fields: [{ id: "fv", label: "Future value", type: "number", defaultValue: 10000, prefix: "$" }, { id: "rate", label: "Discount rate", type: "number", defaultValue: 5, suffix: "%" }, { id: "years", label: "Years", type: "number", defaultValue: 5 , suffix: "years"}],
     related: ["npv", "investment-return", "cagr"],
     kind: "form",
     compute: (v) => {
@@ -1771,7 +1771,7 @@ export const extraCalculators: CalculatorMeta[] = [
     description: "Rough entropy bits from password length and character-set size.",
     keywords: ["password", "entropy", "security"],
     formulaNote: "entropy \u2248 length \u00d7 log2(charset). Not a substitute for a password manager.",
-    fields: [{ id: "length", label: "Length", type: "number", defaultValue: 12, min: 1 }, { id: "charset", label: "Character set size", type: "select", defaultValue: "62", options: [{ value: "26", label: "Lowercase only (26)" }, { value: "52", label: "Letters (52)" }, { value: "62", label: "Letters + digits (62)" }, { value: "95", label: "Letters + digits + symbols (~95)" }] }],
+    fields: [{ id: "length", label: "Length", type: "number", defaultValue: 12, min: 1 , suffix: "ft"}, { id: "charset", label: "Character set size", type: "select", defaultValue: "62", options: [{ value: "26", label: "Lowercase only (26)" }, { value: "52", label: "Letters (52)" }, { value: "62", label: "Letters + digits (62)" }, { value: "95", label: "Letters + digits + symbols (~95)" }] }],
     related: ["password-strength", "random-number"],
     kind: "form",
     compute: (v) => {
@@ -1917,7 +1917,7 @@ export const extraCalculators: CalculatorMeta[] = [
     name: "Target Heart Rate Calculator",
     description: "Simple % of max heart-rate training targets from age.",
     keywords: ["target heart rate", "exercise", "cardio"],
-    fields: [{ id: "age", label: "Age", type: "number", defaultValue: 40 }, { id: "pct", label: "Target % of max", type: "number", defaultValue: 70, suffix: "%" }],
+    fields: [{ id: "age", label: "Age", type: "number", defaultValue: 40 , suffix: "years"}, { id: "pct", label: "Target % of max", type: "number", defaultValue: 70, suffix: "%" }],
     related: ["heart-rate-zones", "calories-burned"],
     kind: "form",
     compute: (v) => {

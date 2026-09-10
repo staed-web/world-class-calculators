@@ -246,8 +246,8 @@ export const everydayCalculators: CalculatorMeta[] = [
     keywords: ["timesheet", "decimal hours", "payroll time"],
     kind: "form",
     fields: [
-      { id: "hours", label: "Hours", type: "number", defaultValue: 7 },
-      { id: "minutes", label: "Minutes", type: "number", defaultValue: 30, min: 0, max: 59 },
+      { id: "hours", label: "Hours", type: "number", defaultValue: 7 , suffix: "hours"},
+      { id: "minutes", label: "Minutes", type: "number", defaultValue: 30, min: 0, max: 59 , suffix: "min"},
     ],
     related: ["hourly-to-salary"],
     compute: (v) => {

@@ -5,6 +5,8 @@ import type { ResultChartBar, ResultItem, ResultTable } from "@/lib/types";
 import { getCalculator } from "@/lib/calculators/registry";
 import { ResultLineChartView } from "@/components/charts/ResultLineChart";
 import { AnimatedNumber } from "@/components/charts/AnimatedNumber";
+import { useCurrency } from "./CurrencyProvider";
+import { CurrencyPicker } from "./CurrencyPicker";
 
 export function CalculatorForm({
   category,
@@ -15,6 +17,7 @@ export function CalculatorForm({
 }) {
   const calc = getCalculator(category, slug);
   const fields = calc?.fields ?? [];
+  const { symbol, currency } = useCurrency();
   const [values, setValues] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
     for (const f of fields) {
@@ -27,15 +30,24 @@ export function CalculatorForm({
   });
   const [showResults, setShowResults] = useState(true);
 
+  const usesMoney = Boolean(
+    calc?.usesMoney ||
+      fields.some((f) => f.prefix === "$" || f.money) ||
+      category === "finance" ||
+      category === "business"
+  );
+
+  // Recompute when currency changes so fmtMoney picks up the new code
   const display = useMemo(() => {
     if (!calc?.compute || !showResults) return null;
+    void currency; // dependency
     return calc.compute(values);
-  }, [calc, values, showResults]);
+  }, [calc, values, showResults, currency]);
 
   if (!calc) {
     return (
       <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200">
-        Calculator not found.
+        Calculator not found. Try searching from the home page.
       </div>
     );
   }
@@ -64,86 +76,107 @@ export function CalculatorForm({
 
   const output = display;
 
+  function fieldPrefix(prefix?: string): string | undefined {
+    if (!prefix) return undefined;
+    if (prefix === "$") return symbol;
+    return prefix;
+  }
+
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       <form
         onSubmit={onSubmit}
-        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-6"
+        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-5 sm:p-6"
       >
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            Inputs
-          </h2>
-          <p className="text-xs text-muted">Live results as you type</p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+              Inputs
+            </h2>
+            <p className="text-xs text-muted mt-0.5">Results update as you type</p>
+          </div>
+          {usesMoney && (
+            <CurrencyPicker id={`currency-${slug}`} className="no-print" />
+          )}
         </div>
-        {fields.map((f) => (
-          <div key={f.id}>
-            <label htmlFor={f.id} className="mb-1 block text-sm font-medium text-foreground">
-              {f.label}
-            </label>
-            {f.type === "select" ? (
-              <select
-                id={f.id}
-                value={values[f.id] ?? ""}
-                onChange={(e) => setField(f.id, e.target.value)}
-                className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-              >
-                {f.options?.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            ) : f.type === "textarea" ? (
-              <textarea
-                id={f.id}
-                value={values[f.id] ?? ""}
-                onChange={(e) => setField(f.id, e.target.value)}
-                rows={4}
-                placeholder={f.placeholder}
-                className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-              />
-            ) : (
-              <div className="relative">
-                {f.prefix && (
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm">
-                    {f.prefix}
-                  </span>
-                )}
-                <input
+        {fields.map((f) => {
+          const prefix = fieldPrefix(f.prefix);
+          const labelUnit =
+            f.suffix && !f.label.includes(`(${f.suffix})`) && !f.label.includes(f.suffix)
+              ? ` (${f.suffix})`
+              : "";
+          return (
+            <div key={f.id}>
+              <label htmlFor={f.id} className="mb-1 block text-sm font-medium text-foreground">
+                {f.label}
+                {labelUnit && !f.suffix ? (
+                  <span className="text-muted font-normal">{labelUnit}</span>
+                ) : null}
+              </label>
+              {f.type === "select" ? (
+                <select
                   id={f.id}
-                  type={f.type}
                   value={values[f.id] ?? ""}
                   onChange={(e) => setField(f.id, e.target.value)}
-                  min={f.min}
-                  max={f.max}
-                  step={f.step ?? "any"}
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+                >
+                  {f.options?.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              ) : f.type === "textarea" ? (
+                <textarea
+                  id={f.id}
+                  value={values[f.id] ?? ""}
+                  onChange={(e) => setField(f.id, e.target.value)}
+                  rows={4}
                   placeholder={f.placeholder}
-                  className={`w-full rounded-xl border border-border bg-card py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)] ${
-                    f.prefix ? "pl-7 pr-3" : f.suffix ? "pl-3 pr-14" : "px-3"
-                  }`}
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
                 />
-                {f.suffix && (
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">
-                    {f.suffix}
-                  </span>
-                )}
-              </div>
-            )}
-            {f.helpText && <p className="mt-1 text-xs text-muted">{f.helpText}</p>}
-          </div>
-        ))}
-        <div className="sticky bottom-3 flex gap-2 pt-2 no-print">
+              ) : (
+                <div className="relative">
+                  {prefix && (
+                    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm font-medium">
+                      {prefix}
+                    </span>
+                  )}
+                  <input
+                    id={f.id}
+                    type={f.type}
+                    value={values[f.id] ?? ""}
+                    onChange={(e) => setField(f.id, e.target.value)}
+                    min={f.min}
+                    max={f.max}
+                    step={f.step ?? "any"}
+                    placeholder={f.placeholder}
+                    className={`w-full rounded-xl border border-border bg-card py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-[var(--ring)] ${
+                      prefix ? "pl-9 pr-3" : f.suffix ? "pl-3 pr-14" : "px-3"
+                    }`}
+                  />
+                  {f.suffix && (
+                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">
+                      {f.suffix}
+                    </span>
+                  )}
+                </div>
+              )}
+              {f.helpText && <p className="mt-1 text-xs text-muted">{f.helpText}</p>}
+            </div>
+          );
+        })}
+        <div className="sticky bottom-3 z-10 flex gap-2 pt-2 no-print">
           <button
             type="submit"
-            className="flex-1 rounded-xl bg-brand py-3 text-sm font-semibold text-white hover:opacity-90 transition"
+            className="flex-1 rounded-xl bg-brand py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
           >
             Calculate
           </button>
           <button
             type="button"
             onClick={onReset}
-            className="rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground hover:border-brand"
+            className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:border-brand transition"
           >
             Reset
           </button>
@@ -151,7 +184,7 @@ export function CalculatorForm({
       </form>
 
       <div className="lg:col-span-2 space-y-3">
-        <ResultsPanel output={output} />
+        <ResultsPanel output={output} currency={usesMoney ? currency : undefined} />
         {calc.formulaNote && (
           <details className="rounded-2xl border border-border bg-card p-4 text-sm">
             <summary className="cursor-pointer font-semibold text-foreground">
@@ -169,13 +202,16 @@ export function CalculatorForm({
 
 function ResultsPanel({
   output,
+  currency,
 }: {
   output: ResultItem[] | { error: string } | null;
+  currency?: string;
 }) {
   if (!output) {
     return (
-      <div className="rounded-2xl border border-dashed border-border bg-card/60 p-6 text-sm text-muted">
-        Enter values to see results.
+      <div className="rounded-2xl border border-dashed border-border bg-card/60 p-6 text-sm text-muted text-center">
+        <p className="font-medium text-foreground mb-1">Ready when you are</p>
+        Enter values on the left — results appear here instantly.
       </div>
     );
   }
@@ -190,7 +226,7 @@ function ResultsPanel({
     <div className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-6 shadow-sm backdrop-blur-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30">
       <div className="mb-3 flex items-center justify-between gap-2">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
-          Results
+          Results{currency ? ` · ${currency}` : ""}
         </h2>
         <button
           type="button"

@@ -32,6 +32,8 @@ export interface FieldDef {
   placeholder?: string;
   helpText?: string;
   required?: boolean;
+  /** Marks a money input — prefix tracks display currency. */
+  money?: boolean;
 }
 
 export interface ResultTable {
@@ -91,6 +93,8 @@ export interface CalculatorMeta {
   related?: string[];
   /** When true, form recalculates live as fields change (default true). */
   liveCalc?: boolean;
+  /** Show currency picker and format money with selected currency. */
+  usesMoney?: boolean;
 }
 
 export interface CategoryMeta {

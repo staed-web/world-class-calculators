@@ -1882,7 +1882,7 @@ export const wave2Calculators: CalculatorMeta[] = [
     keywords: ["currency", "fx", "exchange rate", "usd eur inr"],
     kind: "form",
     fields: [
-      { id: "amount", label: "Amount", type: "number", defaultValue: 1000 },
+      { id: "amount", label: "Amount", type: "number", defaultValue: 1000, prefix: "$" },
       { id: "rate", label: "Rate (quote per base)", type: "number", defaultValue: 83.2, step: 0.0001 },
       { id: "pair", label: "Pair label", type: "text", defaultValue: "USD→INR" },
     ],
@@ -1906,7 +1906,7 @@ export const wave2Calculators: CalculatorMeta[] = [
     kind: "form",
     fields: [
       { id: "rate", label: "Hourly rate", type: "number", defaultValue: 4, prefix: "$" },
-      { id: "hours", label: "Hours", type: "number", defaultValue: 5, step: 0.25 },
+      { id: "hours", label: "Hours", type: "number", defaultValue: 5, step: 0.25, suffix: "hours" },
       { id: "cap", label: "Daily max (0 = none)", type: "number", defaultValue: 25, prefix: "$" },
     ],
     related: ["commute-cost", "fuel-cost"],

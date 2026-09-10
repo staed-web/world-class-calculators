@@ -109,7 +109,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "principal", label: "Principal", type: "number", defaultValue: 5000, prefix: "$" },
       { id: "rate", label: "Annual rate", type: "number", defaultValue: 7, suffix: "%" },
-      { id: "years", label: "Years", type: "number", defaultValue: 10 },
+      { id: "years", label: "Years", type: "number", defaultValue: 10, suffix: "years", min: 0 },
       {
         id: "compounds",
         label: "Compounded",
@@ -238,9 +238,9 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "balance", label: "Current balance", type: "number", defaultValue: 280000, prefix: "$" },
       { id: "currentRate", label: "Current rate", type: "number", defaultValue: 7.5, suffix: "%" },
-      { id: "yearsLeft", label: "Years remaining", type: "number", defaultValue: 25 },
+      { id: "yearsLeft", label: "Years remaining", type: "number", defaultValue: 25, suffix: "years" },
       { id: "newRate", label: "New rate", type: "number", defaultValue: 6.0, suffix: "%" },
-      { id: "newYears", label: "New term (years)", type: "number", defaultValue: 30 },
+      { id: "newYears", label: "New term", type: "number", defaultValue: 30, suffix: "years" },
       { id: "closing", label: "Closing costs", type: "number", defaultValue: 4000, prefix: "$" },
     ],
     related: ["mortgage", "amortization"],
@@ -393,68 +393,18 @@ export const financeCalculators: CalculatorMeta[] = [
     category: "finance",
     name: "Currency Converter",
     description:
-      "Illustrative static FX conversion for common currencies. Rates are sample snapshots, not live market data.",
-    keywords: ["currency", "fx", "exchange rate", "usd", "eur"],
-    kind: "form",
+      "Convert between USD, EUR, GBP, INR, JPY, AED and more using periodically refreshed FX rates.",
+    keywords: ["currency", "fx", "exchange rate", "usd", "eur", "inr", "aed"],
+    featured: true,
+    popular: true,
+    kind: "custom",
+    customKey: "currency-live",
+    usesMoney: true,
     formulaNote:
-      "Uses fixed illustrative rates vs USD for demo purposes. Always verify with a live FX source before transferring money.",
-    fields: [
-      { id: "amount", label: "Amount", type: "number", defaultValue: 100, min: 0 },
-      {
-        id: "from",
-        label: "From",
-        type: "select",
-        defaultValue: "USD",
-        options: [
-          { value: "USD", label: "USD" },
-          { value: "EUR", label: "EUR" },
-          { value: "GBP", label: "GBP" },
-          { value: "INR", label: "INR" },
-          { value: "JPY", label: "JPY" },
-          { value: "CAD", label: "CAD" },
-          { value: "AUD", label: "AUD" },
-        ],
-      },
-      {
-        id: "to",
-        label: "To",
-        type: "select",
-        defaultValue: "EUR",
-        options: [
-          { value: "USD", label: "USD" },
-          { value: "EUR", label: "EUR" },
-          { value: "GBP", label: "GBP" },
-          { value: "INR", label: "INR" },
-          { value: "JPY", label: "JPY" },
-          { value: "CAD", label: "CAD" },
-          { value: "AUD", label: "AUD" },
-        ],
-      },
-    ],
-    related: ["percentage"],
-    compute: (v) => {
-      const amount = parseNum(v.amount);
-      if (!Number.isFinite(amount)) return err("Enter a valid amount.");
-      // Illustrative USD-based rates (not live)
-      const usdPer: Record<string, number> = {
-        USD: 1,
-        EUR: 1.08,
-        GBP: 1.27,
-        INR: 0.012,
-        JPY: 0.0067,
-        CAD: 0.74,
-        AUD: 0.66,
-      };
-      const from = v.from || "USD";
-      const to = v.to || "EUR";
-      const inUsd = amount * (usdPer[from] ?? 1);
-      const converted = inUsd / (usdPer[to] ?? 1);
-      return ok([
-        { label: "Converted amount", value: `${fmtNumber(converted, 4)} ${to}`, emphasize: true },
-        { label: "Note", value: "Static illustrative rates — not live market quotes." },
-      ]);
-    },
+      "Rates are pulled from a free ECB reference feed (frankfurter.app) via /api/fx, cached about hourly. Fallback snapshot rates apply if the feed is down. Not for trading or wire transfers.",
+    related: ["currency-pairs-quick", "percentage", "forex-position-size"],
   },
+
   {
     slug: "savings-goal",
     category: "finance",
@@ -465,7 +415,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "goal", label: "Goal amount", type: "number", defaultValue: 20000, prefix: "$" },
       { id: "current", label: "Current savings", type: "number", defaultValue: 2000, prefix: "$" },
-      { id: "years", label: "Years to goal", type: "number", defaultValue: 3 },
+      { id: "years", label: "Years to goal", type: "number", defaultValue: 3, suffix: "years" },
       { id: "rate", label: "Expected annual return", type: "number", defaultValue: 4, suffix: "%" },
     ],
     related: ["compound-interest", "retirement"],
@@ -491,7 +441,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "starting", label: "Starting balance", type: "number", defaultValue: 25000, prefix: "$" },
       { id: "monthly", label: "Monthly contribution", type: "number", defaultValue: 500, prefix: "$" },
-      { id: "years", label: "Years until retirement", type: "number", defaultValue: 25 },
+      { id: "years", label: "Years until retirement", type: "number", defaultValue: 25 , suffix: "years"},
       { id: "returnPct", label: "Expected annual return", type: "number", defaultValue: 7, suffix: "%" },
     ],
     related: ["compound-interest", "savings-goal"],
@@ -530,7 +480,7 @@ export const financeCalculators: CalculatorMeta[] = [
           { value: "365", label: "Daily" },
         ],
       },
-      { id: "years", label: "Term (years)", type: "number", defaultValue: 2, step: 0.5 },
+      { id: "years", label: "Term (years)", type: "number", defaultValue: 2, step: 0.5 , suffix: "years"},
     ],
     related: ["compound-interest"],
     compute: (v) => {
@@ -674,7 +624,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "amount", label: "Amount today", type: "number", defaultValue: 1000, prefix: "$" },
       { id: "rate", label: "Annual inflation", type: "number", defaultValue: 3, suffix: "%" },
-      { id: "years", label: "Years", type: "number", defaultValue: 10 },
+      { id: "years", label: "Years", type: "number", defaultValue: 10 , suffix: "years"},
     ],
     related: ["compound-interest"],
     compute: (v) => {
@@ -711,7 +661,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "principal", label: "Principal", type: "number", defaultValue: 10000, prefix: "$" },
       { id: "rate", label: "Nominal annual rate", type: "number", defaultValue: 6, suffix: "%" },
-      { id: "years", label: "Years", type: "number", defaultValue: 10, step: 0.5 },
+      { id: "years", label: "Years", type: "number", defaultValue: 10, step: 0.5 , suffix: "years"},
       {
         id: "freq",
         label: "Compounding",
@@ -793,7 +743,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "monthly", label: "Monthly investment", type: "number", defaultValue: 500, prefix: "$" },
       { id: "rate", label: "Expected annual return", type: "number", defaultValue: 12, suffix: "%" },
-      { id: "years", label: "Years", type: "number", defaultValue: 15 },
+      { id: "years", label: "Years", type: "number", defaultValue: 15 , suffix: "years"},
     ],
     related: ["compounding", "retirement", "cagr"],
     compute: (v) => {
@@ -856,7 +806,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "amount", label: "Amount", type: "number", defaultValue: 1000, prefix: "$" },
       { id: "rate", label: "Annual inflation", type: "number", defaultValue: 3, suffix: "%" },
-      { id: "years", label: "Years", type: "number", defaultValue: 10 },
+      { id: "years", label: "Years", type: "number", defaultValue: 10 , suffix: "years"},
       {
         id: "direction",
         label: "Direction",
@@ -895,7 +845,7 @@ export const financeCalculators: CalculatorMeta[] = [
     fields: [
       { id: "begin", label: "Beginning value", type: "number", defaultValue: 10000, prefix: "$" },
       { id: "end", label: "Ending value", type: "number", defaultValue: 25000, prefix: "$" },
-      { id: "years", label: "Years", type: "number", defaultValue: 5 },
+      { id: "years", label: "Years", type: "number", defaultValue: 5 , suffix: "years"},
     ],
     related: ["roi", "compounding", "sip"],
     compute: (v) => {

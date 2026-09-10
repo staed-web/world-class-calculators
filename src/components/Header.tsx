@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { categories } from "@/lib/categories";
 import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
+import { CurrencyPicker } from "./CurrencyPicker";
 
 export function Header() {
   return (
@@ -9,9 +11,24 @@ export function Header() {
       className="sticky top-0 z-50 border-b border-border/80 backdrop-blur-xl"
       style={{ background: "var(--header)" }}
     >
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-        <Link href="/" className="shrink-0 font-bold text-brand text-lg tracking-tight">
-          MyCalcs<span className="text-foreground">World</span>
+      <div className="mx-auto flex max-w-6xl items-center gap-2 sm:gap-3 px-4 py-2.5 sm:py-3">
+        <Link
+          href="/"
+          className="group flex shrink-0 items-center gap-2.5 font-bold text-lg tracking-tight"
+          aria-label="MyCalcsWorld home"
+        >
+          <Image
+            src="/logo-mark.png"
+            alt=""
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-xl shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
+            priority
+          />
+          <span className="hidden xs:inline sm:inline">
+            <span className="text-brand">MyCalcs</span>
+            <span className="text-foreground">World</span>
+          </span>
         </Link>
         <div className="hidden flex-1 md:block max-w-md ml-auto">
           <SearchBar showShortcut />
@@ -20,6 +37,9 @@ export function Header() {
           <Link href="/#categories" className="hover:text-brand transition">
             Categories
           </Link>
+          <Link href="/calculators/finance/currency-converter" className="hover:text-brand transition">
+            FX
+          </Link>
           <Link href="/calculators/math/3d-function" className="hover:text-brand transition">
             3D
           </Link>
@@ -27,6 +47,7 @@ export function Header() {
             About
           </Link>
         </nav>
+        <CurrencyPicker compact className="shrink-0" />
         <ThemeToggle />
       </div>
       <div

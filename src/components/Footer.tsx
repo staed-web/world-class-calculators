@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { categories } from "@/lib/categories";
 import { calculatorCount } from "@/lib/calculators/registry";
 import { AdSlot } from "./AdSlot";
@@ -10,10 +11,19 @@ export function Footer() {
         <AdSlot placement="footer" className="mb-8 bg-slate-900 border-slate-800 no-print" />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-white font-bold text-lg mb-2">MyCalcsWorld</p>
+            <div className="mb-3 flex items-center gap-2.5">
+              <Image
+                src="/logo-mark.png"
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-lg"
+              />
+              <p className="text-white font-bold text-lg">MyCalcsWorld</p>
+            </div>
             <p className="text-sm text-slate-400">
               Free online calculators for finance, math, health, and everyday life —{" "}
-              {calculatorCount}+ working tools, built to feel faster and clearer than
+              {calculatorCount}+ working tools, live FX, and clearer UX than
               ad-heavy calculator directories.
             </p>
           </div>
@@ -59,12 +69,17 @@ export function Footer() {
                   Disclaimer
                 </Link>
               </li>
+              <li>
+                <Link href="/calculators/finance/currency-converter" className="hover:text-teal-300">
+                  Currency converter
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
         <p className="mt-8 border-t border-slate-800 pt-6 text-xs text-slate-500">
           © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
-          professional advice.
+          professional advice. FX rates are delayed educational quotes.
         </p>
       </div>
       <AdSlot placement="sticky-mobile" className="no-print" />

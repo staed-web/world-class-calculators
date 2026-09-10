@@ -43,6 +43,7 @@ npm run lint
 | `/calculators/[category]/[slug]` | Individual calculator (inputs + live results + formula accordion + related) |
 | `/search?q=` | Catalog search |
 | `/about` `/privacy` `/disclaimer` | Site info & legal |
+| `/api/fx` | Cached FX rates (USD base)
 | `/sitemap.xml` `/robots.txt` | SEO |
 
 **Categories:** finance, math, health-fitness, conversion, date-time, everyday-life, science-engineering, business, education, statistics, commodities.
@@ -55,7 +56,8 @@ npm run lint
 - Amortization: **full year-by-year schedule table** + interest chart bars
 - Category pages: scannable list directory (Calculator.net-style density) with filter
 - Related tools auto-padded to 6+
-- Tasteful **AdSlot** placements (header / in-content / sidebar / footer / sticky-mobile)
+- **Live FX** via `/api/fx` (frankfurter/ECB, cached ~1h) with header + finance currency picker
+- Tasteful **AdSlot** placements (header / in-content / sticky sidebar / footer / sticky-mobile)
 
 ## Catalog (200+)
 
@@ -86,7 +88,7 @@ High-traffic additions this pass include credit-card payoff, lease vs buy, rent 
 
 ## Disclaimers
 
-Results are **estimates for education only** — not professional financial, medical, legal, or tax advice. Paycheck/tax tools use flat percentages. Currency rates may be illustrative. Commodity quotes are delayed free-feed estimates. See [/disclaimer](/disclaimer).
+Results are **estimates for education only** — not professional financial, medical, legal, or tax advice. Paycheck/tax tools use flat percentages. Currency rates are delayed educational quotes from a free reference feed (fallback snapshot if offline). Commodity quotes are delayed free-feed estimates. See [/disclaimer](/disclaimer).
 
 ## Known gaps vs Omni
 

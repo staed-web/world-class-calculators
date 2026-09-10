@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CurrencyProvider } from "@/components/CurrencyProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,18 +26,27 @@ export const metadata: Metadata = {
     template: "%s | MyCalcsWorld",
   },
   description:
-    "Free online calculators for finance, math, health, and everyday life. 280+ working tools with interactive charts and 3D math — mortgage, SIP, BMI, and more.",
+    "Free online calculators for finance, math, health, and everyday life. 280+ working tools with interactive charts, live FX, and 3D math — mortgage, SIP, BMI, and more.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     type: "website",
     siteName: "MyCalcsWorld",
     title: "MyCalcsWorld",
     description:
       "Free online calculators for finance, math, health, and everyday life.",
+    images: [{ url: "/logo-mark.png", width: 128, height: 128, alt: "MyCalcsWorld" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "MyCalcsWorld",
     description: "Free online calculators for finance, math, health, and everyday life.",
+    images: ["/logo-mark.png"],
   },
   robots: { index: true, follow: true },
   other: {
@@ -58,10 +68,12 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans ambient-mesh">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="min-h-full flex flex-col font-sans ambient-mesh pb-14 md:pb-0">
+        <CurrencyProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </CurrencyProvider>
         {adsenseClient ? (
           <Script
             async

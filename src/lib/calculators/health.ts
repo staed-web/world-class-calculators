@@ -25,8 +25,8 @@ export const healthCalculators: CalculatorMeta[] = [
     kind: "form",
     formulaNote: "BMI is a screening estimate, not a diagnosis.",
     fields: [
-      { id: "weight", label: "Weight (kg)", type: "number", defaultValue: 70, min: 1 },
-      { id: "height", label: "Height (cm)", type: "number", defaultValue: 175, min: 1 },
+      { id: "weight", label: "Weight", type: "number", defaultValue: 70, min: 1, suffix: "kg" },
+      { id: "height", label: "Height", type: "number", defaultValue: 175, min: 1, suffix: "cm" },
     ],
     related: ["ideal-weight", "body-fat-navy", "bmr"],
     compute: (v) => {
@@ -49,9 +49,9 @@ export const healthCalculators: CalculatorMeta[] = [
     popular: true,
     kind: "form",
     fields: [
-      { id: "weight", label: "Weight (kg)", type: "number", defaultValue: 70 },
-      { id: "height", label: "Height (cm)", type: "number", defaultValue: 175 },
-      { id: "age", label: "Age", type: "number", defaultValue: 30 },
+      { id: "weight", label: "Weight", type: "number", defaultValue: 70, suffix: "kg" },
+      { id: "height", label: "Height", type: "number", defaultValue: 175, suffix: "cm" },
+      { id: "age", label: "Age", type: "number", defaultValue: 30, suffix: "years", min: 1 },
       {
         id: "sex",
         label: "Sex",
@@ -85,9 +85,9 @@ export const healthCalculators: CalculatorMeta[] = [
     featured: true,
     kind: "form",
     fields: [
-      { id: "weight", label: "Weight (kg)", type: "number", defaultValue: 70 },
-      { id: "height", label: "Height (cm)", type: "number", defaultValue: 175 },
-      { id: "age", label: "Age", type: "number", defaultValue: 30 },
+      { id: "weight", label: "Weight", type: "number", defaultValue: 70, suffix: "kg" },
+      { id: "height", label: "Height", type: "number", defaultValue: 175, suffix: "cm" },
+      { id: "age", label: "Age", type: "number", defaultValue: 30, suffix: "years", min: 1 },
       {
         id: "sex",
         label: "Sex",
@@ -146,10 +146,10 @@ export const healthCalculators: CalculatorMeta[] = [
           { value: "female", label: "Female" },
         ],
       },
-      { id: "height", label: "Height (cm)", type: "number", defaultValue: 175 },
-      { id: "neck", label: "Neck (cm)", type: "number", defaultValue: 38 },
-      { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 84 },
-      { id: "hip", label: "Hip (cm, required for female)", type: "number", defaultValue: 95 },
+      { id: "height", label: "Height", type: "number", defaultValue: 175, suffix: "cm" },
+      { id: "neck", label: "Neck (cm)", type: "number", defaultValue: 38 , suffix: "cm"},
+      { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 84 , suffix: "cm"},
+      { id: "hip", label: "Hip (cm, required for female)", type: "number", defaultValue: 95 , suffix: "cm"},
     ],
     related: ["bmi", "ideal-weight"],
     compute: (v) => {
@@ -181,7 +181,7 @@ export const healthCalculators: CalculatorMeta[] = [
     keywords: ["ideal weight", "healthy weight", "robinson"],
     kind: "form",
     fields: [
-      { id: "height", label: "Height (cm)", type: "number", defaultValue: 170 },
+      { id: "height", label: "Height (cm)", type: "number", defaultValue: 170 , suffix: "cm"},
       {
         id: "sex",
         label: "Sex",
@@ -316,7 +316,7 @@ export const healthCalculators: CalculatorMeta[] = [
     kind: "form",
     formulaNote: "Rule-of-thumb only (~33 ml/kg + activity). Individual needs vary.",
     fields: [
-      { id: "weight", label: "Weight (kg)", type: "number", defaultValue: 70 },
+      { id: "weight", label: "Weight", type: "number", defaultValue: 70, suffix: "kg" },
       { id: "activity", label: "Exercise (minutes/day)", type: "number", defaultValue: 45 },
     ],
     related: ["bmi", "tdee"],
@@ -380,8 +380,8 @@ export const healthCalculators: CalculatorMeta[] = [
     kind: "form",
     formulaNote: "Screening hint only — not a medical diagnosis. Cutoffs vary by sex and guideline.",
     fields: [
-      { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 80 },
-      { id: "hip", label: "Hip (cm)", type: "number", defaultValue: 100 },
+      { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 80 , suffix: "cm"},
+      { id: "hip", label: "Hip (cm)", type: "number", defaultValue: 100 , suffix: "cm"},
     ],
     related: ["bmi", "body-fat-navy"],
     compute: (v) => {
