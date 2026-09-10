@@ -95,7 +95,6 @@ export function Footer() {
           professional advice. FX rates are delayed educational quotes.
         </p>
       </div>
-      <AdSlot placement="sticky-mobile" className="no-print" />
     </footer>
   );
 }

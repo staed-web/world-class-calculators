@@ -58,8 +58,11 @@ export default async function CategoryPage({
         {cat.icon} {cat.name}
       </div>
       <h1 className="text-3xl font-bold text-foreground">{cat.name} Calculators</h1>
-      <p className="mt-2 max-w-2xl text-muted">{cat.description}</p>
-      <p className="mt-1 text-sm text-muted">{calcs.length} tools in this category</p>
+      <p className="mt-2 max-w-3xl text-muted leading-relaxed">{cat.description}</p>
+      <p className="mt-2 text-sm text-muted">
+        {calcs.length} tools in this category — each calculator page includes how-to steps,
+        a worked example, formula notes, and FAQs (not just a bare form).
+      </p>
 
       <AdSlot placement="header" className="my-6 no-print" />
 

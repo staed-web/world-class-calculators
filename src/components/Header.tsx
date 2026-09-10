@@ -25,7 +25,7 @@ export function Header() {
             className="h-9 w-9 rounded-xl object-cover shadow-sm ring-1 ring-teal-500/20 transition group-hover:scale-105 group-hover:ring-teal-400/40"
             priority
           />
-          <span className="hidden xs:inline sm:inline">
+          <span className="hidden min-[380px]:inline">
             <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent dark:from-teal-300 dark:to-indigo-300">
               MyCalcs
             </span>
@@ -52,9 +52,55 @@ export function Header() {
             Contact
           </Link>
         </nav>
-        <CurrencyPicker compact className="shrink-0" />
+        <CurrencyPicker compact className="shrink-0 ml-auto md:ml-0" />
         <ThemeToggle />
       </div>
+
+      {/* Mobile quick links — visible when desktop nav is hidden */}
+      <div className="lg:hidden border-t border-border/60">
+        <nav
+          aria-label="Mobile"
+          className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-1.5 text-xs font-medium text-muted"
+        >
+          <Link
+            href="/#categories"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            Categories
+          </Link>
+          <Link
+            href="/calculators/finance/loan-emi"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            EMI
+          </Link>
+          <Link
+            href="/calculators/finance/currency-converter"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            FX
+          </Link>
+          <Link
+            href="/calculators/finance/daily-compound-interest"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            Daily compound
+          </Link>
+          <Link
+            href="/about"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="whitespace-nowrap rounded-full px-2.5 py-1 hover:bg-card hover:text-brand"
+          >
+            Contact
+          </Link>
+        </nav>
+      </div>
+
       <div
         className="border-t border-border/70 overflow-x-auto"
         style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)" }}

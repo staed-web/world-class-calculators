@@ -244,9 +244,24 @@ function ResultsPanel({
               <AnimatedNumber value={item.value} emphasize={item.emphasize} />
             </dd>
             {item.hint && <p className="text-xs text-muted">{item.hint}</p>}
-            {item.chart && item.chart.length > 0 && <MiniBars data={item.chart} />}
-            {item.lineChart && <ResultLineChartView data={item.lineChart} variant="area" />}
-            {item.table && <ResultTableView table={item.table} />}
+            {item.chart && item.chart.length > 0 && (
+              <div className="mt-3">
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted">Chart</p>
+                <MiniBars data={item.chart} />
+              </div>
+            )}
+            {item.lineChart && (
+              <div className="mt-4">
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted">Chart</p>
+                <ResultLineChartView data={item.lineChart} variant="area" />
+              </div>
+            )}
+            {item.table && (
+              <div className="mt-4">
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted">Table / schedule</p>
+                <ResultTableView table={item.table} />
+              </div>
+            )}
           </div>
         ))}
       </dl>

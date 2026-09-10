@@ -68,7 +68,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans ambient-mesh pb-14 md:pb-0">
+      <body className="min-h-full flex flex-col font-sans ambient-mesh">
         <CurrencyProvider>
           <Header />
           <main className="flex-1">{children}</main>

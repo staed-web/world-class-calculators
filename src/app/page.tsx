@@ -56,11 +56,12 @@ export default function HomePage() {
             </div>
           </div>
           <h1 className="rise-in max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
-            Calculators that feel like a modern product — not a dusty directory.
+            Free calculators with real guides — not a dusty ad directory.
           </h1>
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
-            Finance charts, multi-currency results, SIP growth, amortization curves,
-            and showcase 3D math — accurate, mobile-first, and fast. Search with{" "}
+            Mortgage, EMI, daily compound interest, BMI, live FX, and{" "}
+            {calculatorCount}+ guided tools — how-to steps, worked examples, formula
+            notes, and FAQs on every page. Mobile-first, no signup. Search with{" "}
             <span className="font-semibold">⌘K</span> /{" "}
             <span className="font-semibold">Ctrl+K</span>.
           </p>
@@ -95,8 +96,8 @@ export default function HomePage() {
         <section className="grid gap-4 sm:grid-cols-3">
           {[
             { t: "Live FX & money", d: "Pick USD, EUR, INR, AED and more — results format in your currency." },
-            { t: "Interactive charts", d: "Amortization, SIP, trajectories, and more via Recharts." },
-            { t: `${calculatorCount}+ tools`, d: "Finance, math, health, construction, science — all working." },
+            { t: "Charts & schedules", d: "Amortization tables, SIP curves, daily-compound snapshots — in results when supported." },
+            { t: `${calculatorCount}+ guided tools`, d: "Every calculator includes how-to, worked example, formula notes, and FAQs." },
           ].map((x) => (
             <div key={x.t} className="rounded-2xl surface-card glass-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
               <h2 className="font-semibold text-foreground">{x.t}</h2>

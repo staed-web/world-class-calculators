@@ -57,7 +57,7 @@ npm run lint
 - Category pages: scannable list directory (Calculator.net-style density) with filter
 - Related tools auto-padded to 6+
 - **Live FX** via `/api/fx` (frankfurter/ECB, cached ~1h) with header + finance currency picker
-- Tasteful **AdSlot** placements (header / in-content / sticky sidebar / footer / sticky-mobile)
+- Tasteful **AdSlot** placements (header / in-content / sticky sidebar / footer (no fixed mobile banner))
 
 ## Catalog (200+)
 
@@ -89,7 +89,7 @@ Public contact address: **hello@mycalcsworld.online** (also linked from `/contac
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | e.g. `ca-pub-xxxxxxxx` |
-| `NEXT_PUBLIC_ADSENSE_SLOT_*` | Optional slot IDs (header, in-content, sidebar, sticky-mobile, footer, default) |
+| `NEXT_PUBLIC_ADSENSE_SLOT_*` | Optional slot IDs (header, in-content, sidebar, footer, default; sticky-mobile unused) |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL for sitemap/metadata (default `https://mycalcsworld.online`) |
 
 ## Disclaimers

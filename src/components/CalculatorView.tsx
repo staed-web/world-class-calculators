@@ -111,19 +111,39 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           {calc.name}
         </h1>
-        <p className="mt-2 max-w-2xl text-muted text-sm sm:text-base">
+        <p className="mt-2 max-w-3xl text-muted text-sm sm:text-base leading-relaxed">
           {seo?.seoDescription || calc.description}
         </p>
         <TrustStrip />
+        {seo && (
+          <div className="mt-4 flex flex-wrap gap-2 no-print">
+            <a
+              href="#calculator-guide"
+              className="inline-flex items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-1.5 text-xs font-semibold text-brand hover:bg-brand/10 transition"
+            >
+              Jump to guide & FAQ ↓
+            </a>
+            <a
+              href="#guide-example"
+              className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+            >
+              Worked example
+            </a>
+            <a
+              href="#guide-formula"
+              className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+            >
+              Formula notes
+            </a>
+          </div>
+        )}
       </div>
 
-      {/* Above-the-fold banner — single, not stacked */}
       <AdSlot placement="header" className="mb-6 no-print" />
 
       <div className="grid gap-8 lg:grid-cols-4">
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-8">
           {renderCalc(calc)}
-          {/* High-viewability in-content after results — content guide follows so FAQs aren't buried under ads */}
           <AdSlot placement="in-content" className="no-print" />
           {seo && (
             <CalculatorGuide
@@ -149,8 +169,10 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <aside className="hidden lg:block space-y-4 no-print">
           <AdSlot placement="sidebar" />
           {related.length > 0 && (
-            <div className="rounded-2xl surface-card p-4 sticky top-[28rem]">
-              <h2 className="mb-3 text-sm font-semibold text-foreground">Related tools</h2>
+            <div className="rounded-2xl surface-card p-4 sticky top-28">
+              <h2 className="mb-3 text-sm font-semibold text-foreground">
+                Related tools
+              </h2>
               <ul className="space-y-2">
                 {related.map((r) => (
                   <li key={r.slug}>
@@ -163,6 +185,12 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
                   </li>
                 ))}
               </ul>
+              <a
+                href="#calculator-guide"
+                className="mt-4 block text-center text-xs font-semibold text-brand hover:underline"
+              >
+                Guide & FAQ on this page ↓
+              </a>
             </div>
           )}
         </aside>
@@ -170,7 +198,9 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
 
       {related.length > 0 && (
         <section className="mt-10 sm:mt-12 no-print">
-          <h2 className="mb-4 text-xl font-bold text-foreground">You might also like</h2>
+          <h2 className="mb-4 text-xl font-bold text-foreground">
+            You might also like
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {related.slice(0, 6).map((r) => (
               <CalculatorCard key={r.slug} calc={r} />
