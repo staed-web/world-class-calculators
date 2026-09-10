@@ -68,12 +68,19 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans ambient-mesh">
-        <CurrencyProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CurrencyProvider>
+      <body className="min-h-full flex flex-col font-sans">
+        {/* App shell: mesh lives here (not on body/html) so portals stay viewport-fixed. */}
+        <div className="relative isolate flex min-h-full flex-1 flex-col">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 ambient-mesh"
+            aria-hidden
+          />
+          <CurrencyProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CurrencyProvider>
+        </div>
         {adsenseClient ? (
           <Script
             async
@@ -82,6 +89,8 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         ) : null}
+        {/* Dedicated portal mount: last in body, outside app shell / not a flex+fixed trap. */}
+        <div id="app-portal" />
       </body>
     </html>
   );

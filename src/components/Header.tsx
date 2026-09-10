@@ -52,13 +52,24 @@ export function Header() {
     };
   }, [open]);
 
+  const portalTarget =
+    mounted && typeof document !== "undefined"
+      ? document.getElementById("app-portal") ?? document.body
+      : null;
+
   const drawer =
-    open && mounted
+    open && portalTarget
       ? createPortal(
           <div
             id="mobile-nav-drawer"
-            className="lg:hidden fixed inset-0 z-[9999] isolate"
-            style={{ zIndex: 9999 }}
+            className="lg:hidden fixed inset-0 z-[99999] h-dvh min-h-dvh w-screen"
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 99999,
+              width: "100vw",
+              height: "100dvh",
+            }}
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
@@ -66,12 +77,19 @@ export function Header() {
             <button
               type="button"
               className="absolute inset-0 bg-black/50"
+              style={{ position: "absolute", inset: 0 }}
               aria-label="Close menu overlay"
               onClick={() => setOpen(false)}
             />
             <div
-              className="absolute right-0 top-0 flex h-full w-[min(100%,20rem)] flex-col bg-card text-foreground shadow-2xl border-l border-border pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]"
-              style={{ backgroundColor: "var(--card)" }}
+              className="absolute right-0 top-0 flex h-dvh min-h-dvh w-[min(100%,20rem)] flex-col bg-card text-foreground shadow-2xl border-l border-border pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]"
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                height: "100dvh",
+                backgroundColor: "var(--card)",
+              }}
             >
               <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
                 <p className="font-semibold text-foreground">Menu</p>
@@ -148,7 +166,7 @@ export function Header() {
               </div>
             </div>
           </div>,
-          document.body,
+          portalTarget,
         )
       : null;
 

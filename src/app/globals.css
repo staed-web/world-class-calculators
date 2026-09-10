@@ -173,6 +173,30 @@ html,
 body {
   max-width: 100%;
   /* Do not overflow-x:clip on html/body — it can trap/clip position:fixed portals (mobile nav). */
+  /* Do not put filter/transform/perspective/contain/will-change/backdrop-filter on html/body —
+     they create fixed containing blocks and collapse portaled drawers (esp. on Home). */
+  filter: none;
+  transform: none;
+  perspective: none;
+  contain: none;
+  will-change: auto;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Portal mount: last body child for createPortal. Keep it a real element
+   (not display:contents) so the drawer is NOT a direct flex child of body —
+   flex+fixed on body collapses height (~header-sized) on some mobile viewports. */
+#app-portal {
+  position: static;
+  flex: none;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+#app-portal > * {
+  pointer-events: auto;
 }
 
 html.nav-drawer-open,
