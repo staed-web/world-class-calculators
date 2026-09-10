@@ -13,13 +13,16 @@ export function Footer() {
           <div>
             <div className="mb-3 flex items-center gap-2.5">
               <Image
-                src="/logo-mark.png"
+                src="/logo-v2.png"
                 alt=""
                 width={32}
                 height={32}
-                className="h-8 w-8 rounded-lg"
+                className="h-8 w-8 rounded-lg object-cover ring-1 ring-teal-400/30"
               />
-              <p className="text-white font-bold text-lg">MyCalcsWorld</p>
+              <p className="text-lg font-bold">
+                <span className="bg-gradient-to-r from-teal-300 to-indigo-300 bg-clip-text text-transparent">MyCalcs</span>
+                <span className="text-white">World</span>
+              </p>
             </div>
             <p className="text-sm text-slate-400">
               Free online calculators for finance, math, health, and everyday life —{" "}

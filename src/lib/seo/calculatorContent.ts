@@ -1,4 +1,9 @@
 import type { CalculatorSeoContent } from "@/lib/types";
+import { getCalculatorBySlug, allCalculators } from "@/lib/calculators/registry";
+import {
+  buildDefaultCalculatorSeo,
+  mergeCalculatorSeo,
+} from "./seoDefaults";
 
 /** High-ROI FAQ / how-to / SEO overlays keyed by calculator slug. */
 export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
@@ -1427,12 +1432,131 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       },
     ],
   },
+
+  "daily-compound-interest": {
+    seoTitle: "Daily Compound Interest Calculator — Reinvest, Deposits & Business Days",
+    seoDescription:
+      "Calculate daily compound interest with daily or annual rates, optional reinvest %, extra deposits, and weekend exclusion. Free chart + snapshots — not investment advice.",
+    formulaNote:
+      "Daily rate form: grow the balance each day by interest = balance × r, then keep reinvest% of that interest in the account (withdraw the rest as cash). Closed form when reinvest = 100% and there are no deposits: A = P(1+r)^t with r = daily decimal and t = compounding days. Annual-rate mode uses r_daily = r_annual/365, i.e. A = P(1 + r/365)^(365·T) over a full year of calendar compounding. Deposits are added at the end of each day or every 30 calendar days. Exclude weekends compounds Monday–Friday only inside the calendar span.",
+    overview:
+      "Daily compound interest credits earnings every day so each session’s interest can itself earn interest. Banks often quote daily compounding on savings, CDs, and money-market products; traders sometimes model daily financing or marked-to-market gains the same way — with far higher risk.\n\nMyCalcsWorld’s Daily Compound Interest Calculator is built to match (and extend) what people expect from flagship finance tools: choose a daily rate or an annual rate divided by 365, set a horizon in years + months + days, optionally keep only part of each day’s interest invested (reinvest %), add daily or monthly deposits at end of period, and exclude weekends for business-day calendars. Results include future value, total interest, deposits, cash withdrawn, effective growth, a balance-over-time chart, and periodic snapshots. Currency formatting uses the site CurrencyProvider / fmtMoney picker (USD, INR, EUR, and more).\n\nIllustrative only — not investment advice. Extreme daily percentage rates sometimes appear in trading or margin examples and can imply severe risk of loss beyond your principal.",
+    howToUse: [
+      "Enter the starting principal.",
+      "Choose Daily rate (%) or Annual rate (%) → ÷365, then enter the rate.",
+      "Set years, months, and extra days (horizon = years×365 + months×30 + days).",
+      "Optionally set a daily reinvest rate below 100% to model cash withdrawals of interest.",
+      "Optionally add daily or monthly deposits and/or exclude weekends.",
+      "Read future value, interest, deposits, withdrawn cash, chart, and snapshot table.",
+    ],
+    howToUseUS: [
+      "Enter principal in your display currency (USD via the picker is common for U.S. savings examples).",
+      "For bank APY-style thinking, prefer Annual rate mode and compare with our CD/APY tool; for a stated daily % use Daily mode.",
+      "Set the calendar horizon with years/months/days.",
+      "Use Exclude weekends if you are modeling weekday-only trading calendars — not typical FDIC savings.",
+      "Review the chart and snapshots; treat high daily % scenarios as educational stress tests only.",
+    ],
+    howToUseIndia: [
+      "Pick INR in the currency picker for Indian savings / FD-style illustrations.",
+      "Indian retail deposits usually quote annual rates with their own compounding conventions — use Annual mode or map the bank’s day-count carefully.",
+      "SIP-style monthly top-ups can be approximated with Monthly deposits (every 30 days) while daily compounding runs.",
+      "For stock/F&O style weekday calendars, try Exclude weekends — still not brokerage advice.",
+      "Compare with the SIP and Compound Interest calculators when your product compounds monthly or quarterly instead of daily.",
+    ],
+    howToInterpret: [
+      "Future value is the invested balance at the end — it excludes cash you already withdrew when reinvest < 100%.",
+      "Total interest generated counts all interest before splitting into reinvested vs withdrawn.",
+      "Effective growth divides net gain (FV + withdrawn − total deposits) by total deposits.",
+      "Compounding days shrinks when weekends are excluded even though the calendar span is unchanged.",
+      "Charts downsample long horizons; the snapshot table keeps periodic checkpoints.",
+    ],
+    workedExample: {
+      title: "Worked example — $1,000 at 0.4% per day for 365 days",
+      steps: [
+        "Principal P = 1000; daily rate r = 0.4/100 = 0.004; t = 365 days; reinvest = 100%.",
+        "Closed form: A = P(1+r)^t = 1000 × (1.004)^365.",
+        "(1.004)^365 ≈ 4.2934377972993, so A ≈ 4293.44.",
+        "Interest ≈ 4293.44 − 1000 = 3293.44.",
+        "Enter the same numbers in Daily rate mode with 1 year (365 days) to mirror this result in the live tool.",
+      ],
+      result:
+        "About $4,293.44 future value and $3,293.44 interest after 365 daily compounds at 0.4%/day (illustrative — such a daily rate is extremely high versus typical savings products).",
+    },
+    faqs: [
+      {
+        question: "What is daily compound interest?",
+        answer:
+          "Interest is calculated and credited every day on the current balance, so previously earned interest can earn more interest. More frequent compounding grows a balance faster than the same nominal rate compounded monthly or annually.",
+      },
+      {
+        question: "What is the daily reinvest rate?",
+        answer:
+          "It is the percentage of each day’s interest you keep invested. At 80% reinvest, 20% of that day’s interest is treated as cash withdrawn and no longer compounds. Example: $5,000 at 0.5%/day earns $25 on day one; 80% reinvest adds $20 to the balance ($5,020) and withdraws $5 cash.",
+      },
+      {
+        question: "How does excluding weekends work?",
+        answer:
+          "The horizon is still a calendar span (years×365 + months×30 + days), but interest (and daily deposits) apply only Monday–Friday. A 365-day span therefore compounds on roughly 261 business days depending on the start weekday — useful for weekday trading calendars, not typical bank savings.",
+      },
+      {
+        question: "When are additional deposits applied?",
+        answer:
+          "At the end of each period: daily deposits after that day’s interest on compounding days; monthly deposits every 30 calendar days. They then participate in later compounding.",
+      },
+      {
+        question: "Which formula should I use for an annual rate?",
+        answer:
+          "With full reinvestment and no deposits, A = P(1 + r/365)^(365·T) for T years of daily calendar compounding. This tool’s Annual mode uses r/365 each calendar (or business) day in the day-by-day engine so reinvest and deposits stay consistent.",
+      },
+      {
+        question: "Is this for trading or margin interest?",
+        answer:
+          "You can explore daily % scenarios educationally, including ones traders discuss for financing or marked-to-market gains, but leveraged trading can lose more than your principal. This page is not a broker, does not include fees/spreads, and is not investment advice — speak with a qualified advisor.",
+      },
+      {
+        question: "How is this different from the Compound Interest calculator?",
+        answer:
+          "The classic Compound Interest tool uses A = P(1+r/n)^(n·t) with a chosen n (monthly, daily, …). This Daily Compound page specializes in day-by-day modeling with reinvest %, deposits, weekend filters, charts, and snapshots.",
+      },
+    ],
+  },
 };
 
 export const seoContentSlugs = Object.keys(calculatorSeoContent);
 
-export function getCalculatorSeoContent(slug: string): CalculatorSeoContent | undefined {
-  return calculatorSeoContent[slug];
+/** Explicit overrides only (flagships / enriched pages). */
+export const seoOverrideCount = seoContentSlugs.length;
+
+/**
+ * Resolves SEO/detail content for any calculator: category-quality defaults
+ * merged with optional per-slug overrides (overview, FAQs, worked examples, etc.).
+ */
+export function getCalculatorSeoContent(
+  slug: string
+): CalculatorSeoContent | undefined {
+  const calc = getCalculatorBySlug(slug);
+  const override = calculatorSeoContent[slug];
+  if (!calc && !override) return undefined;
+  if (!calc) return override;
+  return mergeCalculatorSeo(buildDefaultCalculatorSeo(calc), override);
+}
+
+/** Every registry calculator gets merged detail content. */
+export function getAllCalculatorSeoCoverage(): {
+  total: number;
+  withOverride: number;
+  defaultsOnly: number;
+} {
+  const total = allCalculators.length;
+  let withOverride = 0;
+  for (const c of allCalculators) {
+    if (calculatorSeoContent[c.slug]) withOverride += 1;
+  }
+  return {
+    total,
+    withOverride,
+    defaultsOnly: total - withOverride,
+  };
 }
 
 /** India-focused rail on the home page. */
@@ -1445,6 +1569,7 @@ export const popularInIndiaSlugs = [
   "gold-value",
   "cagr",
   "compound-interest",
+  "daily-compound-interest",
   "inflation-adjuster",
   "metals-spot",
   "emi-extra-payments",

@@ -397,3 +397,283 @@ export function emiWithExtra(opts: {
     monthsSaved: baseMonths - months,
   };
 }
+
+/** Convert years + months + days into a calendar-day horizon (365 / 30 convention). */
+export function totalDaysFromYMD(
+  years: number,
+  months: number,
+  days: number
+): number {
+  const y = Number.isFinite(years) ? years : 0;
+  const m = Number.isFinite(months) ? months : 0;
+  const d = Number.isFinite(days) ? days : 0;
+  return Math.max(0, Math.floor(y * 365 + m * 30 + d));
+}
+
+export type DailyCompoundRateMode = "daily" | "annual";
+export type DailyDepositFrequency = "none" | "daily" | "monthly";
+
+export interface DailyCompoundOptions {
+  principal: number;
+  /** Percent figure — daily % if rateMode is "daily", else annual %. */
+  ratePct: number;
+  rateMode: DailyCompoundRateMode;
+  /** Calendar-day horizon (include weekends in the span even if excludeWeekends). */
+  totalDays: number;
+  /** Share of each day's interest kept invested (0–100). Default 100. */
+  reinvestPct?: number;
+  depositAmount?: number;
+  depositFrequency?: DailyDepositFrequency;
+  /** When true, interest (and daily deposits) apply Mon–Fri only within the span. */
+  excludeWeekends?: boolean;
+  /** First calendar day of the horizon. Defaults to 2024-01-01 (Monday). */
+  startDate?: Date;
+}
+
+export interface DailyCompoundPoint {
+  /** 1-based compounding step index (business days when weekends excluded). */
+  step: number;
+  /** Calendar day index within the horizon (1..totalDays). */
+  calendarDay: number;
+  balance: number;
+  interestThatDay: number;
+  cashWithdrawnThatDay: number;
+  depositThatDay: number;
+  cumulativeInterest: number;
+  cumulativeWithdrawn: number;
+  cumulativeDeposits: number;
+}
+
+export interface DailyCompoundSnapshot {
+  label: string;
+  calendarDay: number;
+  balance: number;
+  cumulativeInterest: number;
+  cumulativeWithdrawn: number;
+  cumulativeDeposits: number;
+}
+
+export interface DailyCompoundResult {
+  futureValue: number;
+  /** All interest generated (reinvested + withdrawn). */
+  totalInterest: number;
+  /** Principal + additional deposits. */
+  totalDeposits: number;
+  additionalDeposits: number;
+  cashWithdrawn: number;
+  /** (FV + cash withdrawn − total deposits) / total deposits × 100. */
+  effectiveGrowthPct: number;
+  compoundingDays: number;
+  dailyRate: number;
+  points: DailyCompoundPoint[];
+  snapshots: DailyCompoundSnapshot[];
+}
+
+function addCalendarDays(start: Date, days: number): Date {
+  const d = new Date(start.getTime());
+  d.setUTCDate(d.getUTCDate() + days);
+  return d;
+}
+
+function isWeekendUTC(d: Date): boolean {
+  const day = d.getUTCDay();
+  return day === 0 || day === 6;
+}
+
+/**
+ * Day-by-day daily compound interest engine.
+ * Deposits are applied at end of period. Partial reinvest withdraws (1 − reinvest%) of each day's interest as cash.
+ */
+export function dailyCompoundInterest(
+  opts: DailyCompoundOptions
+): DailyCompoundResult {
+  const principal = opts.principal;
+  const totalDays = Math.max(0, Math.floor(opts.totalDays));
+  const reinvestFrac = Math.min(
+    1,
+    Math.max(0, (opts.reinvestPct ?? 100) / 100)
+  );
+  const depositAmount = opts.depositAmount ?? 0;
+  const depositFrequency = opts.depositFrequency ?? "none";
+  const excludeWeekends = Boolean(opts.excludeWeekends);
+  const start = opts.startDate
+    ? new Date(
+        Date.UTC(
+          opts.startDate.getUTCFullYear(),
+          opts.startDate.getUTCMonth(),
+          opts.startDate.getUTCDate()
+        )
+      )
+    : new Date(Date.UTC(2024, 0, 1)); // Monday
+
+  const dailyRate =
+    opts.rateMode === "daily"
+      ? opts.ratePct / 100
+      : opts.ratePct / 100 / 365;
+
+  let balance = principal;
+  let cumulativeInterest = 0;
+  let cumulativeWithdrawn = 0;
+  let cumulativeDeposits = 0;
+  let compoundingDays = 0;
+  const points: DailyCompoundPoint[] = [];
+
+  if (
+    !Number.isFinite(principal) ||
+    !Number.isFinite(dailyRate) ||
+    principal < 0 ||
+    dailyRate < -0.99
+  ) {
+    return {
+      futureValue: NaN,
+      totalInterest: NaN,
+      totalDeposits: NaN,
+      additionalDeposits: NaN,
+      cashWithdrawn: NaN,
+      effectiveGrowthPct: NaN,
+      compoundingDays: 0,
+      dailyRate,
+      points: [],
+      snapshots: [],
+    };
+  }
+
+  for (let calendarDay = 1; calendarDay <= totalDays; calendarDay++) {
+    const date = addCalendarDays(start, calendarDay - 1);
+    const weekend = isWeekendUTC(date);
+    const compoundsToday = !excludeWeekends || !weekend;
+
+    let interestThatDay = 0;
+    let cashWithdrawnThatDay = 0;
+    let depositThatDay = 0;
+
+    if (compoundsToday) {
+      interestThatDay = balance * dailyRate;
+      const reinvested = interestThatDay * reinvestFrac;
+      cashWithdrawnThatDay = interestThatDay - reinvested;
+      balance += reinvested;
+      cumulativeInterest += interestThatDay;
+      cumulativeWithdrawn += cashWithdrawnThatDay;
+      compoundingDays += 1;
+
+      if (depositFrequency === "daily" && depositAmount !== 0) {
+        depositThatDay += depositAmount;
+        balance += depositAmount;
+        cumulativeDeposits += depositAmount;
+      }
+    }
+
+    if (
+      depositFrequency === "monthly" &&
+      depositAmount !== 0 &&
+      calendarDay % 30 === 0
+    ) {
+      depositThatDay += depositAmount;
+      balance += depositAmount;
+      cumulativeDeposits += depositAmount;
+    }
+
+    points.push({
+      step: compoundingDays,
+      calendarDay,
+      balance,
+      interestThatDay,
+      cashWithdrawnThatDay,
+      depositThatDay,
+      cumulativeInterest,
+      cumulativeWithdrawn,
+      cumulativeDeposits,
+    });
+  }
+
+  const totalDeposits = principal + cumulativeDeposits;
+  const netGain = balance + cumulativeWithdrawn - totalDeposits;
+  const effectiveGrowthPct =
+    totalDeposits > 0 ? (netGain / totalDeposits) * 100 : NaN;
+
+  const snapshots = buildDailyCompoundSnapshots(points, totalDays);
+
+  return {
+    futureValue: balance,
+    totalInterest: cumulativeInterest,
+    totalDeposits,
+    additionalDeposits: cumulativeDeposits,
+    cashWithdrawn: cumulativeWithdrawn,
+    effectiveGrowthPct,
+    compoundingDays,
+    dailyRate,
+    points,
+    snapshots,
+  };
+}
+
+function buildDailyCompoundSnapshots(
+  points: DailyCompoundPoint[],
+  totalDays: number
+): DailyCompoundSnapshot[] {
+  if (points.length === 0) return [];
+  const targets = new Set<number>();
+  targets.add(1);
+  targets.add(totalDays);
+  const step =
+    totalDays <= 31
+      ? 1
+      : totalDays <= 120
+        ? 7
+        : totalDays <= 730
+          ? 30
+          : 90;
+  for (let d = step; d < totalDays; d += step) targets.add(d);
+  // Always include ~year boundaries for multi-year runs
+  for (let y = 365; y < totalDays; y += 365) targets.add(y);
+
+  const sorted = [...targets].sort((a, b) => a - b);
+  return sorted
+    .map((d) => points[d - 1])
+    .filter(Boolean)
+    .map((p) => ({
+      label:
+        p.calendarDay === totalDays
+          ? `Day ${p.calendarDay} (end)`
+          : `Day ${p.calendarDay}`,
+      calendarDay: p.calendarDay,
+      balance: p.balance,
+      cumulativeInterest: p.cumulativeInterest,
+      cumulativeWithdrawn: p.cumulativeWithdrawn,
+      cumulativeDeposits: p.cumulativeDeposits,
+    }));
+}
+
+/** Downsample balance series for charts (keeps first/last). */
+export function sampleDailyCompoundPoints(
+  points: DailyCompoundPoint[],
+  maxPoints = 90
+): Array<{ day: number; balance: number; withdrawn: number; deposits: number }> {
+  if (points.length <= maxPoints) {
+    return points.map((p) => ({
+      day: p.calendarDay,
+      balance: p.balance,
+      withdrawn: p.cumulativeWithdrawn,
+      deposits: p.cumulativeDeposits,
+    }));
+  }
+  const out: Array<{
+    day: number;
+    balance: number;
+    withdrawn: number;
+    deposits: number;
+  }> = [];
+  const last = points.length - 1;
+  for (let i = 0; i < maxPoints; i++) {
+    const idx =
+      i === maxPoints - 1 ? last : Math.round((i * last) / (maxPoints - 1));
+    const p = points[idx];
+    out.push({
+      day: p.calendarDay,
+      balance: p.balance,
+      withdrawn: p.cumulativeWithdrawn,
+      deposits: p.cumulativeDeposits,
+    });
+  }
+  return out;
+}

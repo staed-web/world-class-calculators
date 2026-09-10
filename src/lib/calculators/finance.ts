@@ -26,6 +26,9 @@ import {
   npv,
   salaryHike,
   emiWithExtra,
+  dailyCompoundInterest,
+  totalDaysFromYMD,
+  sampleDailyCompoundPoints,
 } from "../formulas/finance";
 import { amortizeYearlySummary } from "../formulas/catalog";
 import { sipGrowthSchedule } from "../formulas/wave2";
@@ -255,7 +258,7 @@ export const financeCalculators: CalculatorMeta[] = [
         ],
       },
     ],
-    related: ["simple-interest", "cd-apy", "savings-goal"],
+    related: ["simple-interest", "cd-apy", "savings-goal", "daily-compound-interest", "compounding"],
     compute: (v) => {
       const parsed = requireNums(v, ["principal", "rate", "years", "compounds"]);
       if (!parsed.ok) return err(parsed.error);
@@ -613,7 +616,7 @@ export const financeCalculators: CalculatorMeta[] = [
       },
       { id: "years", label: "Term (years)", type: "number", defaultValue: 2, step: 0.5 , suffix: "years"},
     ],
-    related: ["compound-interest"],
+    related: ["compound-interest", "daily-compound-interest"],
     compute: (v) => {
       const parsed = requireNums(v, ["principal", "apr", "compounds", "years"]);
       if (!parsed.ok) return err(parsed.error);
@@ -808,7 +811,7 @@ export const financeCalculators: CalculatorMeta[] = [
         ],
       },
     ],
-    related: ["compound-interest", "cd-apy", "sip", "rule-of-72"],
+    related: ["compound-interest", "daily-compound-interest", "cd-apy", "sip", "rule-of-72"],
     compute: (v) => {
       const parsed = requireNums(v, ["principal", "rate", "years"]);
       if (!parsed.ok) return err(parsed.error);
@@ -884,7 +887,7 @@ export const financeCalculators: CalculatorMeta[] = [
       { id: "rate", label: "Expected annual return", type: "number", defaultValue: 12, suffix: "%" },
       { id: "years", label: "Years", type: "number", defaultValue: 15 , suffix: "years"},
     ],
-    related: ["compounding", "retirement", "cagr"],
+    related: ["compounding", "daily-compound-interest", "retirement", "cagr"],
     compute: (v) => {
       const parsed = requireNums(v, ["monthly", "rate", "years"]);
       if (!parsed.ok) return err(parsed.error);
@@ -1057,6 +1060,160 @@ export const financeCalculators: CalculatorMeta[] = [
         { label: "New salary", value: fmtMoney(r.newSalary), emphasize: true },
         { label: "Increase", value: fmtMoney(r.increase) },
         { label: "Monthly (÷12)", value: fmtMoney(r.newSalary / 12) },
+      ]);
+    },
+  },
+
+  {
+    slug: "daily-compound-interest",
+    category: "finance",
+    name: "Daily Compound Interest Calculator",
+    shortName: "Daily Compound",
+    description:
+      "Project daily compounding with daily or annual rates, optional reinvest %, deposits, and business-day filtering — plus balance chart and snapshots.",
+    keywords: [
+      "daily compound interest",
+      "daily compounding",
+      "compound interest daily",
+      "reinvest rate",
+      "business days interest",
+      "forex daily interest",
+      "savings daily compound",
+    ],
+    featured: true,
+    popular: true,
+    kind: "form",
+    usesMoney: true,
+    formulaNote:
+      "Daily rate mode: A grows as balance ← balance + interest each day with A_day = balance·r. Annual mode uses r_daily = r_annual/365. Partial reinvest keeps reinvest% of each day's interest invested and withdraws the rest as cash. Deposits are added at end of period. Exclude weekends compounds Mon–Fri only within the calendar span.",
+    fields: [
+      { id: "principal", label: "Principal", type: "number", defaultValue: 1000, prefix: "$", min: 0, money: true, helpText: "Starting balance" },
+      {
+        id: "rateMode",
+        label: "Interest mode",
+        type: "select",
+        defaultValue: "daily",
+        options: [
+          { value: "daily", label: "Daily rate (%)" },
+          { value: "annual", label: "Annual rate (%) → ÷365" },
+        ],
+      },
+      { id: "rate", label: "Interest rate", type: "number", defaultValue: 0.4, suffix: "%", step: 0.001, helpText: "Daily % or annual % depending on mode" },
+      { id: "years", label: "Years", type: "number", defaultValue: 1, min: 0, step: 1 },
+      { id: "months", label: "Months", type: "number", defaultValue: 0, min: 0, step: 1 },
+      { id: "days", label: "Extra days", type: "number", defaultValue: 0, min: 0, step: 1, helpText: "Added to years×365 + months×30" },
+      { id: "reinvest", label: "Daily reinvest rate", type: "number", defaultValue: 100, suffix: "%", min: 0, max: 100, step: 1, helpText: "e.g. 80 keeps 80% invested and withdraws 20% cash" },
+      {
+        id: "depositFreq",
+        label: "Additional deposits",
+        type: "select",
+        defaultValue: "none",
+        options: [
+          { value: "none", label: "None" },
+          { value: "daily", label: "Daily (end of day)" },
+          { value: "monthly", label: "Monthly (every 30 days)" },
+        ],
+      },
+      { id: "deposit", label: "Deposit amount", type: "number", defaultValue: 0, prefix: "$", min: 0, money: true },
+      {
+        id: "excludeWeekends",
+        label: "Exclude weekends",
+        type: "select",
+        defaultValue: "no",
+        options: [
+          { value: "no", label: "Compound every calendar day" },
+          { value: "yes", label: "Business days only (Mon–Fri)" },
+        ],
+        helpText: "Useful for trading calendars; span still uses full calendar days",
+      },
+    ],
+    related: ["compound-interest", "compounding", "sip", "cd-apy"],
+    compute: (v) => {
+      const parsed = requireNums(v, ["principal", "rate", "years", "months", "days", "reinvest", "deposit"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.principal < 0) return err("Principal must be ≥ 0.");
+      if (n.reinvest < 0 || n.reinvest > 100) return err("Reinvest rate must be between 0 and 100%.");
+      const rateMode = v.rateMode === "annual" ? "annual" : "daily";
+      const depositFrequency =
+        v.depositFreq === "daily" || v.depositFreq === "monthly" ? v.depositFreq : "none";
+      const totalDays = totalDaysFromYMD(n.years, n.months, n.days);
+      if (totalDays <= 0) return err("Enter a time horizon greater than zero days.");
+      if (totalDays > 36500) return err("Time horizon is too long (max ~100 years).");
+      const r = dailyCompoundInterest({
+        principal: n.principal,
+        ratePct: n.rate,
+        rateMode,
+        totalDays,
+        reinvestPct: n.reinvest,
+        depositAmount: depositFrequency === "none" ? 0 : n.deposit,
+        depositFrequency,
+        excludeWeekends: v.excludeWeekends === "yes",
+      });
+      if (!Number.isFinite(r.futureValue)) return err("Could not compute with these inputs.");
+      const chart = sampleDailyCompoundPoints(r.points, 90);
+      const series = [
+        { key: "balance", label: "Balance", color: "#0d9488" },
+      ];
+      if (r.cashWithdrawn > 0) {
+        series.push({ key: "withdrawn", label: "Cash withdrawn (cum.)", color: "#f43f5e" });
+      }
+      if (r.additionalDeposits > 0) {
+        series.push({ key: "deposits", label: "Additional deposits (cum.)", color: "#6366f1" });
+      }
+      return ok([
+        { label: "Future value", value: fmtMoney(r.futureValue), emphasize: true, hint: "Ending invested balance" },
+        { label: "Total interest generated", value: fmtMoney(r.totalInterest) },
+        { label: "Total deposits", value: fmtMoney(r.totalDeposits), hint: "Principal + additional deposits" },
+        ...(r.cashWithdrawn > 0
+          ? [{ label: "Cash withdrawn", value: fmtMoney(r.cashWithdrawn), emphasize: true, hint: "Interest not reinvested" }]
+          : []),
+        {
+          label: "Effective growth",
+          value: fmtPercent(r.effectiveGrowthPct),
+          hint: "(FV + cash withdrawn − total deposits) ÷ total deposits",
+        },
+        {
+          label: "Compounding days",
+          value: String(r.compoundingDays),
+          hint:
+            v.excludeWeekends === "yes"
+              ? `Business days inside ${totalDays}-day calendar span`
+              : `All ${totalDays} calendar days`,
+        },
+        {
+          label: "Balance over time",
+          value: `${r.compoundingDays} compounding steps`,
+          lineChart: {
+            xKey: "day",
+            series,
+            points: chart.map((p) => ({
+              day: p.day,
+              balance: Math.round(p.balance * 100) / 100,
+              withdrawn: Math.round(p.withdrawn * 100) / 100,
+              deposits: Math.round(p.deposits * 100) / 100,
+            })),
+          },
+        },
+        {
+          label: "Periodic snapshots",
+          value: `${r.snapshots.length} rows`,
+          table: {
+            headers: ["Period", "Balance", "Interest (cum.)", "Withdrawn", "Extra deposits"],
+            rows: r.snapshots.map((s) => [
+              s.label,
+              fmtMoney(s.balance),
+              fmtMoney(s.cumulativeInterest),
+              fmtMoney(s.cumulativeWithdrawn),
+              fmtMoney(s.cumulativeDeposits),
+            ]),
+          },
+        },
+        {
+          label: "Disclaimer",
+          value: "Illustrative only — not investment advice",
+          hint: "High daily % figures sometimes appear in trading/margin scenarios and can imply extreme risk of loss.",
+        },
       ]);
     },
   },

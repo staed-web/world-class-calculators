@@ -39,11 +39,11 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-20">
           <div className="rise-in mb-5 flex items-center gap-3">
             <Image
-              src="/logo-mark.png"
+              src="/logo-v2.png"
               alt="MyCalcsWorld"
               width={56}
               height={56}
-              className="h-14 w-14 rounded-2xl shadow-lg ring-2 ring-white/20"
+              className="h-14 w-14 rounded-2xl object-cover shadow-lg ring-2 ring-white/20"
               priority
             />
             <div>
@@ -75,6 +75,7 @@ export default function HomePage() {
               "bmi",
               "3d function",
               "amortization",
+              "daily compound interest",
             ].map((q) => (
               <Link
                 key={q}

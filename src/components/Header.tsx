@@ -18,15 +18,17 @@ export function Header() {
           aria-label="MyCalcsWorld home"
         >
           <Image
-            src="/logo-mark.png"
+            src="/logo-v2.png"
             alt=""
-            width={36}
-            height={36}
-            className="h-9 w-9 rounded-xl shadow-sm ring-1 ring-black/5 transition group-hover:scale-105"
+            width={40}
+            height={40}
+            className="h-9 w-9 rounded-xl object-cover shadow-sm ring-1 ring-teal-500/20 transition group-hover:scale-105 group-hover:ring-teal-400/40"
             priority
           />
           <span className="hidden xs:inline sm:inline">
-            <span className="text-brand">MyCalcs</span>
+            <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent dark:from-teal-300 dark:to-indigo-300">
+              MyCalcs
+            </span>
             <span className="text-foreground">World</span>
           </span>
         </Link>
