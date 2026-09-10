@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { categories } from "@/lib/categories";
 import { calculatorCount } from "@/lib/calculators/registry";
 import { AdSlot } from "./AdSlot";
@@ -18,15 +19,9 @@ export function Footer() {
                 alt=""
                 width={32}
                 height={32}
-                className="h-8 w-8 rounded-lg object-cover ring-1 ring-teal-400/30"
+                className="h-8 w-8 rounded-lg object-cover ring-1 ring-white/20"
               />
-              <Image
-                src="/logo-wordmark-v3.png"
-                alt="MyCalcsWorld"
-                width={148}
-                height={26}
-                className="h-6 w-auto object-contain brightness-110"
-              />
+              <BrandWordmark tone="light" size="sm" />
             </div>
             <p className="text-sm text-slate-400">
               Free online calculators for finance, math, health, and everyday life —{" "}

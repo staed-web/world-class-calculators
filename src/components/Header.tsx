@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { categories } from "@/lib/categories";
 import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
@@ -190,16 +191,12 @@ export function Header() {
             alt=""
             width={36}
             height={36}
-            className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-cover shadow-sm ring-1 ring-teal-500/20 transition group-hover:scale-105"
+            className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-cover shadow-sm ring-1 ring-[#07234a]/15 transition group-hover:scale-105"
             priority
           />
-          <Image
-            src="/logo-wordmark-v3.png"
-            alt="MyCalcsWorld"
-            width={160}
-            height={28}
-            className="hidden min-[360px]:block h-5 sm:h-6 w-auto object-contain"
-            priority
+          <BrandWordmark
+            className="hidden min-[360px]:inline-flex"
+            size="sm"
           />
         </Link>
 

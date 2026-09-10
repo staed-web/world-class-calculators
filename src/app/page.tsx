@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { BrandWordmark } from "@/components/BrandWordmark";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryGrid } from "@/components/CategoryGrid";
 import { CalculatorCard } from "@/components/CalculatorCard";
@@ -49,14 +50,7 @@ export default function HomePage() {
               priority
             />
             <div className="min-w-0">
-              <Image
-                src="/logo-wordmark-v3.png"
-                alt="MyCalcsWorld"
-                width={220}
-                height={38}
-                className="h-7 sm:h-8 w-auto object-contain brightness-110 drop-shadow-sm"
-                priority
-              />
+              <BrandWordmark tone="light" size="lg" className="drop-shadow-sm" />
               <p className="mt-1.5 text-xs text-teal-50/90">
                 {calculatorCount}+ free calculators · live FX · charts · 3D math
               </p>

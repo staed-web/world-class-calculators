@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const src = path.join(root, "public/logo.png");
 const outDir = path.join(root, "public/icons");
-const bg = { r: 7, g: 11, b: 20, alpha: 1 };
+const bg = { r: 255, g: 250, b: 244, alpha: 1 };
 
 async function squareIcon(size, out) {
   await sharp(src).resize(size, size, { fit: "cover" }).png().toFile(out);
