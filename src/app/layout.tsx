@@ -97,6 +97,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
+        <Script
+          id="wcc-theme-boot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("wcc-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}})();`,
+          }}
+        />
         {/* App shell: mesh lives here (not on body/html) so portals stay viewport-fixed. */}
         <div className="relative isolate flex min-h-full flex-1 flex-col">
           <div

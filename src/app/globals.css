@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Class-based dark mode — must match ThemeToggle toggling .dark on <html>.
+   Tailwind v4 default is prefers-color-scheme, which desyncs from the site toggle
+   (e.g. OS dark + site light → dark: utilities fire on a light --header). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f3f6fb;
   --foreground: #0b1220;
