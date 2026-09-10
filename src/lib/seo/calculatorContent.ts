@@ -5,6 +5,7 @@ import {
   mergeCalculatorSeo,
 } from "./seoDefaults";
 import { calculatorSeoExtra } from "./overridesExtra";
+import { calculatorSeoParity } from "./overridesParity";
 
 /** High-ROI FAQ / how-to / SEO overlays keyed by calculator slug. */
 export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
@@ -2394,6 +2395,12 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
 
 // Merge deep extras (extras win on overlapping keys for richer popular pages).
 for (const [slug, extra] of Object.entries(calculatorSeoExtra)) {
+  const prev = calculatorSeoContent[slug];
+  calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
+}
+
+// Flagship-parity overlays for spot-check / popular tools (win last when equally specified).
+for (const [slug, extra] of Object.entries(calculatorSeoParity)) {
   const prev = calculatorSeoContent[slug];
   calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
 }

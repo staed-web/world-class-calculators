@@ -553,22 +553,49 @@ function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
 function buildHowTo(calc: CalculatorMeta): {
   howToUse: string[];
 } {
-  const fields = fieldList(calc.fields, 6);
-  const howToUse = [
-    `Open the ${calc.name} and review the labeled fields: ${fields}.`,
-    "Enter your values (or start from the defaults) — results update as you type or when you press Calculate.",
-    "Read the primary result(s) in the panel, including any chart or table when shown. Use Copy / Share if you want a plain-text summary.",
-    "Scroll to When to use, Common mistakes, How to interpret, the worked example, formula notes, and FAQs before relying on the figure.",
-    "Use Related tools / You might also like if you need a neighboring calculation in the same category.",
+  const visible = (calc.fields || []).filter((f) => !f.advanced);
+  const advanced = (calc.fields || []).filter((f) => f.advanced);
+  const steps: string[] = [
+    `Open the ${calc.name} on MyCalcsWorld and skim the labeled fields before you type.`,
   ];
+  if (visible.length) {
+    for (const f of visible.slice(0, 5)) {
+      const unit =
+        f.suffix ? ` (${f.suffix})` : f.prefix === "$" ? " (money)" : "";
+      const demo =
+        f.defaultValue !== undefined && f.defaultValue !== null && f.defaultValue !== ""
+          ? ` — demo default is ${f.prefix === "$" ? "" : f.prefix || ""}${f.defaultValue}${f.suffix ? ` ${f.suffix}` : ""}`
+          : "";
+      const modeHint = f.visibleWhen
+        ? ` (shown when ${f.visibleWhen.field} is ${f.visibleWhen.in.join("/")})`
+        : "";
+      steps.push(`Set ${f.label}${unit}${modeHint}${demo}.`);
+    }
+  } else {
+    steps.push(
+      `Use the on-page controls for this ${calc.name} (custom widget — follow the labels in the tool itself).`
+    );
+  }
+  if (advanced.length) {
+    steps.push(
+      `Open More options only if you need advanced controls (${advanced
+        .slice(0, 4)
+        .map((f) => f.label)
+        .join(", ")}). Leave them alone for a simple first run.`
+    );
+  }
+  steps.push(
+    "Read the primary result(s) first, then any secondary totals, chart, or table. Use Copy / Share for a plain-text summary."
+  );
+  steps.push(
+    "Scroll the Detailed guide — When to use, Common mistakes, How to interpret, worked example, formula notes, and FAQs — before you rely on the figure."
+  );
   const extra = categoryHowToExtra[calc.category] || [];
-  // Enrich the shared how-to with a couple of category tips when available
   const enriched = [
-    ...howToUse,
+    ...steps,
     "If a bank, insurer, school, or lab uses a different definition of an input, match their definition before comparing.",
     ...extra.slice(0, 2),
   ];
-  // Keep a focused 5–7 steps
   const seen = new Set<string>();
   const merged: string[] = [];
   for (const s of enriched) {
@@ -576,7 +603,7 @@ function buildHowTo(calc: CalculatorMeta): {
     if (seen.has(key)) continue;
     seen.add(key);
     merged.push(s);
-    if (merged.length >= 7) break;
+    if (merged.length >= 8) break;
   }
   return { howToUse: merged };
 }
@@ -763,71 +790,110 @@ function preferLongerSteps(
 ): string[] {
   const b = base || [];
   const o = over || [];
-  if (o.length >= min) return o;
   if (!o.length) return b;
+  if (!b.length) return o;
+  // Prefer hand-tuned override voice, but always pad up to the depth bar from defaults.
+  // Always reach the depth bar (min). Cap at 8 so guides stay scannable.
+  const target = Math.max(min, Math.min(8, o.length));
+  if (o.length >= min) return o.slice(0, 8);
   const seen = new Set(o.map((s) => s.toLowerCase()));
   const merged = [...o];
   for (const s of b) {
     if (seen.has(s.toLowerCase())) continue;
     merged.push(s);
-    if (merged.length >= min) break;
+    if (merged.length >= target) break;
   }
+  // If override is still thin vs a much richer default, keep padded merge (override-first).
   return merged.length ? merged : b;
 }
 
-/** Merge override onto defaults; thin how-to arrays are padded from defaults. */
+function preferRicherOverview(
+  over: string | undefined,
+  base: string | undefined
+): string | undefined {
+  const o = over?.trim();
+  const d = base?.trim();
+  if (!o) return d;
+  if (!d) return o;
+  // Hand-tuned flagship/parity copy (>=500) wins — unique voice over templates.
+  if (o.length >= 500) return o;
+  // Thin stubs must not clobber richer registry-driven defaults.
+  if (d.length > o.length) return d;
+  return o;
+}
+
+function preferRicherFormula(
+  over: string | undefined,
+  base: string | undefined
+): string | undefined {
+  const o = over?.trim();
+  const d = base?.trim();
+  if (!o) return d;
+  if (!d) return o;
+  // Worked-example style formula notes win.
+  if (o.length >= 200) return o;
+  if (d.length > o.length + 40) {
+    if (o.length >= 40 && !d.startsWith(o)) return `${o}
+
+${d}`;
+    return d;
+  }
+  if (o.length >= 80) return o;
+  return `${o} ${d}`.trim();
+}
+
+function preferRicherExample(
+  over: WorkedExample | undefined,
+  base: WorkedExample | undefined
+): WorkedExample | undefined {
+  if (!over) return base;
+  if (!base) return over;
+  const oSteps = over.steps?.length ?? 0;
+  const dSteps = base.steps?.length ?? 0;
+  const oRes = over.result?.length ?? 0;
+  const dRes = base.result?.length ?? 0;
+  // Deep hand-tuned examples (4+ steps with a solid result) win.
+  if (oSteps >= 4 && oRes >= 80) return over;
+  if (oSteps >= 5) return over;
+  // Otherwise pad steps from defaults and keep the better result line.
+  const seen = new Set(over.steps.map((s) => s.toLowerCase()));
+  const steps = [...over.steps];
+  for (const s of base.steps) {
+    if (seen.has(s.toLowerCase())) continue;
+    steps.push(s);
+    if (steps.length >= Math.max(4, dSteps >= 4 ? 4 : 5)) break;
+  }
+  return {
+    title: over.title || base.title,
+    steps: steps.length >= 3 ? steps : base.steps,
+    result: oRes >= dRes && oRes >= 40 ? over.result : base.result || over.result,
+  };
+}
+
+/** Merge override onto defaults; thin overrides are padded so every page stays near-flagship. */
 export function mergeCalculatorSeo(
   defaults: CalculatorSeoContent,
   override?: CalculatorSeoContent
 ): CalculatorSeoContent {
   if (!override) return defaults;
-  const overview =
-    override.overview && override.overview.trim().length >= 120
-      ? override.overview
-      : override.overview && override.overview.trim().length >= 80
-        ? `${override.overview.trim()}\n\n${defaults.overview}`
-        : defaults.overview;
   return {
     seoTitle: override.seoTitle || defaults.seoTitle,
     seoDescription: override.seoDescription || defaults.seoDescription,
-    overview,
-    whenToUse: preferLongerSteps(override.whenToUse, defaults.whenToUse, 3),
+    overview: preferRicherOverview(override.overview, defaults.overview),
+    whenToUse: preferLongerSteps(override.whenToUse, defaults.whenToUse, 5),
     commonMistakes: preferLongerSteps(
       override.commonMistakes,
       defaults.commonMistakes,
-      3
+      5
     ),
-    howToUse: preferLongerSteps(override.howToUse, defaults.howToUse, 4),
+    howToUse: preferLongerSteps(override.howToUse, defaults.howToUse, 6),
     howToInterpret: preferLongerSteps(
       override.howToInterpret,
       defaults.howToInterpret,
-      3
+      5
     ),
-    workedExample: (() => {
-      const o = override.workedExample;
-      const d = defaults.workedExample;
-      if (!o) return d;
-      if ((o.steps?.length ?? 0) >= 3) return o;
-      if (!d) return o;
-      const seen = new Set(o.steps.map((s) => s.toLowerCase()));
-      const steps = [...o.steps];
-      for (const s of d.steps) {
-        if (seen.has(s.toLowerCase())) continue;
-        steps.push(s);
-        if (steps.length >= 3) break;
-      }
-      return {
-        title: o.title || d.title,
-        steps: steps.length ? steps : d.steps,
-        result: o.result || d.result,
-      };
-    })(),
+    workedExample: preferRicherExample(override.workedExample, defaults.workedExample),
     faqs: mergeFaqs(defaults.faqs, override.faqs),
-    formulaNote:
-      override.formulaNote && override.formulaNote.length >= 80
-        ? override.formulaNote
-        : override.formulaNote
-          ? `${override.formulaNote} ${defaults.formulaNote || ""}`.trim()
-          : defaults.formulaNote,
+    formulaNote: preferRicherFormula(override.formulaNote, defaults.formulaNote),
   };
 }

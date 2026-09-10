@@ -18,6 +18,33 @@ const FLAGSHIPS = [
   "daily-compound-interest",
 ] as const;
 
+const PARITY_SPOT_CHECK = [
+  "mortgage",
+  "loan-emi",
+  "sip",
+  "bmi",
+  "tip",
+  "percentage",
+  "pythagoras",
+  "gst-vat",
+  "currency-converter",
+  "compound-interest",
+  "daily-compound-interest",
+] as const;
+
+function sectionScore(c: NonNullable<ReturnType<typeof getCalculatorSeoContent>>) {
+  return {
+    overview: c.overview?.length ?? 0,
+    howToUse: c.howToUse?.length ?? 0,
+    howToInterpret: c.howToInterpret?.length ?? 0,
+    whenToUse: c.whenToUse?.length ?? 0,
+    commonMistakes: c.commonMistakes?.length ?? 0,
+    faqs: c.faqs?.length ?? 0,
+    exampleSteps: c.workedExample?.steps.length ?? 0,
+    formula: c.formulaNote?.length ?? 0,
+  };
+}
+
 describe("calculator SEO content", () => {
   it("covers 90+ commercial slug overrides with real FAQs", () => {
     expect(seoContentSlugs.length).toBeGreaterThanOrEqual(95);
@@ -43,7 +70,6 @@ describe("calculator SEO content", () => {
       expect(getCalculatorBySlug(slug)).toBeTruthy();
     }
   });
-
 
   it("worked examples include concrete demo numbers for form calculators", () => {
     const sample = allCalculators
@@ -78,14 +104,52 @@ describe("calculator SEO content", () => {
       const c = getCalculatorSeoContent(calc.slug);
       expect(c, calc.slug).toBeTruthy();
       expect((c!.overview?.length ?? 0), calc.slug).toBeGreaterThan(160);
-      expect((c!.howToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
-      expect((c!.howToInterpret?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
-      expect((c!.faqs?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
+      expect((c!.howToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(5);
+      expect((c!.howToInterpret?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
+      expect((c!.faqs?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(5);
       expect((c!.workedExample?.steps.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
       expect((c!.formulaNote?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(40);
       expect((c!.seoDescription?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(40);
-      expect((c!.whenToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
-      expect((c!.commonMistakes?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
+      expect((c!.whenToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
+      expect((c!.commonMistakes?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
     }
+  });
+
+  it("spot-check tools match daily-compound section richness", () => {
+    const flag = sectionScore(getCalculatorSeoContent("daily-compound-interest")!);
+    expect(flag.overview).toBeGreaterThan(700);
+    expect(flag.howToUse).toBeGreaterThanOrEqual(6);
+    expect(flag.faqs).toBeGreaterThanOrEqual(8);
+
+    for (const slug of PARITY_SPOT_CHECK) {
+      const s = sectionScore(getCalculatorSeoContent(slug)!);
+      expect(s.overview, slug).toBeGreaterThanOrEqual(500);
+      expect(s.howToUse, slug).toBeGreaterThanOrEqual(6);
+      expect(s.howToInterpret, slug).toBeGreaterThanOrEqual(5);
+      expect(s.whenToUse, slug).toBeGreaterThanOrEqual(5);
+      expect(s.commonMistakes, slug).toBeGreaterThanOrEqual(5);
+      expect(s.faqs, slug).toBeGreaterThanOrEqual(6);
+      expect(s.exampleSteps, slug).toBeGreaterThanOrEqual(4);
+      expect(s.formula, slug).toBeGreaterThanOrEqual(120);
+    }
+  });
+
+  it("nearly all calculators expose the full guide section set", () => {
+    let full = 0;
+    for (const calc of allCalculators) {
+      const s = sectionScore(getCalculatorSeoContent(calc.slug)!);
+      const ok =
+        s.overview >= 400 &&
+        s.howToUse >= 5 &&
+        s.howToInterpret >= 4 &&
+        s.whenToUse >= 4 &&
+        s.commonMistakes >= 4 &&
+        s.faqs >= 6 &&
+        s.exampleSteps >= 4 &&
+        s.formula >= 80;
+      if (ok) full += 1;
+    }
+    // Parity bar: almost the entire catalog — long-tail defaults + merge padding.
+    expect(full).toBeGreaterThanOrEqual(Math.floor(allCalculators.length * 0.95));
   });
 });

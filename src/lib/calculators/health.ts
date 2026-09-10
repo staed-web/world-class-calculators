@@ -23,7 +23,7 @@ export const healthCalculators: CalculatorMeta[] = [
     featured: true,
     popular: true,
     kind: "form",
-    formulaNote: "BMI is a screening estimate, not a diagnosis.",
+    formulaNote: "BMI = weight(kg) / [height(m)]² with height_m = height_cm/100. Adult category bands are population heuristics — screening only, not a diagnosis.",
     fields: [
       { id: "weight", label: "Weight", type: "number", defaultValue: 70, min: 1, suffix: "kg" },
       { id: "height", label: "Height", type: "number", defaultValue: 175, min: 1, suffix: "cm" },

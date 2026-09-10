@@ -376,7 +376,7 @@ export const financeCalculators: CalculatorMeta[] = [
       { id: "yearsLeft", label: "Years remaining", type: "number", defaultValue: 25, suffix: "years" },
       { id: "newRate", label: "New rate", type: "number", defaultValue: 6.0, suffix: "%" },
       { id: "newYears", label: "New term", type: "number", defaultValue: 30, suffix: "years" },
-      { id: "closing", label: "Closing costs", type: "number", defaultValue: 4000, prefix: "$" },
+      { id: "closing", label: "Closing costs", type: "number", defaultValue: 4000, prefix: "$", advanced: true, helpText: "Optional — fees to break even on a refinance" },
     ],
     related: ["mortgage", "amortization"],
     compute: (v) => {
