@@ -181,7 +181,7 @@ export const extraCalculators: CalculatorMeta[] = [
     slug: "paycheck-estimator",
     category: "finance",
     name: "Paycheck / Tax Rough Estimator",
-    description: "Very rough net paycheck from flat withholding percentages. Not tax advice (US/IN/elsewhere).",
+    description: "Very rough net paycheck from flat withholding percentages. Not tax advice for any jurisdiction.",
     keywords: ["paycheck", "salary", "tax", "net pay"],
     formulaNote: "DISCLAIMER: Flat % model only. Real taxes use brackets and deductions. Not professional advice.",
     fields: [{ id: "gross", label: "Gross annual", type: "number", defaultValue: 75000, prefix: "$" }, { id: "periods", label: "Pay periods / year", type: "number", defaultValue: 26, helpText: "26 biweekly, 24 semi-monthly, 12 monthly" }, { id: "federal", label: "Federal / central tax %", type: "number", defaultValue: 12, suffix: "%" }, { id: "state", label: "State / local %", type: "number", defaultValue: 5, suffix: "%" }, { id: "other", label: "Other (FICA/PF/etc) %", type: "number", defaultValue: 7.65, suffix: "%" }],
@@ -197,7 +197,7 @@ export const extraCalculators: CalculatorMeta[] = [
         { label: "Gross per paycheck", value: fmtMoney(r.grossPerPeriod) },
         { label: "Total withholding %", value: fmtPercent(r.totalTaxPct) },
         { label: "Est. net annual", value: fmtMoney(r.netAnnual) },
-        { label: "Disclaimer", value: "Rough flat-rate model — not US/IN tax filing advice." },
+        { label: "Disclaimer", value: "Rough flat-rate model — not tax filing advice." },
       ]);
     },
   },

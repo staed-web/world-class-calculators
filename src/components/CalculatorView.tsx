@@ -20,6 +20,7 @@ import {
   TrustStrip,
 } from "./seo/CalculatorGuide";
 import { TrackRecentCalculator } from "./TrackRecentCalculator";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 import {
   Function3DCalculator,
   Pythagoras3DCalculator,
@@ -130,34 +131,37 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         </p>
         <TrustStrip />
         {seo && (
-          <div className="mt-4 flex gap-2 overflow-x-auto overscroll-x-contain no-print pb-1 [-webkit-overflow-scrolling:touch]" aria-label="Page shortcuts">
+          <div
+            className="mt-4 flex flex-wrap gap-2 no-print"
+            aria-label="Page shortcuts"
+          >
             <a
               href="#calculator-guide"
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-2 text-xs font-semibold text-brand hover:bg-brand/10 transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-2 text-xs font-semibold text-brand hover:bg-brand/10 transition"
             >
               Guide & FAQ ↓
             </a>
             <a
               href="#guide-when"
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
               When to use
             </a>
             <a
               href="#guide-example"
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
               Example
             </a>
             <a
               href="#guide-mistakes"
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
               Mistakes
             </a>
             <a
               href="#guide-formula"
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted hover:border-brand hover:text-brand transition"
             >
               Formula
             </a>
@@ -165,11 +169,10 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         )}
       </div>
 
-      <AdSlot placement="header" className="mb-6 no-print" />
-
       <div className="grid gap-8 lg:grid-cols-4 min-w-0">
         <div className="lg:col-span-3 space-y-8 min-w-0">
           {renderCalc(calc)}
+          <AdSlot placement="header" className="no-print" />
           <AdSlot placement="in-content" className="no-print" />
           {seo && (
             <CalculatorGuide
@@ -185,10 +188,10 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
             </Link>{" "}
             ·{" "}
             <a
-              href="mailto:hello@mycalcsworld.online"
-              className="text-brand hover:underline"
+              href={contactMailto(`Question about ${calc.name}`)}
+              className="text-brand hover:underline break-all"
             >
-              hello@mycalcsworld.online
+              {CONTACT_EMAIL}
             </a>
           </p>
         </div>

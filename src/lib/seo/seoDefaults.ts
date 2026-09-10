@@ -47,7 +47,7 @@ function firstFieldDefaults(fields?: FieldDef[]): { label: string; value: string
 function audienceFor(cat: CategorySlug): string {
   const map: Record<CategorySlug, string> = {
     finance:
-      "homebuyers, EMI shoppers, SIP investors, freelancers, and anyone comparing a bank quote to an independent worksheet",
+      "homebuyers, loan shoppers, investors, freelancers, and anyone comparing a bank quote to an independent worksheet",
     math: "students, tutors, contest-prep learners, and professionals who need a transparent check against homework or hand math",
     "health-fitness":
       "people setting fitness goals, coaches doing quick estimates, and anyone curious about BMI, calories, or training numbers — not a clinic visit",
@@ -426,11 +426,11 @@ function buildFaqs(calc: CalculatorMeta): FaqItem[] {
     });
   }
 
-  if (calc.keywords?.some((k) => /india|emi|sip|gst|inr/i.test(k))) {
+  if (calc.keywords?.some((k) => /emi|sip|gst|vat|loan|mortgage|currency|fx/i.test(k))) {
     faqs.push({
-      question: "Does this work for India (INR) use cases?",
+      question: "Can I use my local currency?",
       answer:
-        "Yes — choose INR in the currency picker where money fields appear, and read the India-oriented how-to steps when present. Tax and product rules still vary by bank, state, and scheme.",
+        "Yes — choose USD, EUR, INR, GBP, AED, or another supported code in the currency picker where money fields appear. Tax and product rules still vary by lender and jurisdiction.",
     });
   }
 
@@ -482,8 +482,6 @@ function buildWorkedExample(calc: CalculatorMeta): WorkedExample {
 
 function buildHowTo(calc: CalculatorMeta): {
   howToUse: string[];
-  howToUseUS: string[];
-  howToUseIndia: string[];
 } {
   const fields = fieldList(calc.fields, 6);
   const howToUse = [
@@ -494,19 +492,23 @@ function buildHowTo(calc: CalculatorMeta): {
     "Use Related tools / You might also like if you need a neighboring calculation in the same category.",
   ];
   const extra = categoryHowToExtra[calc.category] || [];
-  const howToUseUS = [
-    `Use ${calc.name} with the units and conventions commonly quoted in U.S. / global English docs for this topic (${fields}).`,
-    ...howToUse.slice(1, 3),
+  // Enrich the shared how-to with a couple of category tips when available
+  const enriched = [
+    ...howToUse,
     "If a bank, insurer, school, or lab uses a different definition of an input, match their definition before comparing.",
     ...extra.slice(0, 2),
   ];
-  const howToUseIndia = [
-    `Use ${calc.name} with India-relevant units where applicable (INR via the currency picker on money tools, metric measures, financial-year or academic-year context). Fields: ${fields}.`,
-    ...howToUse.slice(1, 3),
-    "Confirm bank/NBFC, CBSE/university, clinic, or BIS-style conventions when your institution publishes its own method.",
-    ...extra.slice(0, 2),
-  ];
-  return { howToUse, howToUseUS, howToUseIndia };
+  // Keep a focused 5–7 steps
+  const seen = new Set<string>();
+  const merged: string[] = [];
+  for (const s of enriched) {
+    const key = s.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(s);
+    if (merged.length >= 7) break;
+  }
+  return { howToUse: merged };
 }
 
 function buildOverview(calc: CalculatorMeta): string {
@@ -517,7 +519,7 @@ function buildOverview(calc: CalculatorMeta): string {
   const desc = calc.description.replace(/\.$/, "");
 
   const openings: Partial<Record<CategorySlug, string>> = {
-    finance: `Money math should be transparent. The ${calc.name} on MyCalcsWorld gives you a browser-side estimate you can compare to a bank worksheet — with INR/USD/EUR formatting via the currency picker when money fields appear.`,
+    finance: `Money math should be transparent. The ${calc.name} on MyCalcsWorld gives you a browser-side estimate you can compare to a bank worksheet — with multi-currency formatting (USD, EUR, INR, GBP, AED, and more) via the currency picker when money fields appear.`,
     math: `Clear math beats a black-box app. The ${calc.name} on MyCalcsWorld keeps inputs labeled and formula notes visible so you can reconcile with a textbook or homework key.`,
     "health-fitness": `Fitness numbers are starting points, not diagnoses. The ${calc.name} on MyCalcsWorld uses published educational formulas so you can plan goals — then confirm with a clinician when it matters.`,
     conversion: `Unit mix-ups are expensive. The ${calc.name} on MyCalcsWorld applies clear SI / customary factors so homework, DIY, and travel docs stay consistent.`,
@@ -540,13 +542,13 @@ What it does: ${desc}. Typical inputs: ${fields || "the fields on the form"}. Pe
 
 Who it helps: ${audienceFor(calc.category)}.
 
-Below the live form you get MyCalcsWorld-specific guidance — when to use this tool, common mistakes, how to interpret results, India and U.S./global how-to steps, a worked example with real numbers, formula notes, and FAQs. Charts and tables appear in the results panel whenever this engine provides them. ${cat?.name || "Category"} related tools are linked so you can jump without starting from search.`;
+Below the live form you get MyCalcsWorld-specific guidance — when to use this tool, common mistakes, how to interpret results, step-by-step how-to, a worked example with real numbers, formula notes, and FAQs. Charts and tables appear in the results panel whenever this engine provides them. ${cat?.name || "Category"} related tools are linked so you can jump without starting from search.`;
 }
 
 /** Substantial default SEO/detail sections for any registry calculator. */
 export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoContent {
   const cat = categoryMap[calc.category];
-  const { howToUse, howToUseUS, howToUseIndia } = buildHowTo(calc);
+  const { howToUse } = buildHowTo(calc);
   const fields = fieldList(calc.fields, 5);
   const interpret =
     categoryInterpret[calc.category] || [
@@ -580,8 +582,6 @@ export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoCo
           "Treating an educational estimate as professional advice.",
         ],
     howToUse,
-    howToUseUS,
-    howToUseIndia,
     howToInterpret: interpret,
     workedExample: buildWorkedExample(calc),
     faqs: buildFaqs(calc),
@@ -647,12 +647,6 @@ export function mergeCalculatorSeo(
       3
     ),
     howToUse: preferLongerSteps(override.howToUse, defaults.howToUse, 4),
-    howToUseUS: preferLongerSteps(override.howToUseUS, defaults.howToUseUS, 3),
-    howToUseIndia: preferLongerSteps(
-      override.howToUseIndia,
-      defaults.howToUseIndia,
-      3
-    ),
     howToInterpret: preferLongerSteps(
       override.howToInterpret,
       defaults.howToInterpret,

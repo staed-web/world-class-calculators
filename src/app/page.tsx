@@ -12,13 +12,13 @@ import {
   getPopularCalculators,
   calculatorPath,
 } from "@/lib/calculators/registry";
-import { popularInIndiaSlugs } from "@/lib/seo/calculatorContent";
+import { popularPlanningSlugs } from "@/lib/seo/calculatorContent";
 import { RecentlyUsedCalculators } from "@/components/RecentlyUsedCalculators";
 
 export default function HomePage() {
   const featured = getFeaturedCalculators().slice(0, 9);
   const popular = getPopularCalculators().slice(0, 12);
-  const indiaPopular = popularInIndiaSlugs
+  const planningPopular = popularPlanningSlugs
     .map((slug) => getCalculatorBySlug(slug))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
@@ -57,7 +57,7 @@ export default function HomePage() {
             </div>
           </div>
           <h1 className="rise-in max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.35rem] lg:leading-[1.1]">
-            Free calculators with real guides — built for India and the world.
+            Free calculators with real guides — built for everyone, worldwide.
           </h1>
           <p className="rise-in mt-5 max-w-2xl text-lg text-teal-50/95" style={{ animationDelay: "80ms" }}>
             Mortgage, EMI, daily compound interest, BMI, live FX, and{" "}
@@ -98,7 +98,7 @@ export default function HomePage() {
 
         <section className="grid gap-4 sm:grid-cols-3">
           {[
-            { t: "Live FX & money", d: "Pick USD, EUR, INR, AED and more — results format in your currency." },
+            { t: "Live FX & money", d: "Pick USD, EUR, GBP, INR, AED and more — results format in your currency." },
             { t: "Charts & schedules", d: "Amortization tables, SIP curves, daily-compound snapshots — in results when supported." },
             { t: `${calculatorCount}+ guided tools`, d: "Every calculator includes how-to, worked example, formula notes, and FAQs." },
           ].map((x) => (
@@ -143,9 +143,9 @@ export default function HomePage() {
         <section>
           <div className="mb-5 flex items-end justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">Popular in India</h2>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Popular planning tools</h2>
               <p className="text-sm text-muted mt-1">
-                EMI, SIP, GST, INR FX, gold — everyday planning tools.
+                EMI, SIP, GST/VAT, live FX, gold — everyday money tools.
               </p>
             </div>
             <Link href="/calculators/finance/loan-emi" className="text-sm font-medium text-brand hover:underline shrink-0">
@@ -153,12 +153,12 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {indiaPopular.slice(0, 6).map((c) => (
+            {planningPopular.slice(0, 6).map((c) => (
               <CalculatorCard key={`${c.category}/${c.slug}`} calc={c} />
             ))}
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {indiaPopular.slice(6).map((c) => (
+            {planningPopular.slice(6).map((c) => (
               <Link
                 key={c.slug}
                 href={calculatorPath(c)}

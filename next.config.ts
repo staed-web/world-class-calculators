@@ -63,6 +63,31 @@ const nextConfig: NextConfig = {
         destination: "/calculators/health-fitness/bmi",
         permanent: true,
       },
+      {
+        source: "/calculators/health/bmi-calculator",
+        destination: "/calculators/health-fitness/bmi",
+        permanent: true,
+      },
+      {
+        source: "/calculators/finance/mortgage-calculator",
+        destination: "/calculators/finance/mortgage",
+        permanent: true,
+      },
+      {
+        source: "/calculators/finance/compound",
+        destination: "/calculators/finance/compound-interest",
+        permanent: true,
+      },
+      {
+        source: "/calculators/finance/daily-compound",
+        destination: "/calculators/finance/daily-compound-interest",
+        permanent: true,
+      },
+      {
+        source: "/calculators/finance/sip-returns",
+        destination: "/calculators/finance/sip",
+        permanent: true,
+      },
     ];
   },
 };

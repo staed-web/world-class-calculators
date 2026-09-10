@@ -7,6 +7,7 @@ import { categories } from "@/lib/categories";
 import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { CurrencyPicker } from "./CurrencyPicker";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 
 const mobileQuick = [
   { href: "/calculators/finance/loan-emi", label: "EMI" },
@@ -237,10 +238,11 @@ export function Header() {
                   Contact
                 </Link>
                 <a
-                  href="mailto:hello@mycalcsworld.online"
-                  className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-brand"
+                  href={contactMailto()}
+                  className="flex min-h-11 flex-col justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand"
                 >
-                  hello@mycalcsworld.online
+                  <span>Email us</span>
+                  <span className="text-xs font-normal text-muted break-all">{CONTACT_EMAIL}</span>
                 </a>
               </div>
             </div>

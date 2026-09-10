@@ -78,11 +78,11 @@ High-traffic additions this pass include credit-card payoff, lease vs buy, rent 
 4. For special UIs, use `kind: "custom"` + `customKey` and wire the component in `CalculatorView`.
 5. Run `npm test`, `npm run lint`, and `npm run build`.
 
-## Contact email (mailbox setup)
+## Contact email
 
-Public contact address: **hello@mycalcsworld.online** (also linked from `/contact`, header/footer, and About).
+Public contact address: **mycalcsworldcontact@gmail.com** (also linked from `/contact`, header/footer, About, and Privacy). Shared constant: `src/lib/site.ts` (`CONTACT_EMAIL`).
 
-**Ops note:** create or forward this mailbox at your DNS / email provider (Google Workspace, Cloudflare Email Routing, ImprovMX, etc.). The site uses `mailto:` drafts — it does not host an inbound mail server.
+The site uses `mailto:` drafts (subject/body) and optional Gmail compose links — it does not host an inbound mail server.
 
 ## AdSense
 

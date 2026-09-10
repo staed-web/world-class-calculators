@@ -49,7 +49,7 @@ describe("wave2 finance", () => {
     expect(r.net).toBeLessThan(90000);
     expect(r.net).toBeGreaterThan(60000);
   });
-  it("india rebate under 7L", () => {
+  it("illustrative low-income rebate", () => {
     expect(salaryAfterTaxIn(600000).tax).toBe(0);
   });
 });

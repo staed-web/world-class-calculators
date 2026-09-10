@@ -3,7 +3,7 @@ import {
   calculatorSeoContent,
   getCalculatorSeoContent,
   getAllCalculatorSeoCoverage,
-  popularInIndiaSlugs,
+  popularPlanningSlugs,
   seoContentSlugs,
 } from "./calculatorContent";
 import { allCalculators, getCalculatorBySlug } from "@/lib/calculators/registry";
@@ -28,19 +28,18 @@ describe("calculator SEO content", () => {
     }
   });
 
-  it("flagships have overview, India/US how-to, and worked examples", () => {
+  it("flagships have overview, how-to, and worked examples", () => {
     for (const slug of FLAGSHIPS) {
       const c = getCalculatorSeoContent(slug);
       expect(c?.overview?.length ?? 0).toBeGreaterThan(160);
-      expect(c?.howToUseIndia?.length ?? 0).toBeGreaterThanOrEqual(3);
-      expect(c?.howToUseUS?.length ?? 0).toBeGreaterThanOrEqual(3);
+      expect(c?.howToUse?.length ?? 0).toBeGreaterThanOrEqual(3);
       expect(c?.workedExample?.steps.length ?? 0).toBeGreaterThanOrEqual(3);
       expect(c?.faqs?.length ?? 0).toBeGreaterThanOrEqual(4);
     }
   });
 
-  it("Popular in India slugs resolve", () => {
-    for (const slug of popularInIndiaSlugs) {
+  it("Popular planning slugs resolve", () => {
+    for (const slug of popularPlanningSlugs) {
       expect(getCalculatorBySlug(slug)).toBeTruthy();
     }
   });
@@ -56,8 +55,6 @@ describe("calculator SEO content", () => {
       expect(c, calc.slug).toBeTruthy();
       expect((c!.overview?.length ?? 0), calc.slug).toBeGreaterThan(160);
       expect((c!.howToUse?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
-      expect((c!.howToUseIndia?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
-      expect((c!.howToUseUS?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
       expect((c!.howToInterpret?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);
       expect((c!.faqs?.length ?? 0), calc.slug).toBeGreaterThanOrEqual(4);
       expect((c!.workedExample?.steps.length ?? 0), calc.slug).toBeGreaterThanOrEqual(3);

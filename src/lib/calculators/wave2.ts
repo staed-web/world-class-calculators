@@ -273,13 +273,13 @@ export const wave2Calculators: CalculatorMeta[] = [
   {
     slug: "salary-after-tax-in",
     category: "finance",
-    name: "Salary After Tax (India Rough)",
-    description: "Rough India salary after-tax / take-home sketch (educational). Pair with FAQs — not the official tax utility.",
-    keywords: ["india tax", "income tax", "new regime", "take home"],
+    name: "Salary After Tax (illustrative slabs)",
+    description: "Illustrative salary after-tax / take-home sketch using sample progressive slabs (educational). Not an official tax utility.",
+    keywords: ["income tax", "take home", "after tax", "salary net", "illustrative slabs"],
     kind: "form",
-    formulaNote: "Simplified slabs with illustrative rebate under ~₹7L. Not tax advice; ignore deductions/exemptions nuance.",
+    formulaNote: "Simplified sample slabs with an illustrative low-income rebate. Not tax advice; ignores deductions/exemptions nuance and local law.",
     fields: [
-      { id: "gross", label: "Annual CTC / taxable income", type: "number", defaultValue: 1200000, prefix: "₹" },
+      { id: "gross", label: "Annual CTC / taxable income", type: "number", defaultValue: 1200000, prefix: "" },
     ],
     related: ["salary-hike", "paycheck-estimator"],
     compute: (v) => {
@@ -287,10 +287,10 @@ export const wave2Calculators: CalculatorMeta[] = [
       if (!parsed.ok) return err(parsed.error);
       const r = salaryAfterTaxIn(parsed.n.gross);
       return ok([
-        { label: "Est. net annual", value: "₹" + fmtNumber(r.net, 0), emphasize: true },
-        { label: "Est. monthly net", value: "₹" + fmtNumber(r.net / 12, 0) },
-        { label: "Income tax", value: "₹" + fmtNumber(r.tax, 0) },
-        { label: "Cess (4%)", value: "₹" + fmtNumber(r.cess, 0) },
+        { label: "Est. net annual", value: fmtNumber(r.net, 0), emphasize: true },
+        { label: "Est. monthly net", value: fmtNumber(r.net / 12, 0) },
+        { label: "Income tax", value: fmtNumber(r.tax, 0) },
+        { label: "Cess (4%)", value: fmtNumber(r.cess, 0) },
         { label: "Effective rate", value: fmtPercent(r.effectivePct) },
       ]);
     },

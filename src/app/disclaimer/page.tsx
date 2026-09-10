@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Disclaimer",
@@ -13,7 +15,7 @@ export default function DisclaimerPage() {
         <p>
           All calculators and results on MyCalcsWorld are provided for
           general educational and informational purposes only. They are{" "}
-          <strong>estimates</strong>, not guarantees.
+          <strong className="text-foreground">estimates</strong>, not guarantees.
         </p>
         <p>
           Nothing on this site constitutes professional financial, investment, tax,
@@ -30,6 +32,17 @@ export default function DisclaimerPage() {
         <p>
           We strive for accuracy but provide the site “as is” without warranties of any
           kind. Use at your own risk.
+        </p>
+        <p>
+          Questions?{" "}
+          <Link href="/contact" className="text-brand hover:underline">
+            Contact us
+          </Link>{" "}
+          or email{" "}
+          <a href={contactMailto()} className="text-brand hover:underline break-all">
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
       </div>
     </div>

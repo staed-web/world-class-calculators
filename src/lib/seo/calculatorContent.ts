@@ -11,26 +11,12 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     seoTitle: "Mortgage Calculator — Monthly Payment & Interest",
     seoDescription: "Estimate fixed-rate mortgage principal & interest payments, total interest, and loan cost. Free browser-based tool — no signup.",
     formulaNote: "Standard amortizing loan: M = P · r(1+r)^n / ((1+r)^n − 1), where r is monthly rate and n is months. Taxes, insurance, and HOA are not included.",
-    overview: "A mortgage calculator estimates the principal-and-interest (P&I) payment on a fixed-rate home loan and shows how interest vs principal evolves over time. MyCalcsWorld’s mortgage tool is built for both U.S. homebuyers comparing 15- vs 30-year loans and Indian home-loan shoppers who think in EMI terms. Taxes, insurance, PMI/MIP, and HOA dues are not included in P&I — add them separately for a full housing budget. Below you get a live payment estimate, a Recharts principal/interest/balance chart, a full year-by-year amortization table, FAQs, and a worked example you can mirror with your own numbers.",
+    overview: "A mortgage calculator estimates the principal-and-interest (P&I) payment on a fixed-rate home loan and shows how interest vs principal evolves over time. MyCalcsWorld’s mortgage / home-loan tool helps you compare tenures and rates whether you think in monthly payment or EMI terms. Taxes, insurance, PMI/MIP, and HOA dues are not included in P&I — add them separately for a full housing budget. Below you get a live payment estimate, a Recharts principal/interest/balance chart, a full year-by-year amortization table, FAQs, and a worked example you can mirror with your own numbers.",
     howToUse: [
       "Enter the loan amount (principal) you plan to borrow.",
       "Set the annual interest rate your lender quoted (APR may differ slightly).",
       "Choose the loan term in years (commonly 15 or 30).",
       "Read the monthly P&I payment, total of payments, and total interest.",
-    ],
-    howToUseUS: [
-      "Enter the loan amount after your down payment (not the full purchase price).",
-      "Use the note rate from your Loan Estimate (not APR, which bundles some fees).",
-      "Choose 15 or 30 years — or another fixed term your lender offers.",
-      "Read monthly P&I, total interest, then scroll the amortization chart and full yearly table.",
-      "Stress-test a higher rate or shorter term before you lock.",
-    ],
-    howToUseIndia: [
-      "Enter the sanctioned home-loan principal (₹) — pick INR in the currency picker.",
-      "Enter the bank/NBFC annual floating or fixed rate you were quoted.",
-      "Set tenure in years (Indian home loans often run 15–30 years).",
-      "Treat the monthly payment as your EMI (P&I). Add property tax, insurance, and society maintenance separately.",
-      "Use the yearly schedule to see how early years are interest-heavy — useful before deciding on prepayments.",
     ],
     howToInterpret: [
       "Monthly payment here is principal + interest only — add property tax and insurance for a full PITI estimate.",
@@ -72,27 +58,15 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
   },
   "loan-emi": {
-    seoTitle: "EMI Calculator India — Loan EMI, Interest & Total Cost",
-    seoDescription: "Calculate equated monthly installment (EMI) for personal, auto, or home loans. Popular India EMI formula — free, works in INR in your browser.",
+    seoTitle: "EMI Calculator — Loan EMI, Interest & Total Cost",
+    seoDescription: "Calculate equated monthly installment (EMI) for personal, auto, or home loans. Free loan EMI formula — works with any currency via the picker.",
     formulaNote: "EMI = P · r(1+r)^n / ((1+r)^n − 1), where P is principal, r is monthly interest rate (annual%/12/100), and n is tenure in months.",
-    overview: "EMI (Equated Monthly Installment) is the standard way Indian banks quote personal, auto, and home loans. The math is the same family as a U.S. amortizing loan payment: a fixed monthly amount that covers interest first, then principal on a reducing balance. This page shows EMI, total interest, a growth/paydown chart, and a full yearly schedule so you can compare tenures and rates transparently — with INR formatting via the currency picker.",
+    overview: "EMI (Equated Monthly Installment) is a fixed monthly loan payment used worldwide for personal, auto, and home loans. The math is the same family as a classic amortizing loan payment: a fixed monthly amount that covers interest first, then principal on a reducing balance. This page shows EMI, total interest, a growth/paydown chart, and a full yearly schedule so you can compare tenures and rates transparently — with multi-currency formatting via the currency picker.",
     howToUse: [
       "Enter the loan principal (amount sanctioned).",
       "Enter the annual interest rate your bank or NBFC offers.",
       "Set tenure in months (e.g. 36 for 3 years, 240 for 20 years).",
       "Review EMI, total payment, and total interest.",
-    ],
-    howToUseUS: [
-      "Enter the financed amount (vehicle or personal loan principal).",
-      "Enter the APR-like annual rate the lender quoted for amortization.",
-      "Set tenure in months (e.g. 60 for a 5-year auto loan).",
-      "Compare EMI vs total interest; shorter terms raise payment but cut interest.",
-    ],
-    howToUseIndia: [
-      "Enter principal in ₹ (use INR currency).",
-      "Enter the annual interest rate from your sanction letter.",
-      "Set months — banks often quote years; multiply by 12.",
-      "Review EMI and total interest; check prepayment rules before paying extra.",
     ],
     howToInterpret: [
       "EMI is the fixed monthly outflow if rate and tenure stay unchanged.",
@@ -100,22 +74,22 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Shorter tenure → higher EMI, lower interest; longer tenure → lower EMI, higher interest.",
     ],
     workedExample: {
-      title: "Worked example — ₹5,00,000 personal loan at 12% for 36 months",
+      title: "Worked example — 500,000 personal loan at 12% for 36 months",
       steps: [
         "P = 500,000; annual 12% → monthly r = 0.01; n = 36.",
-        "EMI = P·r(1+r)^n / ((1+r)^n − 1) ≈ ₹16,607.",
-        "Total payment ≈ ₹5,97,852; interest ≈ ₹97,852.",
+        "EMI = P·r(1+r)^n / ((1+r)^n − 1) ≈ 16,607.",
+        "Total payment ≈ 597,852; interest ≈ 97,852.",
       ],
-      result: "About ₹16.6k EMI; nearly ₹98k interest over 3 years if you pay on schedule.",
+      result: "About 16.6k EMI; nearly 98k interest over 3 years if you pay on schedule.",
     },
     faqs: [
       {
-        question: "What is EMI in India?",
+        question: "What is EMI?",
         answer: "Equated Monthly Installment is the fixed amount you pay each month toward a loan. It combines principal and interest so the payment stays level while the interest–principal mix shifts over time.",
       },
       {
         question: "Should I enter monthly or annual interest rate?",
-        answer: "Enter the annual rate (e.g. 8.5%). The calculator converts it to a monthly rate internally, matching how Indian banks typically quote loans.",
+        answer: "Enter the annual rate (e.g. 8.5%). The calculator converts it to a monthly rate internally, matching how many lenders quote annual percentage rates.",
       },
       {
         question: "Does this work for home loans, car loans, and personal loans?",
@@ -136,26 +110,15 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
   },
   "sip": {
-    seoTitle: "SIP Calculator India — Mutual Fund Returns Estimator",
-    seoDescription: "Estimate SIP (Systematic Investment Plan) maturity value for Indian mutual funds. Enter monthly investment, expected return, and years — free online.",
+    seoTitle: "SIP Calculator — Mutual Fund Returns Estimator",
+    seoDescription: "Estimate SIP / recurring investment maturity. Enter monthly investment, expected return, and years — free online.",
     formulaNote: "Future value of SIP uses the standard annuity compound formula with monthly rate r and n months (site implementation).",
-    overview: "A Systematic Investment Plan (SIP) invests a fixed amount every month — the default habit for many Indian mutual-fund investors, and a useful model for any recurring investment worldwide. This calculator projects maturity value at a constant assumed return, plots invested amount vs portfolio value year by year, and pairs with CAGR/inflation tools for realism. Returns are not guaranteed; equity SIPs can be volatile.",
+    overview: "A Systematic Investment Plan (SIP) invests a fixed amount every month — a useful model for any recurring investment worldwide (mutual funds, brokerage DCA, and similar plans). This calculator projects maturity value at a constant assumed return, plots invested amount vs portfolio value year by year, and pairs with CAGR/inflation tools for realism. Returns are not guaranteed; equity SIPs can be volatile.",
     howToUse: [
       "Enter how much you invest each month.",
       "Set an expected annual return (historical equity SIPs often use 10–12% for illustration — not a guarantee).",
       "Choose the investment horizon in years.",
       "Compare invested amount vs estimated maturity value.",
-    ],
-    howToUseUS: [
-      "Enter a monthly contribution (e.g. 401(k) or brokerage auto-invest).",
-      "Choose a long-run expected return assumption — be conservative.",
-      "Set years until your goal and read future value vs total invested on the chart.",
-    ],
-    howToUseIndia: [
-      "Enter your monthly SIP amount in ₹.",
-      "Use an illustrative equity return (often 10–12% in planner examples) or a lower debt-fund rate.",
-      "Set tenure (5, 10, 15, 20+ years) and compare corpus vs amount invested.",
-      "Remember expense ratios, exit loads, and capital-gains tax are not deducted here.",
     ],
     howToInterpret: [
       "Maturity value is an illustration at a constant assumed return — real NAVs fluctuate.",
@@ -163,18 +126,18 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Estimated gains = maturity − invested; they compound more the longer you stay invested.",
     ],
     workedExample: {
-      title: "Worked example — ₹10,000/month SIP at 12% for 15 years",
+      title: "Worked example — 10,000/month SIP at 12% for 15 years",
       steps: [
         "Monthly P = 10,000; annual return 12% → monthly r = 0.01; n = 180.",
         "Future value of annuity compounds each contribution to the horizon.",
-        "Total invested = 10,000 × 180 = ₹18,00,000; estimated corpus is substantially higher at 12% assumed.",
+        "Total invested = 10,000 × 180 = 1,800,000; estimated corpus is substantially higher at 12% assumed.",
       ],
-      result: "Invested ₹18 lakh; illustrated maturity is much higher at a steady 12% — markets will not be a straight line.",
+      result: "Invested 1,800,000; illustrated maturity is much higher at a steady 12% — markets will not be a straight line.",
     },
     faqs: [
       {
         question: "What is a SIP calculator used for?",
-        answer: "It projects how regular monthly investments might grow at an assumed rate of return — useful for goal planning for Indian mutual funds, not a promise of returns.",
+        answer: "It projects how regular monthly investments might grow at an assumed rate of return — useful for goal planning with recurring investments, not a promise of returns.",
       },
       {
         question: "What return rate should I enter for equity SIPs?",
@@ -279,16 +242,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Generate the schedule and review early vs late payments.",
       "Note how interest dominates early payments on long loans.",
     ],
-    howToUseUS: [
-      "Enter loan amount, rate, and term.",
-      "Study the chart: interest dominates early years on long mortgages.",
-      "Use the full yearly table when comparing lenders or refinance options.",
-    ],
-    howToUseIndia: [
-      "Enter home-loan or personal-loan principal in ₹.",
-      "Review how prepayments would cut the interest column in later years.",
-      "Pair with the EMI calculator for the headline payment.",
-    ],
     howToInterpret: [
       "Early years: most of each payment is interest.",
       "Later years: most of each payment reduces principal.",
@@ -308,7 +261,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "Yes. Extra principal lowers the balance immediately, reducing later interest. Confirm whether your lender recalculates payment or shortens term.",
       },
       {
-        question: "Is amortization the same for EMI loans in India?",
+        question: "Is amortization the same for EMI-style loans?",
         answer: "Yes in principle — EMI loans also use reducing-balance amortization. Labels differ (EMI vs mortgage payment) but the math is the same family.",
       },
       {
@@ -318,47 +271,38 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
   },
   "gst-vat": {
-    seoTitle: "GST Calculator India — Add or Remove GST / VAT",
-    seoDescription: "Add or extract GST/VAT from prices. Useful for Indian GST slabs and general VAT — free online GST calculator.",
+    seoTitle: "GST / VAT Calculator — Add or Remove GST / VAT",
+    seoDescription: "Add or extract GST/VAT/sales tax from prices. Useful for common tax slabs worldwide — free online.",
     formulaNote: "Price with tax = base × (1 + rate/100). Base from tax-inclusive price = gross / (1 + rate/100). Tax amount = gross − base.",
-    overview: "GST in India (and VAT elsewhere) is a percentage tax on taxable value. This calculator adds tax to a base price or backs tax out of a gross price for common slabs such as 5%, 12%, 18%, and 28%. It is an educational invoice helper — not a filing tool. CGST/SGST are usually equal halves of the GST rate on intra-state supplies; IGST applies interstate.",
+    overview: "GST, VAT, and sales tax are percentage taxes on taxable value. This calculator adds tax to a base price or backs tax out of a gross price for common slabs (for example 5%, 10%, 12%, 18%, 20%). It is an educational invoice helper — not a filing tool.",
     howToUse: [
       "Enter the amount (tax-exclusive or tax-inclusive).",
-      "Choose the GST/VAT rate (e.g. 5%, 12%, 18%, 28% in India).",
+      "Choose the GST/VAT/sales-tax rate that applies to your invoice.",
       "Select whether you are adding tax or removing tax from a gross price.",
       "Read net, tax, and gross figures.",
-    ],
-    howToUseUS: [
-      "For U.S. sales tax, enter your combined state/local rate and add tax to the pre-tax price.",
-      "Use remove-tax mode when a receipt total is tax-inclusive and you need the base.",
-    ],
-    howToUseIndia: [
-      "Enter taxable value and the HSN/SAC GST rate (e.g. 18%).",
-      "Add GST for invoice totals, or remove GST from an MRP-style inclusive price.",
-      "Split CGST/SGST mentally as half each when preparing intra-state invoices.",
     ],
     howToInterpret: [
       "Use add-tax when you have a taxable value and need invoice totals.",
       "Use remove-tax when a shelf price already includes GST/VAT and you need the base.",
-      "CGST/SGST splits are typically half of the GST rate each for intra-state supplies in India — this tool focuses on the combined rate.",
+      "Some jurisdictions split tax into multiple components — this tool focuses on the combined rate.",
     ],
     workedExample: {
-      title: "Worked example — ₹10,000 taxable at 18% GST",
+      title: "Worked example — 10,000 taxable at 18% GST/VAT",
       steps: [
-        "Tax = 10,000 × 0.18 = ₹1,800.",
-        "Invoice total = ₹11,800.",
+        "Tax = 10,000 × 0.18 = 1,800.",
+        "Invoice total = 11,800.",
         "From a ₹11,800 inclusive price: base = 11,800 / 1.18 = ₹10,000.",
       ],
       result: "₹1,800 GST on ₹10,000 taxable value (₹900 CGST + ₹900 SGST if intra-state).",
     },
     faqs: [
       {
-        question: "What GST rates does India commonly use?",
+        question: "What tax rates can I enter?",
         answer: "Common slabs include 0%, 5%, 12%, 18%, and 28%, with some items under special rates. Always confirm the HSN/SAC rate for your goods or services.",
       },
       {
         question: "Is GST the same as VAT?",
-        answer: "Both are consumption taxes on value. India uses GST nationwide; many other countries use VAT. The percentage math is the same.",
+        answer: "GST, VAT, and sales tax are all consumption taxes on value. The percentage math is the same; enter the rate that applies where you are.",
       },
       {
         question: "How do I reverse-calculate GST from a final price?",
@@ -375,28 +319,17 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
   },
   "salary-after-tax-in": {
-    seoTitle: "India Salary After Tax Calculator — Take-Home Estimate",
-    seoDescription: "Rough estimate of India take-home pay after a flat tax percentage. Educational only — not a substitute for the Income Tax Department calculator.",
-    formulaNote: "Illustrative flat-percentage model: take-home ≈ gross × (1 − tax%/100). Real Indian tax uses slabs, deductions (e.g. 80C), cess, and regime choice.",
-    overview: "Indian take-home pay depends on the tax regime (new vs old), slabs, cess, deductions such as 80C/80D, and payroll items like EPF and professional tax. This calculator intentionally uses a flat effective-tax percentage so you can sketch scenarios quickly — then verify with a full slab worksheet, your employer’s payroll, or a CA. It is not the Income Tax Department utility.",
+    seoTitle: "Salary After Tax Calculator — Take-Home Estimate",
+    seoDescription: "Rough take-home pay estimate after an illustrative effective tax percentage. Educational only — not a substitute for official tax software.",
+    formulaNote: "Illustrative flat-percentage model: take-home ≈ gross × (1 − tax%/100). Real tax systems use slabs, deductions, credits, and local rules — always verify with official tools.",
+    overview: "Take-home pay depends on local tax slabs, deductions/credits, payroll withholdings, and benefits. This calculator intentionally uses a flat effective-tax percentage so you can sketch scenarios quickly — then verify with an official tax worksheet, your employer’s payroll, or a qualified advisor.",
     howToUse: [
       "Enter gross annual or monthly salary as labeled.",
       "Set an approximate effective tax percentage for illustration.",
       "Compare gross vs estimated take-home.",
     ],
-    howToUseUS: [
-      "If you only need a rough net from gross with a blended rate, enter gross and an effective % — for U.S. federal/state detail use a dedicated paycheck tool.",
-      "Treat the output as a planning sketch, then verify with payroll software or a tax preparer.",
-      "For India-specific slab math, switch to the India how-to steps and INR framing.",
-    ],
-    howToUseIndia: [
-      "Enter CTC/gross as labeled.",
-      "Pick an effective tax % that approximates your slab + cess after deductions (illustrative).",
-      "Subtract PF and professional tax separately for a closer in-hand figure.",
-      "Re-run after a hike or when switching tax regimes.",
-    ],
     howToInterpret: [
-      "This is a simplified model — India’s new/old regimes, cess, and deductions change actual liability.",
+      "This is a simplified model — real tax regimes, cess/surcharges, and deductions change actual liability.",
       "Use it for quick planning, then verify with a full tax worksheet or CA.",
       "Employer deductions (PF, professional tax) may further reduce in-hand pay.",
     ],
@@ -411,7 +344,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     },
     faqs: [
       {
-        question: "Is this the official Indian income-tax calculator?",
+        question: "Is this an official income-tax calculator?",
         answer: "No. It applies a flat percentage for education. Official slab math, surcharge, and cess are more detailed.",
       },
       {
@@ -456,7 +389,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "No. A simple average of yearly returns ignores compounding. CAGR is the geometric rate that links start and end values.",
       },
       {
-        question: "Can I use CAGR for Indian mutual funds?",
+        question: "Can I use CAGR for mutual funds?",
         answer: "Yes — point-to-point CAGR is a common way to summarize fund performance. Always check the exact dates and whether dividends were reinvested.",
       },
       {
@@ -559,7 +492,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     faqs: [
       {
         question: "What tip percentage is customary?",
-        answer: "In the U.S., 15–20% on the pre-tax bill is common for sit-down service. Norms differ widely by country.",
+        answer: "Tip norms differ widely by country and venue — often roughly 10–20% where tipping is customary, and sometimes already included as a service charge.",
       },
       {
         question: "Should I tip on tax?",
@@ -651,15 +584,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Enter body weight in kilograms.",
       "Enter height in centimetres.",
       "Read BMI and the category label.",
-    ],
-    howToUseUS: [
-      "Convert pounds and inches to kg and cm if needed, then enter metric values.",
-      "Read BMI and category; discuss personal targets with a healthcare professional.",
-    ],
-    howToUseIndia: [
-      "Enter weight in kg and height in cm (standard clinic units in India).",
-      "Note that some Asian BMI cutoffs for risk start lower than WHO ‘overweight’ thresholds — ask your doctor which chart they use.",
-      "Pair BMI with waist measure or the body-fat tool if you lift weights or play sports.",
     ],
     howToInterpret: [
       "BMI is a population screening metric — it does not measure body fat directly.",
@@ -827,8 +751,8 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "They are periodically refreshed reference rates for education. Your bank, UPI international, or card FX rate will differ.",
       },
       {
-        question: "Can I convert to Indian Rupees (INR)?",
-        answer: "Yes — select INR as source or target. Pair with EMI/SIP tools when planning India-focused budgets.",
+        question: "Can I convert to other currencies like INR, EUR, or GBP?",
+        answer: "Yes — select any supported currency as source or target. Pair with EMI/SIP tools when planning loan or investment budgets.",
       },
       {
         question: "Why does my card charge a different amount?",
@@ -854,7 +778,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Compare estimated melt/spot-linked value to retail offers.",
     ],
     howToInterpret: [
-      "Retail jewellery prices include making charges and GST in India — often far above melt value.",
+      "Retail jewelry prices often include making charges and sales tax/VAT — often far above melt value.",
       "Quotes are delayed free-feed estimates, not a dealer bid.",
     ],
     faqs: [
@@ -867,7 +791,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "Making charges, design premium, wastage, and taxes sit on top of metal value.",
       },
       {
-        question: "Can I use this for Indian gold jewellery?",
+        question: "Can I use this for gold jewellery?",
         answer: "Yes as a rough metal-value check. Always weigh hallmarked jewellery and ask for itemized making charges.",
       },
       {
@@ -963,7 +887,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
     howToInterpret: [
       "Sequence of returns and fees can change outcomes dramatically.",
-      "Indian planners often blend EPF/PPF/mutual funds — model each bucket separately for realism.",
+      "Many planners blend retirement accounts and mutual funds — model each bucket separately for realism.",
     ],
     faqs: [
       {
@@ -983,7 +907,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         answer: "Yes when applicable — add match into the contribution figure for a fairer projection.",
       },
       {
-        question: "What about NPS or EPF in India?",
+        question: "What about employer retirement accounts?",
         answer: "Treat them as separate contribution streams with their own return assumptions, then sum projected values.",
       },
     ],
@@ -1034,12 +958,12 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
     howToInterpret: [
       "U.S. sales tax varies by state/city; this tool does not geo-detect your rate.",
-      "For India invoices, prefer the GST calculator and correct HSN rates.",
+      "For taxable invoices, prefer the GST/VAT calculator and the correct tax rate for your goods.",
     ],
     faqs: [
       {
         question: "Is sales tax the same as GST?",
-        answer: "Conceptually similar as consumption taxes, but filing rules and rate structures differ. Use GST tools for Indian invoices.",
+        answer: "Conceptually similar as consumption taxes, but filing rules and rate structures differ. Use GST tools for invoices.",
       },
       {
         question: "How do I remove sales tax from a total?",
@@ -1199,12 +1123,12 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     ],
     howToInterpret: [
       "A flat salary that ignores inflation loses real purchasing power.",
-      "Indian long-term planners often assume mid-single-digit inflation — choose a rate that matches your scenario.",
+      "Long-term planners often assume mid-single-digit inflation — choose a rate that matches your scenario.",
     ],
     faqs: [
       {
         question: "What inflation rate should I enter?",
-        answer: "Use a CPI-style assumption for your country and horizon. India and the U.S. have different historical averages.",
+        answer: "Use a CPI-style assumption for your country and horizon. Historical averages differ by region.",
       },
       {
         question: "Is this CPI or food inflation?",
@@ -1445,16 +1369,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Read years, months, and days completed.",
       "Cross-check against any institutional cutoff rule that uses a specific as-of date.",
     ],
-    howToUseUS: [
-      "Enter DOB in the form’s date fields (U.S. forms often care about age as of a school or sports cutoff date).",
-      "Set as-of to the cutoff, not necessarily today.",
-      "Read completed years first if the form only asks for age in years.",
-    ],
-    howToUseIndia: [
-      "Enter DOB as on Aadhaar / birth certificate.",
-      "For school/college cutoffs, set as-of to the board or university reference date.",
-      "Use the Y/M/D breakdown when a form asks for exact age rather than completed years only.",
-    ],
     howToInterpret: [
       "Years/months/days are completed units as of the as-of date.",
       "A one-day shift around a birthday or leap day can change the display — expected behavior.",
@@ -1482,8 +1396,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Day difference counts the calendar span between start and end according to the tool’s inclusive/exclusive convention shown in the result hint. Leap days inside the span are included in the day total.",
     overview: "Need to know how many days until a deadline, between invoices, or across a project window? The Date Difference calculator gives a clear day count (and related breakdowns when shown) without building a spreadsheet.\n\nUse Age Calculator instead when you need years/months/days from a date of birth.",
     howToUse: ["Enter the start date.", "Enter the end date.", "Read the day difference and any secondary breakdown.", "Confirm inclusive vs exclusive counting via the result hint before filing a deadline."],
-    howToUseUS: ["Enter start and end in the form fields.", "For U.S. business contexts, remember federal holidays are not auto-excluded unless a business-day mode says so.", "Verify with the institution that owns the deadline."],
-    howToUseIndia: ["Enter start and end dates.", "Bank/court holidays are not auto-skipped in plain day-count mode.", "Use for exam countdowns, rent periods, or project spans — confirm with the relevant authority."],
     howToInterpret: ["Read the hint under the result for inclusive/exclusive rules.", "Weekend-only exclusions appear only when that mode is offered.", "Educational scheduling aid — not legal notice calculation."],
     workedExample: {
       title: "Worked example — 1 Jan to 31 Jan in a non-leap year",
@@ -1503,8 +1415,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Even split ≈ (bill + tip) / people. Tip may be percent of pre-tip bill. Uneven shares weight the total by the ratios you enter when that mode exists.",
     overview: "The Split Bill calculator turns an awkward dinner check into clear per-person amounts, with optional tip — handy for restaurants, roommates, and group travel.\n\nRound results the way your group prefers (some always round up for service).",
     howToUse: ["Enter the bill total.", "Set number of people.", "Add tip percent or amount if desired.", "Read each person’s share."],
-    howToUseUS: ["Enter pre-tax or post-tax total as your group agrees — U.S. tips are often on pre-tax food & drink.", "15–20%+ tip is common for full-service restaurants; adjust for quality.", "Split evenly or use related tip tools for more control."],
-    howToUseIndia: ["Enter the bill including or excluding GST as your group prefers.", "Service charge may already be on the bill — avoid double-tipping unless you intend to.", "Split evenly for casual dining; use per-item honesty for large groups."],
     howToInterpret: ["Per-person share is exact arithmetic; coin rounding is a social choice.", "If service charge is included, decide whether an extra tip is needed.", "Planning aid — not a payment processor."],
     workedExample: {
       title: "Worked example — $120 bill, 4 people, 18% tip",
@@ -1524,8 +1434,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Cost ≈ distance × (fuel price) / efficiency, with efficiency in distance-per-volume (e.g. km/L or MPG) depending on fields. Real trips vary with traffic, load, AC, and speed.",
     overview: "Plan a road trip or commute budget by combining distance, fuel efficiency, and pump price. The Fuel Cost calculator gives a transparent estimate you can stress-test with worse mileage or higher prices.\n\nPair with Fuel vs EV tools when comparing powertrains.",
     howToUse: ["Enter trip distance.", "Enter vehicle efficiency (as labeled).", "Enter fuel price per unit.", "Read estimated fuel cost (and quantity when shown)."],
-    howToUseUS: ["Use miles and MPG with $/gallon for typical U.S. road-trip math.", "Highway MPG is often higher than city — pick a realistic blend.", "Add parking/tolls separately."],
-    howToUseIndia: ["Use km and km/L with ₹/litre for Indian highway planning.", "AC, load, and traffic can cut real km/L vs brochure figures.", "Compare CNG/EV alternatives with related tools when relevant."],
     howToInterpret: ["Estimate assumes steady efficiency — hills and traffic change reality.", "Round-trip = usually 2× one-way if conditions match.", "Planning aid, not a fleet telematics report."],
     workedExample: {
       title: "Worked example — 300 km at 15 km/L and ₹100/L",
@@ -1545,8 +1453,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "°F = °C × 9/5 + 32; °C = (°F − 32) × 5/9; K = °C + 273.15. These are affine transforms — not simple ratios.",
     overview: "Temperature conversion is one of the most common unit tasks — weather apps, oven settings, lab work, and school science all mix °C, °F, and kelvin.\n\nThis converter applies the standard linear formulas so you can move between scales without memorizing offsets every time.",
     howToUse: ["Enter a value in one scale.", "Read the converted outputs.", "Use kelvin for science contexts that need absolute temperature.", "Remember cooking and weather almost never use kelvin."],
-    howToUseUS: ["U.S. weather and ovens are usually °F — convert recipes from °C carefully (ovens are not linear “just multiply”).", "Body-temperature references differ slightly by scale."],
-    howToUseIndia: ["Weather and school science are usually °C; convert U.S. recipes from °F.", "Lab work may require kelvin — use the K output."],
     howToInterpret: ["0 °C ≠ 0 °F; only the formulas above are correct.", "Differences in °C equal differences in K.", "Educational converter — not a calibrated thermometer."],
     workedExample: {
       title: "Worked example — 25 °C",
@@ -1566,8 +1472,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Conversions use standard SI and customary factors (e.g. 1 in = 25.4 mm exact; 1 ft = 12 in). Chain through meters internally for consistency.",
     overview: "Length conversion shows up in DIY plans, travel distances, fabric cutting, and homework. This tool maps common metric and imperial units with standard factors.\n\nFor area or volume, use the dedicated converters so you do not square/cube incorrectly by hand.",
     howToUse: ["Enter a length value.", "Pick or read the target unit outputs.", "Keep significant figures appropriate to your measuring tape or map.", "Use area/volume tools for 2D/3D quantities."],
-    howToUseUS: ["Feet/inches and miles are common; watch survey feet vs international feet only for specialized geospatial work.", "Building plans may mix fractional inches — round carefully."],
-    howToUseIndia: ["Meters/cm and kilometers dominate; convert U.S. plans from feet/inches.", "BIS and construction docs usually prefer metric."],
     howToInterpret: ["Exact SI definitions beat memory roundings for precision work.", "Do not convert area by converting length once — square the factor.", "DIY aid — verify structural dimensions with a professional when safety matters."],
     workedExample: {
       title: "Worked example — 6 feet to meters",
@@ -1587,8 +1491,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Uses standard mass factors (1 lb = 0.45359237 kg exact in the international pound). Everyday language says “weight”; the converter treats mass under standard gravity.",
     overview: "Shipping labels, gym plates, recipes, and baggage allowances constantly mix kilograms and pounds. This weight converter applies standard factors so you can move between systems quickly.\n\nFor cooking volume↔mass you still need ingredient density — use cooking converters when appropriate.",
     howToUse: ["Enter a mass value.", "Read kg/lb/oz (and other) outputs.", "Match the unit your airline, gym, or recipe expects.", "Do not confuse fluid ounces with ounces mass."],
-    howToUseUS: ["Pounds and ounces dominate consumer contexts; body weight is usually lb.", "Shipping may show lb or oz — check carrier labels."],
-    howToUseIndia: ["Kilograms dominate; convert U.S. product labels from lb/oz.", "Gold jewelry uses grams and purity — see commodities tools for value."],
     howToInterpret: ["lb↔kg uses the international pound factor.", "Stone is 14 lb where shown.", "Educational converter — scales need calibration for trade."],
     workedExample: {
       title: "Worked example — 70 kg to lb",
@@ -1608,8 +1510,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "For a right triangle, a² + b² = c² where c is the hypotenuse. Given two sides, the third is recovered by square roots: c = √(a²+b²), a = √(c²−b²), etc.",
     overview: "The Pythagorean theorem is the workhorse of right-triangle geometry — construction layouts, distance checks, and classroom proofs all rely on a² + b² = c².\n\nThis calculator finds the missing side when you provide the other two, with formula notes you can rewrite on paper for exams.",
     howToUse: ["Identify which side is the hypotenuse (longest, opposite the right angle).", "Enter the two known sides.", "Read the computed third side.", "Confirm units are consistent (all cm or all m)."],
-    howToUseUS: ["Common in shop math and SAT-style geometry — keep inches/feet consistent.", "For 3D distance use the 3D Pythagoras / distance tools."],
-    howToUseIndia: ["Matches class 8–10 Pythagoras applications in board curricula.", "Keep units consistent; show √ steps on paper for exams."],
     howToInterpret: ["Works only for right triangles.", "If c² < a² + b² checks fail, inputs may not form a right triangle with those legs.", "Educational geometry — not a survey instrument."],
     workedExample: {
       title: "Worked example — legs 3 and 4",
@@ -1629,8 +1529,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Circumference C = 2πr = πd; area A = πr². Given any one of r, d, C, or A, the others follow algebraically (r = √(A/π), etc.).",
     overview: "Circles show up in garden beds, pipe sizing, pizza math, and exam problems. This calculator relates radius, diameter, circumference, and area so you can move from any one known value to the rest.\n\nπ is taken as the usual floating-point constant; exams may want answers in terms of π.",
     howToUse: ["Enter the known quantity (radius, diameter, circumference, or area).", "Read the derived circle measures.", "Keep units consistent (area will be length²).", "For arcs/sectors use specialized tools if listed."],
-    howToUseUS: ["DIY often uses inches/feet — convert area to ft² carefully (12 in = 1 ft ⇒ 144 in² = 1 ft²)."],
-    howToUseIndia: ["School problems often want exact π form — use decimals here and rewrite as π·r² on paper when needed."],
     howToInterpret: ["Area units are squared length units.", "Diameter is twice radius always.", "Educational geometry aid."],
     workedExample: {
       title: "Worked example — radius 7",
@@ -1650,8 +1548,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Mean = Σx / n. Median = middle value after sorting (average of two middles if n even). Mode = most frequent value(s).",
     overview: "Mean, median, and mode answer different questions about a dataset — typical value, middle value, and most common value. This average calculator computes them from your list so you can check homework or summarize a small sample quickly.\n\nFor spread, see the Standard Deviation calculator.",
     howToUse: ["Enter numbers as the form accepts (comma/space separated or fields).", "Read mean, median, and mode.", "Sort mentally to verify median on small sets.", "Use sample vs population std-dev tools for dispersion."],
-    howToUseUS: ["Common in middle-school through AP Stats warmups — match whether your teacher wants mean of frequencies separately."],
-    howToUseIndia: ["Useful for class 9–11 statistics chapters — show working for mean Σx/n on paper."],
     howToInterpret: ["Outliers pull the mean more than the median.", "Multimodal sets can have multiple modes.", "Descriptive only — not a full stats suite."],
     workedExample: {
       title: "Worked example — 2, 4, 4, 6, 9",
@@ -1671,8 +1567,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Many consumer rules of thumb scale fluid needs with body weight and bump for activity/climate. Exact clinical needs vary widely; this tool uses a transparent educational heuristic labeled on the form.",
     overview: "Hydration targets are personalized — body size, climate, exercise, and health conditions all matter. This Water Intake calculator gives an educational daily estimate from common weight-based rules of thumb so you can set a starting goal.\n\nIt is not medical advice; kidney disease, heart failure, and other conditions need clinician guidance.",
     howToUse: ["Enter body weight.", "Adjust activity/climate factors if offered.", "Read the suggested daily volume.", "Increase gradually and listen to thirst/urine cues unless told otherwise by a clinician."],
-    howToUseUS: ["Results may show fl oz or cups — convert to bottles you actually use.", "Athletes may need more; discuss with a trainer/clinician."],
-    howToUseIndia: ["Results often in liters/ml — practical for bottle planning in hot climates.", "Monsoon humidity and outdoor labor change needs; educational only."],
     howToInterpret: ["Targets are heuristics, not prescriptions.", "Food moisture and other beverages count toward fluids for many people.", "Seek medical advice for specialized diets or illness."],
     workedExample: {
       title: "Worked example — 70 kg moderate activity",
@@ -1692,8 +1586,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Common estimators include Epley: 1RM ≈ w(1 + r/30) for weight w and reps r (typically ≤10–12). Other formulas (Brzycki, etc.) may be noted on-page. Estimates degrade as reps get high.",
     overview: "A one-rep max estimate helps lifters program percentages without testing a true max every week. Enter a weight you lifted for N reps and get an estimated 1RM plus handy training percentages when shown.\n\nUse a spotter and safe form — calculators do not prevent injury.",
     howToUse: ["Enter the weight lifted.", "Enter reps completed cleanly.", "Read estimated 1RM and any percentage chart.", "Prefer rep ranges ≤10 for better estimates."],
-    howToUseUS: ["lb plates are common — keep units consistent with your gym.", "Beginner programs often use estimated 1RM percentages rather than weekly max tests."],
-    howToUseIndia: ["kg plates dominate most gyms — enter kg.", "Focus on form; estimated 1RM is for programming, not ego maxing."],
     howToInterpret: ["High-rep sets overestimate/underestimate depending on formula and fatigue.", "True 1RM can differ with sleep, grip, and ROM.", "Training aid — not medical advice."],
     workedExample: {
       title: "Worked example — 100 kg × 5 reps (Epley)",
@@ -1713,8 +1605,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Margin = (price − cost)/price; Markup = (price − cost)/cost. Therefore price = cost/(1 − margin) and price = cost × (1 + markup).",
     overview: "Teams constantly confuse margin with markup — and misprice products as a result. This calculator converts between cost, price, margin %, and markup % with the standard identities so pricing meetings stay unambiguous.\n\nTaxes, shipping, and payment fees are extra unless you baked them into cost.",
     howToUse: ["Enter cost and either price, margin, or markup depending on fields.", "Read the derived margin/markup/price.", "Label which % you are quoting in customer or investor conversations.", "Re-run after adding freight or fees into cost."],
-    howToUseUS: ["U.S. retail conversations often say “margin” but mean markup — clarify definitions.", "Compare with break-even tools for volume targets."],
-    howToUseIndia: ["Useful for traders and D2C pricing before GST presentation — decide whether quotes are tax-inclusive.", "Keep margin vs markup language clear with suppliers."],
     howToInterpret: ["50% markup ≠ 50% margin (50% markup = 33.3% margin).", "Negative margin means price below cost.", "Illustrative pricing math — not accounting software."],
     workedExample: {
       title: "Worked example — cost 80, price 100",
@@ -1734,8 +1624,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Annual ≈ hourly × hours_per_week × weeks_per_year. Reverse: hourly ≈ annual / (hours_per_week × weeks_per_year). Benefits, overtime, and taxes are not included unless modeled elsewhere.",
     overview: "Job offers mix hourly and salaried language. This converter translates between them using explicit hours/week and weeks/year assumptions so you can compare apples to apples.\n\nBenefits load, overtime rules, and taxes differ by country and contract — adjust outside the simple product.",
     howToUse: ["Enter hourly rate or annual salary.", "Set hours/week and paid weeks/year.", "Read the converted figure.", "Adjust weeks down for unpaid time off if needed."],
-    howToUseUS: ["Full-time often assumes 40×52 = 2,080 hours — many roles are not truly 2,080 paid hours.", "Exempt vs non-exempt overtime rules are legal topics beyond this math."],
-    howToUseIndia: ["Compare monthly CTC vs hourly contract rates carefully — CTC may include benefits.", "Use INR via currency picker for display."],
     howToInterpret: ["Simple product ignores bonuses and equity.", "Fewer paid weeks lowers annualized pay.", "Compensation planning aid — not tax advice."],
     workedExample: {
       title: "Worked example — $30/hr × 40 × 52",
@@ -1755,8 +1643,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Population variance σ² = Σ(x−μ)² / N; sample variance s² = Σ(x−x̄)² / (n−1). Standard deviation is the square root. Confirm which divisor your coursework requires.",
     overview: "Standard deviation measures spread around the mean. This calculator computes variance and std-dev for your list and distinguishes sample vs population divisors when both are offered — a frequent homework tripwire.\n\nPair with the Average calculator for mean/median/mode.",
     howToUse: ["Enter your dataset.", "Choose sample vs population if prompted.", "Read variance and standard deviation.", "Compare with your textbook’s divisor convention."],
-    howToUseUS: ["AP Stats / college intro stats usually want sample s with n−1 for inferential work on samples."],
-    howToUseIndia: ["Board and university problems specify population vs sample — match the question wording."],
     howToInterpret: ["Same units as the data for std-dev; squared units for variance.", "Outliers inflate std-dev.", "Descriptive/educational — not a full hypothesis test."],
     workedExample: {
       title: "Worked example — 2, 4, 4, 4, 5, 5, 7, 9",
@@ -1776,8 +1662,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "If course = w·final + (1−w)·current (weights as fractions), then final_needed = (target − (1−w)·current) / w. Multiple categories use the generalized weighted sum on the form.",
     overview: "Students ask what score they need on the final for a reason. Enter your current average, the final exam weight, and your target course grade to see the required exam score.\n\nSyllabus policies (curves, dropped scores) can change the real answer — match official weights.",
     howToUse: ["Enter current grade %.", "Enter final exam weight %.", "Enter desired course grade %.", "Read the required final score (may exceed 100% if the target is unreachable)."],
-    howToUseUS: ["Use syllabus weights exactly (e.g. final 20%).", "AP/college courses may curve — this tool assumes linear weights."],
-    howToUseIndia: ["Match internal + end-sem weights from your university scheme.", "Some systems use absolute grading bands — convert carefully."],
     howToInterpret: [">100% needed means the target is impossible under these weights.", "Extra credit is not modeled unless you adjust current grade.", "Planning aid — registrar rules win."],
     workedExample: {
       title: "Worked example — current 82%, final weight 30%, target 85%",
@@ -1797,8 +1681,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Simple return ≈ (end − start − net_contributions) / start (definitions vary when contributions occur mid-period). Annualization may use CAGR-style roots when a time span is provided.",
     overview: "Investment Return tools summarize how much you gained or lost between two values, optionally adjusting for deposits. Use them to understand a statement period — not to pick securities.\n\nFor pure compounded growth without cash flows, see CAGR and Compound Interest calculators.",
     howToUse: ["Enter starting value.", "Enter ending value.", "Add net contributions/withdrawals if fields exist.", "Read profit/loss and return %."],
-    howToUseUS: ["Brokerage statements may use time-weighted returns — this page may be money-simple depending on fields.", "Taxes and fees usually excluded."],
-    howToUseIndia: ["Useful for MF folio rough checks — official XIRR may differ with dated cash flows.", "Pick INR for display."],
     howToInterpret: ["Ignoring mid-period cash flows misstates personal return.", "Past returns do not guarantee future results.", "Not investment advice."],
     workedExample: {
       title: "Worked example — $10,000 → $12,000, no contributions",
@@ -1818,8 +1700,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Rearranges the standard payment formula: P = M · ((1+r)^n − 1) / (r(1+r)^n) for payment M, monthly rate r, and n months.",
     overview: "Affordability calculators flip the EMI/mortgage payment equation: start from what you can pay monthly, then estimate a principal. Lenders also check credit, DTI, and collateral — this page is math only.\n\nStress-test higher rates before shopping.",
     howToUse: ["Enter the monthly payment you can afford.", "Enter the interest rate and term.", "Read the estimated principal.", "Leave margin for taxes/insurance on housing loans."],
-    howToUseUS: ["Mortgage affordability should reserve room for taxes, insurance, and HOA — P&I is only part of PITI.", "DTI limits vary by loan program."],
-    howToUseIndia: ["Banks apply FOIR/DTI-like limits and credit checks beyond this formula.", "Use INR and compare floating-rate stress scenarios."],
     howToInterpret: ["Output is capacity under the payment you typed — not a pre-approval.", "Higher rates shrink affordable principal quickly.", "Not lending advice."],
     workedExample: {
       title: "Worked example — $1,500/mo at 6.5% for 30 years",
@@ -1839,8 +1719,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Amortizing payment on principal after down payment: M = P·r(1+r)^n/((1+r)^n−1). Taxes, title, and extended warranties may need to be added into the financed amount.",
     overview: "Car loans are amortizing loans with shorter tenures than mortgages. This calculator estimates monthly payment and total interest from vehicle price, down payment, APR-like rate, and term so you can compare dealer offers.\n\nAdd taxes/fees into the financed amount when they are rolled in.",
     howToUse: ["Enter vehicle price and down payment.", "Enter APR/interest rate and term in months.", "Read monthly payment and total interest.", "Compare a shorter term vs lower payment tradeoff."],
-    howToUseUS: ["Use the contract rate; dealer “add-ons” can inflate principal.", "Gap insurance and warranties are optional costs — know what is financed."],
-    howToUseIndia: ["Enter on-road price components carefully if financing them.", "Compare bank vs dealer hypothecation rates; use INR."],
     howToInterpret: ["Negative equity risk rises with long tenures and fast depreciation.", "Total interest matters, not only EMI.", "Not a credit offer."],
     workedExample: {
       title: "Worked example — $25,000 financed at 7% for 60 months",
@@ -1860,8 +1738,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "A common biweekly plan pays half the monthly P&I every two weeks → ~26 half-payments ≈ 13 full monthly payments per year. Extra principal accelerates amortization; exact savings depend on lender application rules.",
     overview: "Biweekly mortgage strategies aim to make the equivalent of an extra monthly payment each year, reducing interest and term. This calculator compares the idea against a standard monthly schedule so you can see the directional savings.\n\nConfirm your servicer applies payments as you expect — not all “biweekly” products are equal.",
     howToUse: ["Enter remaining principal, rate, and current term.", "Compare monthly vs biweekly scenarios in the results.", "Note interest saved and time shortened when shown.", "Ask your lender how partial payments are applied."],
-    howToUseUS: ["Some U.S. servicers offer formal biweekly drafts; others let you simply pay extra principal monthly.", "Escrow portions may still be monthly."],
-    howToUseIndia: ["Indian home loans more often use EMI + prepayment; model extra monthly prepayment if biweekly drafts are unavailable.", "Check foreclosure/prepayment charges."],
     howToInterpret: ["Savings assume payments post to principal as modeled.", "Rate resets on floating loans change outcomes.", "Not lending advice."],
     workedExample: {
       title: "Worked example — conceptual extra payment",
@@ -1881,8 +1757,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "APY = (1 + r/n)^n − 1 for nominal APR r compounded n times per year (when APR is the nominal rate in that convention). Definitions of APR in consumer lending can legally include fees — read local rules.",
     overview: "APR and APY are easy to mix up. APY (effective annual yield) includes compounding; a higher compounding frequency raises APY for the same nominal rate. This calculator converts between them so savings and loan quotes become comparable.\n\nConsumer “APR” disclosures may also fold in fees — that legal APR is not always pure nominal rate math.",
     howToUse: ["Enter the nominal rate and compounds per year.", "Read APY / effective annual rate.", "Compare products using the same basis.", "Remember fee-inclusive APRs need the lender’s disclosure math."],
-    howToUseUS: ["Savings APY is advertised widely; mortgage APR includes certain fees by regulation — different concepts."],
-    howToUseIndia: ["Compare FD effective yields carefully; bank compounding conventions differ (quarterly, etc.)."],
     howToInterpret: ["More frequent compounding → higher APY for same nominal r.", "Loan shopping: read whether fees are inside the disclosed APR.", "Educational — not a regulated disclosure engine."],
     workedExample: {
       title: "Worked example — 6% nominal monthly",
@@ -1902,8 +1776,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "Compares estimated ownership costs (mortgage P&I plus optional tax/insurance/maintenance) against rent over a horizon, sometimes netting equity build and opportunity cost of down payment at an assumed return. Highly assumption-driven.",
     overview: "Rent vs buy is less about a single “winner” and more about horizon, rates, local rents, and how long you will stay. This calculator structures the comparison so you can see which assumptions dominate.\n\nTransaction costs, HOA, and maintenance can flip the answer — stress-test them.",
     howToUse: ["Enter rent and home price / loan assumptions.", "Set horizon and rate fields.", "Compare cumulative costs / net position when shown.", "Re-run with higher maintenance and rate shocks."],
-    howToUseUS: ["Include property tax and insurance for a fair PITI-aware comparison.", "Closing costs and realtor fees matter if you move often."],
-    howToUseIndia: ["Account for stamp duty/registration and society maintenance.", "Floating home-loan rates need stress tests; use INR."],
     howToInterpret: ["Short horizons often favor renting once transaction costs are included.", "Equity build is not the same as cash savings.", "Not financial advice."],
     workedExample: {
       title: "Worked example — framing the tradeoff",
@@ -1923,8 +1795,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "V = I·R; I = V/R; R = V/I. Power P = V·I = I²R = V²/R for resistive DC circuits under ohmic assumptions.",
     overview: "Ohm’s law is the first tool in electronics troubleshooting and classroom circuit problems. Enter any two of V, I, R (as the form allows) to get the third, with power when supported.\n\nReal components are non-ideal — temperature and frequency matter outside this ideal model.",
     howToUse: ["Enter the two known quantities.", "Read the computed third (and power if shown).", "Keep SI units (V, A, Ω).", "Apply safety practices around live circuits."],
-    howToUseUS: ["Common in maker and technician training — watch mA vs A unit slips."],
-    howToUseIndia: ["Matches class 10/12 and diploma circuit basics — show V=IR working on paper."],
     howToInterpret: ["Assumes ohmic resistors and DC (or instantaneous) values.", "LED/diode circuits need more than bare Ohm’s law.", "Educational — not a certified design calc."],
     workedExample: {
       title: "Worked example — 12 V across 100 Ω",
@@ -1944,8 +1814,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "KE = ½ m v² with mass in kg and speed in m/s for joules. Double speed ⇒ quadruple KE.",
     overview: "Kinetic energy scales with the square of speed — the reason braking distances and impact energies rise fast. This calculator applies KE = ½mv² in SI units for homework and intuition building.\n\nRelativistic speeds need different formulas.",
     howToUse: ["Enter mass in kg.", "Enter speed in m/s (convert from km/h if needed).", "Read KE in joules.", "Remember the v² relationship when comparing scenarios."],
-    howToUseUS: ["Convert mph → m/s (÷2.237 approx) before SI formula, or use a units-aware path if offered."],
-    howToUseIndia: ["School problems usually SI — keep kg and m/s."],
     howToInterpret: ["Units: kg·m²/s² = J.", "Quadrupling KE when speed doubles is the key insight.", "Ideal translational KE only."],
     workedExample: {
       title: "Worked example — 2 kg at 3 m/s",
@@ -1965,8 +1833,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "distance = speed × time; speed = distance/time; time = distance/speed. Keep units consistent (e.g. km and hours → km/h).",
     overview: "The speed–distance–time triad is everyday trip math and introductory physics. Enter any two values to get the third, watching unit consistency so hours and minutes do not get mixed up.\n\nReal travel includes stops and variable speeds — this is average-speed math.",
     howToUse: ["Enter any two of speed, distance, time.", "Read the third.", "Convert minutes to hours when speed is per hour.", "Use average speed for multi-leg trips carefully."],
-    howToUseUS: ["Miles and hours are common for road trips; watch mph vs minutes."],
-    howToUseIndia: ["km/h dominates highway planning; convert minutes properly for shorter legs."],
     howToInterpret: ["Results are averages if speed varied.", "Unit slips are the #1 error.", "Planning/physics aid."],
     workedExample: {
       title: "Worked example — 150 km at 50 km/h",
@@ -1986,8 +1852,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "I = P·r·t with r as decimal annual rate and t in years (or proportional fractions). Amount A = P + I. No compounding.",
     overview: "Simple interest does not compound — interest is only on principal. It still appears in classroom problems and some short-term products. Use this calculator for I = Prt clarity, and switch to compound/daily compound tools when interest earns interest.\n\nCurrency picker formats money displays.",
     howToUse: ["Enter principal.", "Enter annual rate %.", "Enter time in years (or as the form labels).", "Read interest and total amount."],
-    howToUseUS: ["Many real consumer loans compound or amortize — do not assume simple interest unless stated."],
-    howToUseIndia: ["Useful for textbook problems; real bank products often use reducing-balance EMI math instead."],
     howToInterpret: ["No compounding means linear growth with time.", "Compare with compound interest for the same nominal rate.", "Educational estimate."],
     workedExample: {
       title: "Worked example — $1,000 at 5% for 3 years",
@@ -2007,8 +1871,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     formulaNote: "x = (−b ± √(b²−4ac)) / (2a). Discriminant D = b²−4ac: two real roots if D>0, one if D=0, complex if D<0 (displayed per tool support).",
     overview: "Quadratic equations appear across algebra, physics trajectories, and optimization warmups. This solver applies the quadratic formula, surfaces the discriminant, and reports roots so you can verify homework quickly.\n\nShow factoring steps on exams when required.",
     howToUse: ["Enter coefficients a, b, c (a ≠ 0).", "Read discriminant and roots.", "Check by substituting roots back into ax²+bx+c.", "Use graphing tools to visualize."],
-    howToUseUS: ["Algebra I/II staple — watch sign errors on b."],
-    howToUseIndia: ["Class 10 quadratic chapter essential — keep exact radical form on paper when asked."],
     howToInterpret: ["a=0 reduces to linear — not quadratic.", "D<0 means no real roots (complex pair).", "Educational algebra aid."],
     workedExample: {
       title: "Worked example — x² − 5x + 6 = 0",
@@ -2037,20 +1899,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Optionally set a daily reinvest rate below 100% to model cash withdrawals of interest.",
       "Optionally add daily or monthly deposits and/or exclude weekends.",
       "Read future value, interest, deposits, withdrawn cash, chart, and snapshot table.",
-    ],
-    howToUseUS: [
-      "Enter principal in your display currency (USD via the picker is common for U.S. savings examples).",
-      "For bank APY-style thinking, prefer Annual rate mode and compare with our CD/APY tool; for a stated daily % use Daily mode.",
-      "Set the calendar horizon with years/months/days.",
-      "Use Exclude weekends if you are modeling weekday-only trading calendars — not typical FDIC savings.",
-      "Review the chart and snapshots; treat high daily % scenarios as educational stress tests only.",
-    ],
-    howToUseIndia: [
-      "Pick INR in the currency picker for Indian savings / FD-style illustrations.",
-      "Indian retail deposits usually quote annual rates with their own compounding conventions — use Annual mode or map the bank’s day-count carefully.",
-      "SIP-style monthly top-ups can be approximated with Monthly deposits (every 30 days) while daily compounding runs.",
-      "For stock/F&O style weekday calendars, try Exclude weekends — still not brokerage advice.",
-      "Compare with the SIP and Compound Interest calculators when your product compounds monthly or quarterly instead of daily.",
     ],
     howToInterpret: [
       "Future value is the invested balance at the end — it excludes cash you already withdrew when reinvest < 100%.",
@@ -2113,9 +1961,9 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
   "sip-growth-chart": {
     seoTitle: "SIP Growth Chart Calculator — Invested vs Portfolio",
     seoDescription:
-      "Visualize SIP / DCA growth with invested-vs-portfolio curves. Free MyCalcsWorld tool for Indian mutual-fund SIPs and global recurring investing — with how-to, FAQ, and worked example.",
+      "Visualize SIP / DCA growth with invested-vs-portfolio curves. Free MyCalcsWorld tool for mutual-fund SIPs and global recurring investing — with how-to, FAQ, and worked example.",
     overview:
-      "A SIP growth chart turns abstract expected return into a year-by-year picture: how much you put in versus how the portfolio might grow if returns compound as assumed. MyCalcsWorld’s SIP Growth Chart is built for Indian mutual-fund SIP planners and global dollar-cost-averaging investors who want the curve, not only a maturity headline.\n\nEnter monthly investment, expected annual return, and years. Read future value, total invested, gains, and the growth chart. Markets do not deliver a smooth line — treat this as an educational projection, then stress-test lower returns.",
+      "A SIP growth chart turns abstract expected return into a year-by-year picture: how much you put in versus how the portfolio might grow if returns compound as assumed. MyCalcsWorld’s SIP Growth Chart is built for mutual-fund SIP planners and global dollar-cost-averaging investors who want the curve, not only a maturity headline.\n\nEnter monthly investment, expected annual return, and years. Read future value, total invested, gains, and the growth chart. Markets do not deliver a smooth line — treat this as an educational projection, then stress-test lower returns.",
     whenToUse: [
       "Planning a new SIP or increasing an existing monthly contribution.",
       "Comparing 10 vs 15 vs 20 year horizons before you commit.",
@@ -2131,18 +1979,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Set a conservative expected annual return (many long-term equity planners explore 8–12%).",
       "Choose the number of years.",
       "Read future value, invested total, gains, and skim the growth chart.",
-    ],
-    howToUseIndia: [
-      "Enter SIP amount in ₹ (INR currency picker).",
-      "Use an expected return you believe is realistic — not a brochure best case.",
-      "Set years (common: 5, 10, 15, 20).",
-      "Review invested vs portfolio on the chart; confirm tax treatment of gains separately.",
-    ],
-    howToUseUS: [
-      "Enter your recurring contribution (401k/IRA/brokerage DCA).",
-      "Use an expected annual return aligned to your allocation.",
-      "Set years to retirement or goal date.",
-      "Compare the curve to a lower-return stress case.",
     ],
     howToInterpret: [
       "Future value assumes level contributions and a constant annualized return.",
@@ -2199,25 +2035,13 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     commonMistakes: [
       "Entering purchase price instead of loan principal after down payment.",
       "Using APR (fee-inclusive) when the form expects the note rate.",
-      "Ignoring that floating-rate Indian home loans can reprice — chart assumes fixed rate.",
+      "Ignoring that floating-rate home loans can reprice — chart assumes fixed rate.",
     ],
     howToUse: [
       "Enter loan principal.",
       "Enter annual interest rate.",
       "Set term in years.",
       "Review payment, total interest, and the principal/interest chart.",
-    ],
-    howToUseIndia: [
-      "Enter sanctioned principal in ₹.",
-      "Enter the quoted annual rate (floating rates may change later).",
-      "Set tenure in years.",
-      "Use the chart to plan prepayments in interest-heavy early years.",
-    ],
-    howToUseUS: [
-      "Enter amount financed after down payment.",
-      "Enter the note rate from your Loan Estimate.",
-      "Choose 15 or 30 years (or your term).",
-      "Add tax/insurance separately for full PITI.",
     ],
     howToInterpret: [
       "Early years: larger share of each payment is interest.",
@@ -2252,7 +2076,7 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
           "On a long amortizing loan, balance stays high early, so interest (rate × balance) consumes most of each payment.",
       },
       {
-        question: "Is this valid for floating-rate home loans in India?",
+        question: "Is this valid for floating-rate home loans?",
         answer:
           "It illustrates a fixed-rate path. Floating rates can reprice — re-run when your rate changes.",
       },
@@ -2280,16 +2104,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
       "Adjust domain ranges if available.",
       "Drag to rotate; pinch/scroll to zoom where supported.",
       "Compare to a textbook figure or hand sketch.",
-    ],
-    howToUseUS: [
-      "Use standard math notation as labeled on the form.",
-      "Start with a simple surface (e.g. x² + y²) before complex ones.",
-      "Rotate to confirm minima/maxima locations visually.",
-    ],
-    howToUseIndia: [
-      "Use the same expression form your class notes use (check syntax hints).",
-      "Start with familiar surfaces from CBSE/college multivariable intros.",
-      "Capture a screenshot only for personal study — not as a graded submission substitute.",
     ],
     howToInterpret: [
       "Color/height encodes z; rotate to avoid optical illusions.",
@@ -2320,8 +2134,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Quick bill or homework arithmetic.", "Checking a spreadsheet cell without opening Excel.", "Teaching kids simple operations."],
     commonMistakes: ["Dividing by zero.", "Expecting scientific functions here — use the scientific tool instead.", "Mixing currencies or units without converting first."],
     howToUse: ["Enter the first number.", "Choose the operation.", "Enter the second number.", "Read the result; use Copy if you need it elsewhere."],
-    howToUseIndia: ["Use for ₹ totals, school arithmetic, and quick checks.", "For EMI/SIP, prefer the dedicated finance tools.", "Results update in your browser — no signup."],
-    howToUseUS: ["Use for everyday arithmetic and homework checks.", "For percentages/tips, the tip and percentage tools are faster.", "Switch to scientific for powers and trig."],
     howToInterpret: ["The primary result is the arithmetic outcome within floating-point limits.", "Very large/small values may use scientific notation depending on formatting.", "Educational helper only."],
     workedExample: { title: "Worked example — 48 ÷ 1.5", steps: ["First number = 48; operation = divide; second = 1.5.", "Compute 48 / 1.5 = 32.", "Copy the result if you need it in a chat or sheet."], result: "32" },
     faqs: [
@@ -2338,8 +2150,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Homework checks for counting problems.", "Interview or contest prep warm-ups.", "Explaining order-matters vs order-does-not to a student."],
     commonMistakes: ["Using nCr when ranks mean order matters (nPr).", "Entering r > n.", "Forgetting identical items need different formulas."],
     howToUse: ["Enter n (total items).", "Enter r (chosen items).", "Read permutation and/or combination outputs.", "Match the definition to your word problem."],
-    howToUseUS: ["Confirm whether the textbook problem cares about order.", "Use for AP Stats / contest counting checks.", "State assumptions in your write-up."],
-    howToUseIndia: ["Useful for class 11–12 probability counting and JEE-style warm-ups.", "Confirm whether repetition is allowed — classical forms assume no repetition unless labeled.", "Show working with factorials on paper for exams."],
     howToInterpret: ["nPr = n! / (n−r)! — order matters.", "nCr = n! / (r!(n−r)!) — order does not.", "Large n may hit floating-point limits."],
     workedExample: { title: "Worked example — n=10, r=3", steps: ["n = 10, r = 3.", "nPr = 10×9×8 = 720.", "nCr = 720 / 3! = 120."], result: "P(10,3)=720; C(10,3)=120" },
     faqs: [
@@ -2356,8 +2166,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Cooking for a larger dinner or meal prep batch.", "Halving a bakery formula for a test bake.", "Converting a 4-serving card to 6 without mental fractions."],
     commonMistakes: ["Scaling yeast/baking powder linearly for very large jumps without recipe knowledge.", "Forgetting pan size and bake time may need changes.", "Mixing tbsp/tsp abbreviations inconsistently."],
     howToUse: ["Enter original number of servings.", "Enter desired servings.", "Enter ingredient quantities (or follow the form’s list fields).", "Read scaled amounts; adjust seasoning to taste."],
-    howToUseIndia: ["Helpful for scaling dals, biryanis, and festival batches.", "Spice blends often need tasting after linear scale — start slightly under on chili.", "Keep units consistent (cups vs grams)."],
-    howToUseUS: ["Scale cups/tablespoons carefully; prefer weight when precision matters.", "For baking, consider baker’s percentages for serious work.", "Adjust bake time when pan volume changes."],
     howToInterpret: ["Scaled amount = original × (desired ÷ original servings).", "Taste-critical seasonings may need less than a full linear scale.", "Planning aid — not a professional kitchen formula."],
     workedExample: { title: "Worked example — 4 servings → 6", steps: ["Scale factor = 6/4 = 1.5.", "2 cups flour → 3 cups.", "1 tsp salt → 1.5 tsp (taste and adjust)."], result: "Multiply every quantity by 1.5; soften salt/spice if needed." },
     faqs: [
@@ -2369,13 +2177,11 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
   },
   "fuel-vs-ev": {
     seoTitle: "Fuel vs EV Cost Calculator",
-    seoDescription: "Compare petrol/diesel running cost vs electric charging for your commute. Free MyCalcsWorld tool for India and global drivers.",
+    seoDescription: "Compare petrol/diesel running cost vs electric charging for your commute. Free MyCalcsWorld tool for drivers worldwide.",
     overview: "Fuel vs EV cost comparisons are full of marketing charts. MyCalcsWorld’s tool lets you plug in your own fuel price, mileage/efficiency, electricity rate, and distance so the comparison matches your commute — whether you think in ₹/kWh or $/gallon.\n\nEnter the labeled efficiency and price fields, set distance/period, and read estimated energy costs. Insurance, maintenance, and purchase price are separate unless the form includes them.",
     whenToUse: ["Deciding whether an EV’s energy cost beats your current car for a known commute.", "Comparing highway vs city efficiency assumptions.", "Explaining running-cost differences to a household."],
     commonMistakes: ["Using brochure efficiency instead of your real observed mileage/kWh.", "Ignoring home vs public charging price differences.", "Comparing only energy and forgetting insurance/EMI of a new vehicle."],
     howToUse: ["Enter fuel price and vehicle efficiency.", "Enter electricity rate and EV efficiency/consumption.", "Enter distance (daily/monthly as labeled).", "Compare estimated energy costs."],
-    howToUseIndia: ["Use ₹/litre and ₹/kWh from your city; include FASTag/parking separately.", "Two-wheeler vs car efficiency differs a lot — use your vehicle’s numbers.", "Stress-test with monsoon/AC loads that raise consumption."],
-    howToUseUS: ["Use $/gallon and $/kWh from your utility.", "MPGe marketing figures may not match winter real-world kWh/mi.", "Include home charger cost separately if relevant."],
     howToInterpret: ["Outputs are energy running-cost estimates for the distance you entered.", "Total cost of ownership needs purchase, insurance, maintenance, and incentives too.", "Educational comparison — not a dealer quote."],
     workedExample: { title: "Worked example — 1,000 km month", steps: ["Fuel car: 15 km/l at ₹100/l → ~₹6,667 fuel.", "EV: 6 km/kWh at ₹8/kWh → ~₹1,333 electricity.", "Compare using your real tariffs and efficiency."], result: "EV energy cost can be much lower per km — verify with your tariff and real efficiency." },
     faqs: [
@@ -2392,8 +2198,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Estimating walk distance from a pedometer.", "Setting a daily steps goal that maps to a km target.", "Comparing treadmill distance to outdoor steps."],
     commonMistakes: ["Using a generic stride that does not match your height/gait.", "Mixing miles and kilometres in the same plan.", "Assuming every step is the same length on stairs vs flat ground."],
     howToUse: ["Enter your step count.", "Enter step length or use the form’s estimate method.", "Read distance in the units shown.", "Calibrate against a known walking route when possible."],
-    howToUseIndia: ["Prefer kilometres for local plans; convert if your watch shows miles.", "Calibrate on a 400 m track if you have access.", "Educational estimate — not medical advice."],
-    howToUseUS: ["Use miles or km as labeled.", "Calibrate on a measured mile if possible.", "Running strides differ from walking — use a run-specific length."],
     howToInterpret: ["Distance ≈ steps × step length (with unit conversion).", "GPS and wheel measurements beat step estimates for accuracy.", "Educational fitness estimate — not medical advice."],
     workedExample: { title: "Worked example — 8,000 steps at 0.78 m", steps: ["Steps = 8000; step length = 0.78 m.", "Distance = 8000 × 0.78 = 6240 m ≈ 6.24 km.", "Convert to miles if needed (~3.88 mi)."], result: "About 6.24 km (≈ 3.88 miles)." },
     faqs: [
@@ -2410,8 +2214,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Drafting a starting macro split for a cut or lean bulk.", "Translating a calorie number into grocery planning.", "Comparing higher-protein vs balanced splits."],
     commonMistakes: ["Copying influencer macros without matching calories to your TDEE.", "Setting protein unrealistically high without context.", "Treating macros as medical nutrition therapy."],
     howToUse: ["Enter daily calories.", "Choose goal / macro split as labeled.", "Optionally enter body weight if the form uses g/kg protein.", "Read protein, carb, and fat gram targets."],
-    howToUseIndia: ["Use kcal from your TDEE estimate; vegetarian protein sources need planning.", "Confirm clinical needs with a dietitian — especially diabetes or kidney concerns.", "Educational only."],
-    howToUseUS: ["Align calories with a TDEE estimate first.", "FDA labels use kcal — match the same energy unit.", "Reassess after a few weeks of adherence data."],
     howToInterpret: ["Grams are derived from calorie × macro% ÷ kcal-per-gram.", "Protein often anchored to body weight when the form offers it.", "Not medical advice."],
     workedExample: { title: "Worked example — 2,000 kcal with 30/40/30", steps: ["Protein 30% → 600 kcal → 150 g.", "Carbs 40% → 800 kcal → 200 g.", "Fat 30% → 600 kcal → ~67 g."], result: "About 150 g protein / 200 g carbs / 67 g fat — illustrative." },
     faqs: [
@@ -2429,8 +2231,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Geometry homework and contest warm-ups.", "Quick drafting checks when you know two sides and an included angle.", "Teaching law of sines/cosines with live numbers."],
     commonMistakes: ["Entering angles in radians when the tool expects degrees.", "Ignoring the ambiguous SSA case.", "Providing inconsistent measurements that cannot form a triangle."],
     howToUse: ["Choose the known pattern (or fill the fields provided).", "Enter sides/angles carefully with units consistent.", "Read computed sides and angles.", "Verify angle sum ≈ 180°."],
-    howToUseUS: ["Use degrees unless your course specifies radians.", "Label sides opposite their angles (a opposite A, etc.).", "Check SSA carefully."],
-    howToUseIndia: ["Matches class 9–12 trigonometry setups — keep degree mode for most board problems.", "Draw a sketch before trusting a second SSA solution.", "Show exact forms on paper when required."],
     howToInterpret: ["Valid triangles have positive sides and angles summing to 180°.", "SSA may yield 0, 1, or 2 solutions.", "Educational geometry check."],
     workedExample: { title: "Worked example — SAS check", steps: ["Enter the known side-angle-side values on the form.", "Compute the third side via law of cosines, then remaining angles.", "Confirm A+B+C = 180°."], result: "Remaining parts appear in the result panel — verify angle sum." },
     faqs: [
@@ -2447,8 +2247,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Homework checks for V = IR and P = VI.", "Sizing a resistor for an LED with a series estimate.", "Sanity-checking a bench measurement."],
     commonMistakes: ["Applying ohmic assumptions to diodes/LEDs without the forward drop model.", "Mixing mA and A.", "Ignoring power ratings when current is high."],
     howToUse: ["Enter the two known quantities the form requests.", "Leave unknowns blank or select solve mode if offered.", "Read V, I, R, and/or P.", "Apply safety margin for real parts."],
-    howToUseUS: ["Keep SI units (volts, amps, ohms, watts).", "For AC mains work, use proper training — this is DC/ohmic education.", "Check resistor wattage."],
-    howToUseIndia: ["Useful for class physics and polytechnic lab write-ups.", "230 V mains work requires qualified practice — not a web calculator task.", "Show units in lab records."],
     howToInterpret: ["V = I R; P = V I = I²R = V²/R for ohmic DC.", "Results assume ideal resistors.", "Educational / first-cut only."],
     workedExample: { title: "Worked example — 12 V across 220 Ω", steps: ["V = 12, R = 220.", "I = V/R ≈ 0.0545 A ≈ 54.5 mA.", "P = V I ≈ 0.655 W — choose a resistor with margin."], result: "≈ 54.5 mA and ≈ 0.66 W dissipation." },
     faqs: [
@@ -2465,8 +2263,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Class physics problems with ideal projectiles.", "Comparing 30° vs 45° launch angles quickly.", "Teaching trajectory symmetry under constant g."],
     commonMistakes: ["Forgetting degrees vs radians.", "Ignoring launch height when landing level differs.", "Applying vacuum results to sports balls with heavy drag."],
     howToUse: ["Enter initial speed.", "Enter launch angle.", "Enter height if the form has it.", "Read range, time, and max height."],
-    howToUseUS: ["Confirm g ≈ 9.81 m/s² (or the value labeled).", "Keep speed in m/s unless the form accepts ft/s.", "State ideal assumptions in lab reports."],
-    howToUseIndia: ["Matches CBSE/college ideal projectile numericals.", "Draw the diagram and state assumptions in your answer sheet.", "Use degree mode for most board problems."],
     howToInterpret: ["Flat ground ideal: R = v² sin(2θ)/g, T = 2v sinθ/g, H = v² sin²θ/(2g).", "Uneven ground changes formulas.", "Educational physics estimate."],
     workedExample: { title: "Worked example — 20 m/s at 45° on flat ground", steps: ["v = 20, θ = 45°, g = 9.81.", "Range R = v²/g ≈ 40.8 m.", "Time T ≈ 2.88 s; H ≈ 10.2 m."], result: "About 40.8 m range, ~2.9 s flight, ~10 m peak height." },
     faqs: [
@@ -2483,8 +2279,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Trig homework and board exam revision.", "Checking calculator mode (deg vs rad) mistakes.", "Visualizing reference angles."],
     commonMistakes: ["Leaving the calculator in the wrong angle mode.", "Expecting exact √2/2 when the UI shows decimals.", "Forgetting cosine is x and sine is y."],
     howToUse: ["Enter the angle.", "Select degrees or radians if offered.", "Read cos and sin (and any diagram).", "Compare to exact special-angle values when required."],
-    howToUseUS: ["AP Precalculus / Trig: confirm degree vs radian setting first.", "Memorize special angles for exams.", "Use exact radicals on paper when required."],
-    howToUseIndia: ["Useful for class 11 trig; memorize exact values even when the tool shows decimals.", "Check deg/rad mode before exams.", "Sketch the quadrant signs."],
     howToInterpret: ["Point on unit circle: (cos θ, sin θ).", "Angles coterminal differ by 360° / 2π.", "Educational trig helper."],
     workedExample: { title: "Worked example — 30°", steps: ["θ = 30° = π/6 rad.", "cos 30° = √3/2 ≈ 0.866.", "sin 30° = 1/2 = 0.5."], result: "(≈0.866, 0.5) on the unit circle." },
     faqs: [
@@ -2501,8 +2295,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Rough shopping range before installer quotes.", "Comparing a 1-ton vs 1.5-ton idea for a bedroom.", "Learning how area maps to BTU rules of thumb."],
     commonMistakes: ["Ignoring sun-facing glass, kitchen heat, and poor insulation.", "Oversizing so humidity control suffers.", "Treating a web estimate as a certified load design."],
     howToUse: ["Enter room length/width or area as labeled.", "Add occupancy/sun factors if the form includes them.", "Read suggested BTU/hr or tonnage range.", "Confirm with a local technician."],
-    howToUseIndia: ["Indian rooms often use tons (1 ton ≈ 12,000 BTU/hr).", "Hot coastal cities and top-floor flats may need more capacity than a generic rule of thumb.", "Ask installers about inverter ratings and star labels separately."],
-    howToUseUS: ["BTU/hr rules of thumb exist, but Manual J is the proper residential method.", "SEER/EER efficiency is separate from capacity.", "Discuss ductwork with your HVAC pro."],
     howToInterpret: ["Output is a heuristic capacity band, not a guarantee.", "Climate, insulation, and windows dominate real loads.", "Educational estimate only."],
     workedExample: { title: "Worked example — 150 sq ft bedroom", steps: ["Many thumb rules suggest ~20 BTU/sq ft as a crude start → ~3,000 BTU.", "Small rooms still often use 0.75–1 ton class units depending on climate.", "Confirm locally with an installer."], result: "A small-room ballpark — verify with installer and climate." },
     faqs: [
@@ -2519,8 +2311,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Traveling and unsure what percent to start from.", "Splitting an international dinner bill.", "Teaching that norms differ by country."],
     commonMistakes: ["Tipping twice when service charge is already included.", "Applying U.S. percentages everywhere.", "Ignoring local cash vs card tipping norms."],
     howToUse: ["Enter the bill amount.", "Choose or enter a tip percent appropriate to the place.", "Set people if splitting.", "Read tip, total, and per person."],
-    howToUseIndia: ["Many restaurants include service charge — check the bill before adding more.", "For cafes without service charge, small round-ups are common.", "Luxury dining norms vary by city."],
-    howToUseUS: ["Sit-down restaurants often see ~15–20%+ before tax in many regions.", "Follow local norms and service quality.", "Clarify pre-tax vs post-tax with your group."],
     howToInterpret: ["Tip = bill × percent; total = bill + tip.", "Presets are starting points — local custom wins.", "Planning aid only."],
     workedExample: { title: "Worked example — $80 bill at 18%", steps: ["Tip = 80 × 0.18 = 14.40.", "Total = 94.40.", "For 2 people ≈ 47.20 each."], result: "$14.40 tip; $94.40 total." },
     faqs: [
@@ -2537,8 +2327,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Restaurant bills with sales tax and tip.", "Group dinners that need a clean per-person number.", "Travel days when you do not want mental math."],
     commonMistakes: ["Tipping on post-tax when your group agreed pre-tax (or reverse).", "Forgetting posted menu prices may exclude tax.", "Splitting uneven orders without adjusting shares."],
     howToUse: ["Enter pre-tax bill.", "Enter tax rate and tip percent.", "Enter number of people if splitting.", "Read tax, tip, total, per person."],
-    howToUseIndia: ["GST may already appear on the bill — do not double-add tax.", "Service charge vs tip: read the bill carefully.", "Use INR via the currency picker."],
-    howToUseUS: ["Enter local sales tax; tip percent per your group’s norm.", "Clarify pre-tax vs post-tax tipping before splitting.", "Use Copy to send totals in chat."],
     howToInterpret: ["Grand total stacks tax and tip per the form’s order of operations.", "Per-person is an even split unless you adjust manually.", "Social norms vary — math is exact."],
     workedExample: { title: "Worked example — $50 bill, 7% tax, 18% tip (pre-tax tip)", steps: ["Tax = 50 × 0.07 = 3.50.", "Tip on pre-tax = 50 × 0.18 = 9.00.", "Total = 50 + 3.50 + 9.00 = 62.50."], result: "$62.50 grand total (example convention)." },
     faqs: [
@@ -2555,8 +2343,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Large group checks.", "Travel dinners with unfamiliar tax rates.", "When you want one shareable summary."],
     commonMistakes: ["Double-counting service charge and tip.", "Wrong headcount.", "Mixing currencies after a multi-country trip."],
     howToUse: ["Enter bill subtotal.", "Enter tax % and tip %.", "Enter people.", "Share the per-person result with the table."],
-    howToUseIndia: ["Check GST and service charge lines on the printed bill first.", "Use INR formatting via the currency picker.", "Don’t double-add service charge as tip."],
-    howToUseUS: ["Enter local sales tax; tip per group norm.", "Clarify pre-tax tipping before collecting money.", "Use Copy for Venmo notes."],
     howToInterpret: ["Per-person assumes equal split of the grand total.", "Adjust for uneven orders offline if needed.", "Educational arithmetic — not tax advice."],
     workedExample: { title: "Worked example — $120, 8% tax, 20% tip, 4 people", steps: ["Tax = 9.60; tip (pre-tax) = 24.00.", "Total = 153.60.", "Per person = 38.40."], result: "$38.40 per person in this pre-tax tip convention." },
     faqs: [
@@ -2573,8 +2359,6 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     whenToUse: ["Lab write-ups and homework.", "Quick resistor checks on the bench.", "Teaching the mnemonic with live numbers."],
     commonMistakes: ["Unit mix-ups (mA vs A).", "Using ohmic math on non-linear parts without a model.", "Ignoring wattage."],
     howToUse: ["Enter two of V, I, R.", "Read the computed third value.", "Optionally compute power if shown.", "Apply a safety margin on real parts."],
-    howToUseUS: ["Keep SI units consistent.", "Educational DC helper only.", "Check power ratings."],
-    howToUseIndia: ["Handy for polytechnic and class physics practicals.", "Show units in lab notebooks.", "Mains work needs qualified practice."],
     howToInterpret: ["Cover V → I×R; cover I → V/R; cover R → V/I.", "Ideal ohmic DC only.", "Not a substitute for meters and safety training."],
     workedExample: { title: "Worked example — I=0.02 A, R=1000 Ω", steps: ["V = I R = 0.02 × 1000 = 20 V.", "Confirm units (A and Ω).", "Check power if needed: P = I²R = 0.4 W."], result: "20 V across the resistor." },
     faqs: [
@@ -2624,8 +2408,8 @@ export function getAllCalculatorSeoCoverage(): {
   };
 }
 
-/** India-focused rail on the home page. */
-export const popularInIndiaSlugs = [
+/** Popular planning / money tools rail on the home page. */
+export const popularPlanningSlugs = [
   "loan-emi",
   "sip",
   "gst-vat",

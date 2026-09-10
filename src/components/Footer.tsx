@@ -3,6 +3,7 @@ import Image from "next/image";
 import { categories } from "@/lib/categories";
 import { calculatorCount } from "@/lib/calculators/registry";
 import { AdSlot } from "./AdSlot";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -68,8 +69,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:hello@mycalcsworld.online" className="hover:text-teal-300">
-                  hello@mycalcsworld.online
+                <a href={contactMailto()} className="hover:text-teal-300 break-all">
+                  {CONTACT_EMAIL}
                 </a>
               </li>
               <li>
@@ -94,8 +95,8 @@ export function Footer() {
           © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
           professional advice. FX rates are delayed educational quotes. Guides and
           FAQs are original MyCalcsWorld copy. Contact{" "}
-          <a href="mailto:hello@mycalcsworld.online" className="text-teal-300 hover:underline">
-            hello@mycalcsworld.online
+          <a href={contactMailto()} className="text-teal-300 hover:underline break-all">
+            {CONTACT_EMAIL}
           </a>
           .
         </p>

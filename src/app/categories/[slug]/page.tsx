@@ -67,7 +67,9 @@ export default async function CategoryPage({
       <AdSlot placement="header" className="my-6 no-print" />
 
       {calcs.length === 0 ? (
-        <p className="text-muted">More calculators coming soon in this category.</p>
+        <div className="rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted">
+          No calculators in this category yet. Try search or another category from the home page.
+        </div>
       ) : (
         <CategoryDirectory items={items} />
       )}

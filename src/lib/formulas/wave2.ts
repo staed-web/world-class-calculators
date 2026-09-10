@@ -167,7 +167,7 @@ export function salaryAfterTaxUs(
   };
 }
 
-/** Rough India new-regime FY style slabs (educational). */
+/** Illustrative progressive tax slabs with a low-income rebate (educational sample). */
 export function salaryAfterTaxIn(annualGross: number): {
   tax: number;
   cess: number;
@@ -480,7 +480,7 @@ export function tipByCountry(
     uk: { tipPct: 10, note: "UK often optional / service included" },
     eu: { tipPct: 5, note: "Many EU spots include service; small tip OK" },
     jp: { tipPct: 0, note: "Japan: tipping generally not expected" },
-    in: { tipPct: 10, note: "India: ~5–10% if no service charge" },
+    in: { tipPct: 10, note: "~5–10% if no service charge (varies by venue)" },
     au: { tipPct: 10, note: "Australia: optional ~10%" },
     mx: { tipPct: 15, note: "Mexico restaurants often ~15%" },
   };

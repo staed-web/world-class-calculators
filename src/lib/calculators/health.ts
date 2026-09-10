@@ -19,7 +19,7 @@ export const healthCalculators: CalculatorMeta[] = [
     category: "health-fitness",
     name: "BMI Calculator",
     description: "Free BMI calculator from height and weight with category guidance — educational screening only.",
-    keywords: ["bmi", "body mass index", "weight", "BMI chart", "India BMI"],
+    keywords: ["bmi", "body mass index", "weight", "BMI chart"],
     featured: true,
     popular: true,
     kind: "form",

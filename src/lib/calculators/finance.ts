@@ -49,7 +49,7 @@ export const financeCalculators: CalculatorMeta[] = [
     category: "finance",
     name: "Mortgage Calculator",
     description:
-      "Estimate monthly principal & interest for a fixed-rate mortgage or home loan — with full amortization chart and year-by-year table (US + India EMI-style).",
+      "Estimate monthly principal & interest for a fixed-rate mortgage or home loan — with full amortization chart and year-by-year table (classic EMI / amortizing loan math).",
     keywords: [
       "mortgage",
       "home loan",
@@ -57,13 +57,13 @@ export const financeCalculators: CalculatorMeta[] = [
       "house",
       "EMI",
       "amortization",
-      "India home loan",
+      "home loan EMI",
     ],
     featured: true,
     popular: true,
     kind: "form",
     formulaNote:
-      "Standard amortizing loan: M = P · r(1+r)^n / ((1+r)^n − 1), where r is monthly rate and n is months. Taxes, insurance, PMI, and HOA are not included. Same math family as Indian home-loan EMI.",
+      "Standard amortizing loan: M = P · r(1+r)^n / ((1+r)^n − 1), where r is monthly rate and n is months. Taxes, insurance, PMI, and HOA are not included. Same math family as EMI-style home loans worldwide.",
     fields: [
       { id: "principal", label: "Loan amount", type: "number", defaultValue: 300000, prefix: "$", min: 0 },
       { id: "rate", label: "Annual interest rate", type: "number", defaultValue: 6.5, suffix: "%", step: 0.01, min: 0 },
@@ -146,14 +146,14 @@ export const financeCalculators: CalculatorMeta[] = [
     category: "finance",
     name: "Loan / EMI Calculator",
     description:
-      "Calculate EMI for personal, auto, or home loans (India + global) with interest breakdown, chart, and yearly schedule.",
+      "Calculate EMI for personal, auto, or home loans worldwide with interest breakdown, chart, and yearly schedule.",
     keywords: [
       "emi",
       "loan",
       "installment",
       "auto loan",
       "personal loan",
-      "India EMI",
+      "loan EMI",
       "home loan EMI",
     ],
     popular: true,
@@ -870,13 +870,13 @@ export const financeCalculators: CalculatorMeta[] = [
     category: "finance",
     name: "SIP / Recurring Investment",
     description:
-      "Project SIP / recurring investment maturity with invested-vs-portfolio chart — popular for Indian mutual funds and global DCA.",
+      "Project SIP / recurring investment maturity with invested-vs-portfolio chart — useful for mutual funds and global DCA.",
     keywords: [
       "sip",
       "recurring investment",
       "systematic investment",
       "mutual fund",
-      "India SIP",
+      "monthly SIP",
       "SIP calculator",
     ],
     featured: true,

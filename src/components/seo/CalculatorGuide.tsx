@@ -43,10 +43,7 @@ export function CalculatorGuide({
   formulaNote?: string;
 }) {
   const note = formulaNote || content.formulaNote;
-  const hasHowTo =
-    (content.howToUse?.length ?? 0) > 0 ||
-    (content.howToUseUS?.length ?? 0) > 0 ||
-    (content.howToUseIndia?.length ?? 0) > 0;
+  const hasHowTo = (content.howToUse?.length ?? 0) > 0;
 
   if (
     !content.overview &&
@@ -95,16 +92,16 @@ export function CalculatorGuide({
       {toc.length > 1 && (
         <nav
           aria-label="On this guide"
-          className="flex gap-2 overflow-x-auto overscroll-x-contain rounded-xl border border-border bg-background/70 p-2.5 sm:flex-wrap sm:overflow-visible [-webkit-overflow-scrolling:touch]"
+          className="flex flex-wrap gap-2 rounded-xl border border-border bg-background/70 p-2.5"
         >
-          <span className="hidden sm:inline w-full text-[11px] font-semibold uppercase tracking-wide text-muted sm:w-auto sm:mr-1 sm:self-center">
+          <span className="w-full text-[11px] font-semibold uppercase tracking-wide text-muted sm:w-auto sm:mr-1 sm:self-center">
             On this page
           </span>
           {toc.map((t) => (
             <a
               key={t.id}
               href={`#${t.id}`}
-              className="shrink-0 inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3.5 py-2 text-xs font-medium text-foreground hover:border-brand hover:text-brand transition"
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3.5 py-2 text-xs font-medium text-foreground hover:border-brand hover:text-brand transition"
             >
               {t.label}
             </a>
@@ -131,22 +128,7 @@ export function CalculatorGuide({
       {hasHowTo && (
         <div className="space-y-4">
           <SectionTitle id="guide-howto">How to use</SectionTitle>
-          <div className="grid gap-4 md:grid-cols-2">
-            {content.howToUseIndia && content.howToUseIndia.length > 0 && (
-              <StepList title="🇮🇳 India" steps={content.howToUseIndia} />
-            )}
-            {content.howToUseUS && content.howToUseUS.length > 0 && (
-              <StepList title="🇺🇸 United States / global" steps={content.howToUseUS} />
-            )}
-          </div>
-          {content.howToUse && content.howToUse.length > 0 && !content.howToUseUS && !content.howToUseIndia && (
-            <StepList title="Steps" steps={content.howToUse} />
-          )}
-          {content.howToUse &&
-            content.howToUse.length > 0 &&
-            (content.howToUseUS || content.howToUseIndia) && (
-              <StepList title="Quick steps (all regions)" steps={content.howToUse} />
-            )}
+          <StepList title="Steps" steps={content.howToUse!} />
         </div>
       )}
 

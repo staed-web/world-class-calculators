@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { CopyEmailButton } from "@/components/CopyEmailButton";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Contact MyCalcsWorld at hello@mycalcsworld.online — feedback, corrections, and partnership notes.",
+  description: `Contact MyCalcsWorld at ${CONTACT_EMAIL} — feedback, corrections, and partnership notes.`,
 };
 
 export default function ContactPage() {
@@ -17,24 +18,38 @@ export default function ContactPage() {
         questions, email us or use the form below.
       </p>
 
-      <div className="mt-6 rounded-2xl surface-card p-5 sm:p-6 space-y-3">
-        <p className="text-sm text-foreground">
-          <span className="font-semibold">Email:</span>{" "}
+      <div className="mt-6 rounded-2xl surface-card p-5 sm:p-6 space-y-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+            Email us
+          </p>
           <a
-            href="mailto:hello@mycalcsworld.online"
-            className="text-brand hover:underline"
+            href={contactMailto()}
+            className="block break-all text-lg sm:text-xl font-semibold text-brand hover:underline"
           >
-            hello@mycalcsworld.online
+            {CONTACT_EMAIL}
           </a>
-        </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href={contactMailto("MyCalcsWorld inquiry")}
+            className="inline-flex min-h-10 items-center justify-center rounded-xl bg-brand px-3 py-2 text-sm font-semibold text-white hover:opacity-95"
+          >
+            Open in mail app
+          </a>
+          <CopyEmailButton />
+          <a
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-10 items-center justify-center rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-foreground hover:border-brand hover:text-brand transition"
+          >
+            Open in Gmail
+          </a>
+        </div>
         <p className="text-sm text-muted leading-relaxed">
-          Prefer a mailbox client? Tap the address above. The form opens a pre-filled
-          mailto draft in your email app (nothing is stored on our servers).
-        </p>
-        <p className="text-xs text-muted">
-          Operators: create / point the{" "}
-          <code className="rounded bg-background px-1">hello@mycalcsworld.online</code>{" "}
-          mailbox (or forward it) at your DNS / email host — see README.
+          Tap the address, copy it, or open Gmail. The form below prepares a draft with your
+          subject and message — we do not store form submissions on our servers.
         </p>
       </div>
 

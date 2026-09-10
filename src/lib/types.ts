@@ -125,10 +125,6 @@ export interface CalculatorSeoContent {
   commonMistakes?: string[];
   /** Short numbered steps shown as “How to use”. */
   howToUse?: string[];
-  /** US-oriented how-to steps when relevant. */
-  howToUseUS?: string[];
-  /** India-oriented how-to steps when relevant. */
-  howToUseIndia?: string[];
   /** Guidance on reading the outputs. */
   howToInterpret?: string[];
   /** Concrete worked example with steps + result. */
