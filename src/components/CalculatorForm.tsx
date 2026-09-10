@@ -595,30 +595,64 @@ function MiniBars({ data }: { data: ResultChartBar[] }) {
 }
 
 function ResultTableView({ table }: { table: ResultTable }) {
+  const previewRows = table.rows.slice(0, 3);
   return (
-    <div className="table-scroll mt-3 rounded-xl border border-border">
-      <table className="min-w-full text-left text-xs">
-        <thead className="bg-slate-50 dark:bg-slate-900/60">
-          <tr>
-            {table.headers.map((h) => (
-              <th key={h} className="px-2 py-2 font-semibold text-muted whitespace-nowrap">
-                {h}
-              </th>
+    <div className="mt-3 space-y-2">
+      {/* Mobile stacked summary of first rows — desktop still uses full table */}
+      <div className="space-y-2 sm:hidden">
+        {previewRows.map((row, i) => (
+          <dl
+            key={i}
+            className="rounded-xl border border-border bg-background/50 px-3 py-2 text-xs"
+          >
+            {table.headers.map((h, j) => (
+              <div
+                key={h}
+                className="flex items-baseline justify-between gap-3 border-b border-border/50 py-1 last:border-0"
+              >
+                <dt className="shrink-0 text-muted">{h}</dt>
+                <dd className="min-w-0 text-right font-medium text-foreground [overflow-wrap:anywhere]">
+                  {row[j]}
+                </dd>
+              </div>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {table.rows.map((row, i) => (
-            <tr key={i} className="border-t border-border odd:bg-white/40 dark:odd:bg-white/5">
-              {row.map((cell, j) => (
-                <td key={j} className="px-2 py-1.5 whitespace-nowrap text-foreground">
-                  {cell}
-                </td>
+          </dl>
+        ))}
+        {table.rows.length > 3 ? (
+          <p className="text-[11px] text-muted">
+            Showing 3 of {table.rows.length} rows — swipe the schedule below for the full table.
+          </p>
+        ) : null}
+      </div>
+      <div className="table-scroll-wrap">
+        <p className="mb-1 hidden text-[10px] font-medium uppercase tracking-wide text-muted sm:block lg:hidden">
+          Scroll sideways for full schedule →
+        </p>
+        <div className="table-scroll rounded-xl border border-border">
+          <table className="min-w-full text-left text-xs">
+            <thead className="bg-slate-50 dark:bg-slate-900/60">
+              <tr>
+                {table.headers.map((h) => (
+                  <th key={h} className="px-2 py-2 font-semibold text-muted whitespace-nowrap">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {table.rows.map((row, i) => (
+                <tr key={i} className="border-t border-border odd:bg-white/40 dark:odd:bg-white/5">
+                  {row.map((cell, j) => (
+                    <td key={j} className="px-2 py-1.5 whitespace-nowrap text-foreground">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

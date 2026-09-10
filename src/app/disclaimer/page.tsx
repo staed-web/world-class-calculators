@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Disclaimer",
@@ -39,9 +40,7 @@ export default function DisclaimerPage() {
             Contact us
           </Link>{" "}
           or email{" "}
-          <a href={contactMailto()} className="text-brand hover:underline break-all">
-            {CONTACT_EMAIL}
-          </a>
+          <ContactEmail className="text-brand hover:underline" />
           .
         </p>
       </div>

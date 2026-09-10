@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 
 type Props = {
@@ -10,6 +10,12 @@ type Props = {
   variant?: "banner" | "menu";
   onNavigated?: () => void;
 };
+
+/** Routes where a floating bar would cover primary calculator UI. */
+function blocksPrimaryUi(pathname: string | null) {
+  if (!pathname) return false;
+  return pathname.startsWith("/calculators/");
+}
 
 export function InstallApp({ variant = "banner", onNavigated }: Props) {
   const {
@@ -20,6 +26,7 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
     promptInstall,
     dismiss,
   } = useInstallPrompt();
+  const pathname = usePathname();
   const [iosOpen, setIosOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [bannerVisible, setBannerVisible] = useState(false);
@@ -28,15 +35,15 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
     setMounted(true);
   }, []);
 
-  // Soft delay so the install sheet never feels spammy on first paint
+  // Delayed, dismissible subtle bar — never on calculator pages (menu covers install there).
   useEffect(() => {
-    if (variant !== "banner" || !canOffer) {
+    if (variant !== "banner" || !canOffer || blocksPrimaryUi(pathname)) {
       setBannerVisible(false);
       return;
     }
-    const t = window.setTimeout(() => setBannerVisible(true), 4200);
+    const t = window.setTimeout(() => setBannerVisible(true), 7500);
     return () => window.clearTimeout(t);
-  }, [variant, canOffer]);
+  }, [variant, canOffer, pathname]);
 
   if (variant === "menu") {
     if (!menuOffer) return null;
@@ -84,7 +91,9 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
     );
   }
 
-  if (!canOffer || !mounted || !bannerVisible) return null;
+  if (!canOffer || !mounted || !bannerVisible || blocksPrimaryUi(pathname)) {
+    return null;
+  }
 
   const portalTarget =
     typeof document !== "undefined"
@@ -94,65 +103,53 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
 
   return createPortal(
     <>
+      {/* Slim dismissible strip — does not cover hero CTAs or calculator controls */}
       <div
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-[99990] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-[99990] flex justify-center px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-4"
         role="region"
         aria-label="Install MyCalcsWorld"
       >
         <div
-          className="pointer-events-auto w-full max-w-md overflow-hidden rounded-xl border border-border shadow-[var(--shadow)]"
+          className="pointer-events-auto flex w-full max-w-lg items-center gap-2 rounded-full border border-border px-2.5 py-1.5 shadow-[var(--shadow)] sm:gap-3 sm:px-3"
           style={{
-            background: "var(--card)",
+            background: "color-mix(in oklab, var(--card) 94%, transparent)",
+            backdropFilter: "blur(10px)",
           }}
         >
-          <div className="flex gap-3 p-3.5 sm:p-4">
-            <Image
-              src="/icons/icon-192.png"
-              alt=""
-              width={48}
-              height={48}
-              className="h-12 w-12 shrink-0 rounded-full shadow-sm ring-1 ring-[color-mix(in_oklab,var(--gold)_40%,transparent)]"
-            />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-foreground">
-                Install MyCalcsWorld
-              </p>
-              <p className="mt-0.5 text-xs leading-relaxed text-muted">
-                Keep every calculator one tap away — works like a native app on
-                your home screen.
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  className="btn-primary inline-flex min-h-10 items-center justify-center px-3.5 text-xs shadow-sm"
-                  onClick={async () => {
-                    if (canNativePrompt) {
-                      await promptInstall();
-                      return;
-                    }
-                    setIosOpen(true);
-                  }}
-                >
-                  {showIosTip && !canNativePrompt ? "How to install" : "Install"}
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex min-h-10 items-center justify-center rounded-xl px-3 text-xs font-medium text-muted hover:text-foreground"
-                  onClick={dismiss}
-                >
-                  Not now
-                </button>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-border/60 hover:text-foreground"
-              aria-label="Dismiss install prompt"
-              onClick={dismiss}
-            >
-              ✕
-            </button>
-          </div>
+          <span
+            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand"
+            aria-hidden
+          >
+            <InstallGlyph />
+          </span>
+          <p className="min-w-0 flex-1 truncate text-xs font-medium text-foreground sm:text-sm">
+            Install MyCalcsWorld
+            <span className="hidden text-muted font-normal sm:inline">
+              {" "}
+              · home screen
+            </span>
+          </p>
+          <button
+            type="button"
+            className="inline-flex min-h-8 shrink-0 items-center justify-center rounded-full bg-brand px-3 text-[11px] font-semibold text-white sm:text-xs"
+            onClick={async () => {
+              if (canNativePrompt) {
+                await promptInstall();
+                return;
+              }
+              setIosOpen(true);
+            }}
+          >
+            {showIosTip && !canNativePrompt ? "How" : "Install"}
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted hover:bg-border/60 hover:text-foreground"
+            aria-label="Dismiss install prompt"
+            onClick={dismiss}
+          >
+            ✕
+          </button>
         </div>
       </div>
       {iosOpen ? (
@@ -171,7 +168,7 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
 
 function InstallGlyph() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M12 3v10m0 0l3.5-3.5M12 13L8.5 9.5"
         stroke="currentColor"

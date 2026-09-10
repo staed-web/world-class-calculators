@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -32,9 +33,7 @@ export default function PrivacyPage() {
         <h2 className="text-lg font-semibold text-foreground pt-2">Contact</h2>
         <p>
           For privacy questions, email{" "}
-          <a href={contactMailto("Privacy question")} className="text-brand underline break-all">
-            {CONTACT_EMAIL}
-          </a>{" "}
+          <ContactEmail href={contactMailto("Privacy question")} className="text-brand underline" />{" "}
           or use the{" "}
           <Link href="/contact" className="text-brand underline">
             contact page

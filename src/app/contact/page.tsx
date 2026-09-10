@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { CopyEmailButton } from "@/components/CopyEmailButton";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -23,12 +24,7 @@ export default function ContactPage() {
           <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
             Email us
           </p>
-          <a
-            href={contactMailto()}
-            className="block break-all text-lg sm:text-xl font-semibold text-brand hover:underline"
-          >
-            {CONTACT_EMAIL}
-          </a>
+          <ContactEmail className="block text-lg sm:text-xl font-semibold text-brand hover:underline" />
         </div>
         <div className="flex flex-wrap gap-2">
           <a

@@ -14,7 +14,12 @@ export function CategoryGrid() {
             className={`rounded-xl border p-4 transition hover:shadow-md ${c.color}`}
           >
             <div className="flex items-start justify-between gap-2">
-              <div className="text-2xl mb-1">{c.icon}</div>
+              <div
+                aria-hidden
+                className="mb-2 inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-current/15 bg-white/55 px-2 text-[11px] font-bold uppercase tracking-[0.12em] dark:bg-black/20"
+              >
+                {c.icon}
+              </div>
               <span className="rounded-full bg-white/80 px-2 py-0.5 text-[11px] font-semibold text-[var(--accent)] dark:bg-black/25">
                 {count}
               </span>

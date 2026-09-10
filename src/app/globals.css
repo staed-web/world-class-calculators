@@ -310,13 +310,7 @@ main {
   overflow-x: clip;
 }
 
-/* Tables: scroll inside, never widen page */
-.table-scroll {
-  max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-}
+/* Tables: see .table-scroll / .table-scroll-wrap below */
 
 
 /* —— Installed / standalone app chrome —— */
@@ -354,4 +348,63 @@ main {
 html.standalone-app,
 html.standalone-ios {
   min-height: 100dvh;
+}
+
+
+/* AdSense: keep markup; collapse reserved height until filled */
+.ad-slot-collapsed {
+  min-height: 0;
+  max-height: 40px;
+  overflow: hidden;
+  margin-block: 0;
+  padding-block: 0;
+}
+
+.ad-slot-collapsed ins.adsbygoogle {
+  min-height: 1px !important;
+  max-height: 40px;
+}
+
+/* Contact email: prefer wrap at soft points, allow anywhere if needed */
+.email-break {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* Result tables: contained scroll + edge fade affordance on narrow screens */
+.table-scroll-wrap {
+  position: relative;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.table-scroll-wrap::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1.25rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  background: linear-gradient(
+    to left,
+    color-mix(in oklab, var(--card) 88%, transparent),
+    transparent
+  );
+}
+
+@media (min-width: 1024px) {
+  .table-scroll-wrap::after {
+    display: none;
+  }
+}
+
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }

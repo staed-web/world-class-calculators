@@ -21,7 +21,7 @@ import {
 } from "./seo/CalculatorGuide";
 import { TrackRecentCalculator } from "./TrackRecentCalculator";
 import { FavoriteButton } from "./FavoriteButton";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "./ContactEmail";
 import {
   Function3DCalculator,
   Pythagoras3DCalculator,
@@ -142,9 +142,15 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
 
       <div className="mb-5 sm:mb-6">
         <span
-          className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
+          className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
         >
-          {cat?.icon} {cat?.name}
+          <span
+            aria-hidden
+            className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded bg-white/70 px-1 text-[9px] font-bold uppercase tracking-wide dark:bg-black/25"
+          >
+            {cat?.icon}
+          </span>
+          {cat?.name}
         </span>
         <h1 className="mt-2 font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-foreground text-balance">
           {calc.name}
@@ -218,12 +224,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
               Contact MyCalcsWorld
             </Link>{" "}
             ·{" "}
-            <a
-              href={contactMailto(`Question about ${calc.name}`)}
-              className="text-brand hover:underline break-all"
-            >
-              {CONTACT_EMAIL}
-            </a>
+            <ContactEmail className="text-brand hover:underline" />
           </p>
         </div>
         <aside className="hidden lg:block space-y-4 no-print">

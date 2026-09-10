@@ -1,12 +1,13 @@
 import type { CategoryMeta, CategorySlug } from "./types";
 
+/** Short professional marks (no emoji) for classic navy/cream UI. */
 export const categories: CategoryMeta[] = [
   {
     slug: "finance",
     name: "Finance",
     description:
       "Mortgage & EMI payments, daily/compound interest, SIP growth, taxes, savings, retirement, APR vs APY, and multi-currency money tools — each with guides, worked examples, and FAQs.",
-    icon: "💰",
+    icon: "Fx",
     color: "bg-[#e8f2ef] text-[#0d4f46] border-[#c5ddd7]",
   },
   {
@@ -22,7 +23,7 @@ export const categories: CategoryMeta[] = [
     name: "Health & Fitness",
     description:
       "BMI, BMR, TDEE, macros, body fat, water intake, one-rep max, and pregnancy due-date tools using published educational formulas — not medical advice.",
-    icon: "❤️",
+    icon: "HF",
     color: "bg-[#f5ebea] text-[#6b3a3a] border-[#e0cbc8]",
   },
   {
@@ -30,7 +31,7 @@ export const categories: CategoryMeta[] = [
     name: "Conversion",
     description:
       "Length, weight, temperature, area, volume, speed, cooking, data, and time converters with clear SI / customary factors for school, travel, and DIY.",
-    icon: "🔄",
+    icon: "Cv",
     color: "bg-[#eaf1f5] text-[#1e3a4c] border-[#c8d7e0]",
   },
   {
@@ -38,7 +39,7 @@ export const categories: CategoryMeta[] = [
     name: "Date & Time",
     description:
       "Date differences, age from date of birth, add/subtract days, and business-day helpers — leap years respected, holiday calendars usually manual.",
-    icon: "📅",
+    icon: "Dt",
     color: "bg-[#f5f0e6] text-[#5c4a28] border-[#e0d5bc]",
   },
   {
@@ -46,7 +47,7 @@ export const categories: CategoryMeta[] = [
     name: "Everyday Life",
     description:
       "Tips, bill split, fuel cost, recipe scaling, DIY quantities, GPA helpers, and household planning calculators with practical defaults.",
-    icon: "🏠",
+    icon: "Ev",
     color: "bg-[#f3eee8] text-[#5a4030] border-[#ddd0c2]",
   },
   {
@@ -54,7 +55,7 @@ export const categories: CategoryMeta[] = [
     name: "Science & Engineering",
     description:
       "Ohm’s law, kinetics, speed/distance/time, energy, and other textbook physics/engineering helpers with SI-friendly inputs for class and lab checks.",
-    icon: "🔬",
+    icon: "Sc",
     color: "bg-[#eeecf3] text-[#3a3558] border-[#d4d0e0]",
   },
   {
@@ -62,7 +63,7 @@ export const categories: CategoryMeta[] = [
     name: "Business",
     description:
       "Margin vs markup, break-even, hourly-to-salary, ROI, and pricing helpers so founders can pressure-test ideas before a full spreadsheet model.",
-    icon: "📊",
+    icon: "Bz",
     color: "bg-[#e7f3f1] text-[#0d5c56] border-[#c5ddd7]",
   },
   {
@@ -70,7 +71,7 @@ export const categories: CategoryMeta[] = [
     name: "Education",
     description:
       "Final grade needed, grade percentage, GPA-style helpers, and study-friendly math — match your syllabus weights before trusting a target score.",
-    icon: "🎓",
+    icon: "Ed",
     color: "bg-[#e8eef5] text-[#1e3a5f] border-[#c5d0e0]",
   },
   {
@@ -78,7 +79,7 @@ export const categories: CategoryMeta[] = [
     name: "Statistics",
     description:
       "Mean, median, mode, standard deviation, combinations/permutations, and classical probability helpers for homework and quick exploratory checks.",
-    icon: "📈",
+    icon: "St",
     color: "bg-[#f0ecef] text-[#4a3548] border-[#d8cfd6]",
   },
   {
@@ -86,7 +87,7 @@ export const categories: CategoryMeta[] = [
     name: "Commodities & Metals",
     description:
       "Live gold, silver, platinum, copper, and crude reference quotes plus weight, purity, and jewelry melt-value estimators — delayed educational feeds, not trade tickets.",
-    icon: "🪙",
+    icon: "Au",
     color: "bg-[#f5f0e4] text-[#5c4a22] border-[#e0d4b0]",
   },
 ];

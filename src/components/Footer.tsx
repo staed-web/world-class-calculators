@@ -4,7 +4,7 @@ import { BrandWordmark } from "@/components/BrandWordmark";
 import { categories } from "@/lib/categories";
 import { calculatorCount } from "@/lib/calculators/registry";
 import { AdSlot } from "./AdSlot";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "./ContactEmail";
 
 export function Footer() {
   return (
@@ -67,9 +67,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href={contactMailto()} className="hover:text-[#9fd4cf] break-all">
-                  {CONTACT_EMAIL}
-                </a>
+                <ContactEmail className="hover:text-[#9fd4cf]" />
               </li>
               <li>
                 <Link href="/privacy" className="hover:text-[#9fd4cf]">
@@ -93,9 +91,7 @@ export function Footer() {
           © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
           professional advice. FX rates are delayed educational quotes. Guides and
           FAQs are original MyCalcsWorld copy. Contact{" "}
-          <a href={contactMailto()} className="text-[#9fd4cf] hover:underline break-all">
-            {CONTACT_EMAIL}
-          </a>
+          <ContactEmail className="text-[#9fd4cf] hover:underline" />
           .
         </p>
       </div>

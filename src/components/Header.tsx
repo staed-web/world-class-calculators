@@ -9,7 +9,8 @@ import { categories } from "@/lib/categories";
 import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { CurrencyPicker } from "./CurrencyPicker";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { contactMailto } from "@/lib/site";
+import { ContactEmail } from "./ContactEmail";
 import { InstallApp } from "./InstallApp";
 
 const mobileQuick = [
@@ -135,7 +136,12 @@ export function Header() {
                           className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-foreground hover:bg-brand-soft/50"
                           onClick={() => setOpen(false)}
                         >
-                          <span aria-hidden>{c.icon}</span>
+                          <span
+                            aria-hidden
+                            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-[10px] font-bold uppercase tracking-wide text-[var(--accent)]"
+                          >
+                            {c.icon}
+                          </span>
                           {c.name}
                         </Link>
                       </li>
@@ -163,7 +169,7 @@ export function Header() {
                     className="flex min-h-11 flex-col justify-center rounded-xl px-3 py-2 text-sm font-medium text-brand"
                   >
                     <span>Email us</span>
-                    <span className="text-xs font-normal text-muted break-all">{CONTACT_EMAIL}</span>
+                    <ContactEmail href={false} className="text-xs font-normal text-muted" />
                   </a>
                 </div>
               </div>
@@ -196,7 +202,7 @@ export function Header() {
           />
           <BrandWordmark
             className="hidden min-[360px]:inline-flex"
-            size="sm"
+            size="md"
           />
         </Link>
 
@@ -254,21 +260,24 @@ export function Header() {
         </button>
       </div>
 
-      {/* Desktop category strip — hidden when compact scroll on smaller desktops optional */}
+      {/* Desktop category strip — wrap (up to two rows); no clipped overflow scrollbar */}
       <div
-        className={`hidden lg:block border-t border-border/70 overflow-x-auto overscroll-x-contain transition-[max-height,opacity] duration-200 ${
-          compact ? "max-h-0 opacity-0 overflow-hidden border-0" : "max-h-14 opacity-100"
+        className={`hidden lg:block border-t border-border/70 transition-[max-height,opacity] duration-200 ${
+          compact ? "max-h-0 opacity-0 overflow-hidden border-0" : "max-h-24 opacity-100"
         }`}
         style={{ background: "color-mix(in oklab, var(--background) 88%, var(--card))" }}
       >
-        <div className="mx-auto flex max-w-6xl gap-1 px-4 py-2 text-xs font-medium text-muted">
+        <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-x-0.5 gap-y-1 px-4 py-2 text-xs font-medium text-muted">
           {categories.map((c) => (
             <Link
               key={c.slug}
               href={`/categories/${c.slug}`}
-              className="whitespace-nowrap shrink-0 inline-flex min-h-9 items-center rounded-full px-3 py-1.5 transition hover:bg-card hover:text-brand"
+              className="whitespace-nowrap inline-flex min-h-8 items-center rounded-full px-2.5 py-1 transition hover:bg-card hover:text-brand"
             >
-              <span aria-hidden className="mr-1">
+              <span
+                aria-hidden
+                className="mr-1.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded bg-brand-soft/70 px-1 text-[9px] font-bold uppercase tracking-wide text-[var(--accent)]"
+              >
                 {c.icon}
               </span>
               {c.name}

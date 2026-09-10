@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { contactMailto } from "@/lib/site";
+import { ContactEmail } from "./ContactEmail";
 
 export function ContactForm() {
   const [name, setName] = useState("");
@@ -81,12 +82,7 @@ export function ContactForm() {
         >
           Open email draft
         </button>
-        <a
-          href={contactMailto()}
-          className="text-sm text-brand hover:underline break-all"
-        >
-          Or email {CONTACT_EMAIL} directly
-        </a>
+        <span className="text-sm text-muted">Or email <ContactEmail className="text-brand hover:underline" /> directly</span>
       </div>
     </form>
   );

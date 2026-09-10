@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { calculatorCount } from "@/lib/calculators/registry";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "About MyCalcsWorld",
@@ -18,9 +19,7 @@ export default function AboutPage() {
       </p>
       <p className="mt-1 text-xs text-muted">
         Operated independently · Contact{" "}
-        <a href={contactMailto()} className="text-brand hover:underline break-all">
-          {CONTACT_EMAIL}
-        </a>
+        <ContactEmail className="text-brand hover:underline" />
       </p>
 
       <div className="mt-6 space-y-4 text-muted leading-relaxed">
@@ -67,9 +66,7 @@ export default function AboutPage() {
       </p>
       <p className="mt-2 text-muted leading-relaxed">
         Reach us at{" "}
-        <a href={contactMailto()} className="text-brand hover:underline break-all">
-          {CONTACT_EMAIL}
-        </a>{" "}
+        <ContactEmail className="text-brand hover:underline" />{" "}
         or via the{" "}
         <Link href="/contact" className="text-brand hover:underline">
           contact page
@@ -110,9 +107,7 @@ export default function AboutPage() {
         <li>
           <strong className="text-foreground">Honest about limits</strong> — educational estimates
           with clear disclaimers. If something looks wrong, tell us at{" "}
-          <a href={contactMailto()} className="text-brand hover:underline break-all">
-            {CONTACT_EMAIL}
-          </a>
+          <ContactEmail className="text-brand hover:underline" />
           .
         </li>
       </ul>
@@ -134,9 +129,7 @@ export default function AboutPage() {
         <li>
           <strong className="text-foreground">Open to feedback</strong> — no account required for
           core math; privacy policy and disclaimer are linked in the footer; corrections welcome at{" "}
-          <a href={contactMailto()} className="text-brand hover:underline break-all">
-            {CONTACT_EMAIL}
-          </a>
+          <ContactEmail className="text-brand hover:underline" />
           .
         </li>
       </ul>
