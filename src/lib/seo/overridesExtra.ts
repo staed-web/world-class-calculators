@@ -921,95 +921,9 @@ scientific: {
     ],
   },
 
-  "savings-goal": {
-    seoTitle: "Savings Goal Calculator — Time & Contribution",
-    seoDescription: "Estimate how long a savings goal takes or what to save monthly. Free savings goal calculator.",
-    formulaNote: "See the live Savings Goal Calculator — Time & Contribution formula notes on MyCalcsWorld for the exact identity used in this build.",
-    overview: "A savings goal is clearer when you know either the monthly amount or the timeline. MyCalcsWorld’s Savings Goal Calculator works the classic future-value relationships so you can plan contributions transparently.\n\nAssumes a constant return — markets and rates vary.",
-    whenToUse: [
-      "When you specifically need savings goal calculator — time & contribution math rather than a neighboring tool.",
-      "When you want a transparent second opinion before a spreadsheet or quote.",
-      "When teaching or checking a worked example with live numbers."
-    ],
-    commonMistakes: [
-      "Entering values in the wrong units or mixing similar definitions.",
-      "Trusting a single run without a sensitivity check.",
-      "Treating an educational estimate as professional advice."
-    ],
-    howToUse: [
-      "Open the form and review the labeled fields.",
-      "Enter your values or tap Try example for demo numbers.",
-      "Read the primary results, then any chart or table.",
-      "Skim the guide below before relying on the figure."
-    ],
-    howToInterpret: [
-      "Primary metrics appear at the top of the results panel.",
-      "Hints under results explain what was included or excluded.",
-      "Educational estimate only — verify critical numbers independently."
-    ],
-    workedExample: {
-      title: "Worked example — goal with monthly deposits",
-      steps: [
-        "Enter the target amount and current savings.",
-        "Set an assumed annual return and monthly contribution (or solve for one).",
-        "Read the timeline or required deposit from the result panel.",
-        "Re-run with a lower return for a conservative plan."
-      ],
-      result: "The live panel shows either months-to-goal or required contribution depending on what you fix — illustrative only.",
-    },
-    faqs: [
-      { question: "Is this professional advice?", answer: "No — educational estimates only. Confirm critical decisions with a qualified professional." },
-      { question: "Who is the Savings Goal Calculator — Time & Contribution for?", answer: "Anyone who needs a clear, browser-based estimate for this topic without signing up." },
-      { question: "Will my inputs be stored on a server?", answer: "Calculations run in your browser session. See Privacy for analytics details." },
-      { question: "How accurate is the Savings Goal Calculator — Time & Contribution?", answer: "It follows the published educational formula on this page. Product rules, labs, and institutions may differ." },
-      { question: "Mobile friendly?", answer: "Yes — the form and results are laid out for phones as well as desktops." }
-    ],
-  },
 
-  "debt-payoff": {
-    seoTitle: "Debt Payoff Calculator — Plan Extra Payments",
-    seoDescription: "Estimate payoff time and interest when you pay extra on debt. Free debt payoff calculator.",
-    formulaNote: "See the live Debt Payoff Calculator — Plan Extra Payments formula notes on MyCalcsWorld for the exact identity used in this build.",
-    overview: "Extra principal payments can shrink both time and interest. MyCalcsWorld’s Debt Payoff Calculator sketches schedules under fixed rate and payment assumptions so you can compare “pay more” scenarios.\n\nIssuer rules and new charges will change reality.",
-    whenToUse: [
-      "When you specifically need debt payoff calculator — plan extra payments math rather than a neighboring tool.",
-      "When you want a transparent second opinion before a spreadsheet or quote.",
-      "When teaching or checking a worked example with live numbers."
-    ],
-    commonMistakes: [
-      "Entering values in the wrong units or mixing similar definitions.",
-      "Trusting a single run without a sensitivity check.",
-      "Treating an educational estimate as professional advice."
-    ],
-    howToUse: [
-      "Open the form and review the labeled fields.",
-      "Enter your values or tap Try example for demo numbers.",
-      "Read the primary results, then any chart or table.",
-      "Skim the guide below before relying on the figure."
-    ],
-    howToInterpret: [
-      "Primary metrics appear at the top of the results panel.",
-      "Hints under results explain what was included or excluded.",
-      "Educational estimate only — verify critical numbers independently."
-    ],
-    workedExample: {
-      title: "Worked example — higher monthly payment",
-      steps: [
-        "Enter balance, APR, and baseline payment.",
-        "Add an extra monthly amount if the form supports it.",
-        "Compare months-to-zero and total interest.",
-        "Raise the extra payment to see sensitivity."
-      ],
-      result: "Higher payments usually cut months and interest — confirm on the live schedule.",
-    },
-    faqs: [
-      { question: "Is this professional advice?", answer: "No — educational estimates only. Confirm critical decisions with a qualified professional." },
-      { question: "Who is the Debt Payoff Calculator — Plan Extra Payments for?", answer: "Anyone who needs a clear, browser-based estimate for this topic without signing up." },
-      { question: "Will my inputs be stored on a server?", answer: "Calculations run in your browser session. See Privacy for analytics details." },
-      { question: "How accurate is the Debt Payoff Calculator — Plan Extra Payments?", answer: "It follows the published educational formula on this page. Product rules, labs, and institutions may differ." },
-      { question: "Mobile friendly?", answer: "Yes — the form and results are laid out for phones as well as desktops." }
-    ],
-  },
+
+
 
   "sales-tax": {
     seoTitle: "Sales Tax Calculator — Add or Remove Tax",
@@ -1415,46 +1329,55 @@ scientific: {
   },
 
   "cd-apy": {
-    seoTitle: "CD APY Calculator — Certificate Yield",
-    seoDescription: "Estimate certificate of deposit APY and growth. Free CD APY calculator.",
-    overview: "Certificates of deposit quote yields that depend on compounding. MyCalcsWorld’s CD APY Calculator helps you turn a nominal rate and schedule into an APY-style illustration and ending balance sketch.\n\nBank products may use different day-count conventions — confirm with your disclosure.",
+    seoTitle: "CD / APY Calculator — Yield & Maturity Estimate",
+    seoDescription:
+      "Convert APR to APY and project certificate of deposit maturity. Free CD APY calculator with compounding choices, worked example, and FAQs — educational only.",
+    formulaNote:
+      "APY = (1 + APR/n)^n − 1, where n is compounds per year. Maturity illustration uses compound growth A = P(1 + APR/n)^(n·t) for term t in years. Bank day-count and early-withdrawal penalties can differ.",
+    overview:
+      "A certificate of deposit (CD) locks money for a term in exchange for a stated yield. Brochures often show APR and APY side by side — APY already folds in compounding so you can compare products fairly.\n\nMyCalcsWorld’s CD / APY Calculator turns a deposit, APR, compounding schedule, and term into an APY-style effective yield and an ending-balance sketch. Use it next to the Daily Compound and classic Compound Interest tools when you want day-by-day detail or a single-lump growth check. Confirm day-count and penalties on the real disclosure before you open an account.",
     whenToUse: [
-      "When you need this specific calculation rather than a neighboring tool.",
-      "When you want a transparent browser estimate before a spreadsheet.",
-      "When checking homework or a quick plan with live numbers.",
+      "Comparing two CD quotes with different compounding frequencies.",
+      "Turning a nominal APR into an APY-style effective yield.",
+      "Sketching maturity value before you talk to a bank or credit union.",
+      "Teaching why daily compounding raises APY slightly at the same APR.",
     ],
     commonMistakes: [
-      "Entering values in the wrong units or flipping numerator/denominator.",
-      "Trusting a single run without a sensitivity check.",
-      "Treating an educational estimate as professional advice.",
+      "Comparing APR on one product to APY on another without converting.",
+      "Ignoring early-withdrawal penalties that can erase the yield advantage.",
+      "Assuming the display currency converts FX — formatting only.",
+      "Using promotional teaser rates that apply only to a short introductory window.",
     ],
     howToUse: [
-      "Open the form and review the labeled fields.",
-      "Enter your values or tap Try example for demo numbers.",
-      "Read the primary results and any secondary breakdown.",
-      "Skim the guide below before relying on the figure.",
+      "Enter the deposit (principal).",
+      "Enter the nominal APR the institution quotes.",
+      "Choose compounding frequency (daily is common on many CDs).",
+      "Set the term in years (use 0.5 for six months).",
+      "Read APY and projected maturity value; re-run with another compounding choice to compare.",
     ],
     howToInterpret: [
-      "Primary metrics appear at the top of the results panel.",
-      "Hints under results explain definitions and caveats.",
-      "Educational estimate only — verify critical numbers independently.",
+      "APY is the effective annual yield if compounding follows the schedule you chose.",
+      "Maturity value assumes you leave interest in the CD for the full term.",
+      "Real disclosures may use actual/365 or other day-count conventions — treat this as an educational estimate.",
     ],
     workedExample: {
-      title: "Worked example — 5% CD, monthly compound style",
+      title: "Worked example — $10,000 at 4.5% APR, daily compounding, 2 years",
       steps: [
-        "Enter principal, nominal rate, term, and compounding as labeled.",
-        "Read APY-style effective yield and ending value.",
-        "Compare to a savings account APY quote side by side offline.",
-        "Include early-withdrawal penalties in your real decision — not always modeled here."
+        "APR = 4.5% = 0.045; n = 365; t = 2; P = 10,000.",
+        "APY = (1 + 0.045/365)^365 − 1 ≈ 4.602%.",
+        "A = 10,000 × (1 + 0.045/365)^(365×2) ≈ 10,941 (rounded).",
+        "Monthly compounding at the same APR would finish a few dollars lower — frequency matters modestly at retail rates.",
       ],
-      result: "APY rises slightly with more frequent compounding at the same nominal rate — see the live panel.",
+      result:
+        "About 4.60% APY and roughly $10,941 maturity before taxes and penalties — confirm with the bank disclosure.",
     },
     faqs: [
-      { question: "Is this professional advice?", answer: "No — educational estimates only." },
-      { question: "Who is this for?", answer: "Anyone who needs a clear, browser-based estimate without signing up." },
-      { question: "Are inputs stored on a server?", answer: "Calculations run in your browser session. See Privacy for analytics." },
-      { question: "How accurate is it?", answer: "It follows the educational formula on this page; institutions and products may differ." },
-      { question: "Mobile friendly?", answer: "Yes — forms and results are laid out for phones and desktops." },
+      { question: "What is the difference between APR and APY?", answer: "APR is the nominal annual rate; APY is the effective annual yield after compounding. APY is usually the fairer number for comparing deposit products." },
+      { question: "Does daily compounding always win?", answer: "At the same APR, more frequent compounding raises APY slightly. Product fees and penalties often matter more than the last basis point of compounding." },
+      { question: "Are CD early-withdrawal penalties included?", answer: "Not automatically. If you might break the term, ask the issuer how interest is forfeited." },
+      { question: "Is this the same as the Daily Compound Interest calculator?", answer: "Related family — CD/APY focuses on APR→APY and maturity for a certificate-style deposit. Daily Compound adds reinvest %, deposits, and weekend filters day by day." },
+      { question: "Can I model a bump-up or callable CD?", answer: "This page assumes a fixed APR for the term. Specialty CDs need scenario runs or the issuer’s worksheet." },
+      { question: "Does currency picker change yield math?", answer: "No — it only formats money. The APY formula is currency-agnostic." },
     ],
   },
 
@@ -1933,4 +1856,193 @@ scientific: {
       { question: "Mobile friendly?", answer: "Yes — forms and results are laid out for phones and desktops." },
     ],
   },
+
+  "apr-vs-apy": {
+    seoTitle: "APR vs APY Comparator — See Compounding Lift",
+    seoDescription:
+      "Compare nominal APR to effective APY for any compounding schedule. Free side-by-side APR vs APY calculator with formula, example, and FAQs.",
+    formulaNote:
+      "APY = (1 + APR/n)^n − 1, with APR as a decimal and n = compounds per year. The gap APY − APR is the compounding lift for that schedule.",
+    overview:
+      "APR and APY get mixed up constantly — one is nominal, the other is effective after compounding. MyCalcsWorld’s APR vs APY Comparator puts them side by side so you can see how monthly or daily compounding lifts the effective yield.\n\nEnter a nominal APR and compounds per year. Read APY and the difference. Pair with CD/APY or Daily Compound when you also need a balance projection.",
+    whenToUse: [
+      "Reading a loan or savings quote that lists APR and APY differently.",
+      "Teaching why more frequent compounding raises effective yield.",
+      "Sanity-checking a marketing APY against the stated APR and schedule.",
+    ],
+    commonMistakes: [
+      "Comparing one product’s APR to another’s APY.",
+      "Forgetting that loan APR may include fees while deposit APY usually does not use the same fee rules.",
+      "Assuming continuous compounding when the product compounds monthly.",
+    ],
+    howToUse: [
+      "Enter the nominal APR.",
+      "Choose compounds per year.",
+      "Read APY and the compounding lift.",
+      "Re-run with another frequency to compare.",
+    ],
+    howToInterpret: [
+      "APY ≥ APR when APR ≥ 0 and n ≥ 1 (for standard positive rates).",
+      "Larger n raises APY toward the continuous-compounding limit.",
+      "Educational — product disclosures define the legal APY/APR labels in your region.",
+    ],
+    workedExample: {
+      title: "Worked example — 5% APR compounded monthly",
+      steps: [
+        "APR = 0.05; n = 12.",
+        "APY = (1 + 0.05/12)^12 − 1 ≈ 5.116%.",
+        "Lift ≈ 0.116 percentage points from compounding.",
+      ],
+      result: "About 5.12% APY from a 5% nominal APR with monthly compounding.",
+    },
+    faqs: [
+      { question: "Why is APY higher than APR?", answer: "Because interest compounds inside the year, so the effective annual yield exceeds the nominal rate." },
+      { question: "What n should I use for daily?", answer: "Often 365 (sometimes 360 in banking conventions). Match the disclosure when you can." },
+      { question: "Does this include loan fees?", answer: "No — it converts a nominal rate given compounding frequency. Fee-inclusive APR rules differ by product and country." },
+      { question: "How is this different from APR to APY Converter?", answer: "Same math family — this comparator emphasizes the side-by-side lift; the converter is a focused APR→APY tool." },
+      { question: "Is continuous compounding supported?", answer: "Use a very large n as an approximation, or the continuous compound tool when available." },
+    ],
+  },
+
+  "apr-to-apy": {
+    seoTitle: "APR to APY Converter — Effective Annual Yield",
+    seoDescription:
+      "Convert nominal APR to APY for annual, quarterly, monthly, or daily compounding. Free APR to APY converter with worked example.",
+    formulaNote:
+      "APY = (1 + APR/n)^n − 1. Enter APR in percent; the tool converts to a decimal internally.",
+    overview:
+      "Need a quick effective yield from a nominal APR? MyCalcsWorld’s APR to APY Converter is the focused one-step tool: pick compounding frequency, read APY.\n\nIt is ideal when you already know the schedule and just want the effective annual number — then jump to CD/APY or compound interest if you also need a balance.",
+    whenToUse: [
+      "Converting a brochure APR into an APY-style effective yield.",
+      "Homework checks on the (1+r/n)^n − 1 identity.",
+      "Comparing monthly vs daily compounding on the same APR.",
+    ],
+    commonMistakes: [
+      "Entering APY into an APR field on another form afterward.",
+      "Using 360 vs 365 day bases inconsistently.",
+      "Ignoring that advertised loan APR may embed fees.",
+    ],
+    howToUse: [
+      "Enter APR (%).",
+      "Choose compounds per year.",
+      "Read APY.",
+      "Optionally compare with the APR vs APY comparator page.",
+    ],
+    howToInterpret: [
+      "APY is the effective annual yield under the compounding assumption.",
+      "It does not by itself show fees, taxes, or penalties.",
+      "Educational estimate — match your product’s disclosure.",
+    ],
+    workedExample: {
+      title: "Worked example — 5.99% APR monthly",
+      steps: [
+        "APR = 0.0599; n = 12.",
+        "APY = (1 + 0.0599/12)^12 − 1 ≈ 6.15%.",
+      ],
+      result: "Roughly 6.15% APY from 5.99% APR compounded monthly.",
+    },
+    faqs: [
+      { question: "Is APY the same worldwide?", answer: "The compounding idea is universal; legal labels and fee inclusion differ by country and product." },
+      { question: "Can I convert APY back to APR?", answer: "Yes algebraically: APR = n · ((1+APY)^(1/n) − 1). This page focuses on APR→APY." },
+      { question: "Daily compounding uses 365 or 360?", answer: "Many consumer calculators use 365; some banks use 360. Match the disclosure." },
+      { question: "Does this project my balance?", answer: "No — use CD/APY or Compound Interest for balances; this converter is rate-only." },
+    ],
+  },
+
+  "debt-payoff": {
+    seoTitle: "Debt Payoff Calculator — Months, Interest & Total Paid",
+    seoDescription:
+      "Estimate how long to pay off a credit card or loan with fixed monthly payments. Free debt payoff calculator with interest totals and FAQs.",
+    formulaNote:
+      "Each month: interest = balance × (APR/12/100); principal reduction = payment − interest. Repeat until balance clears. If payment ≤ first-month interest, payoff never occurs.",
+    overview:
+      "Minimum payments can hide how long high-APR balances linger. MyCalcsWorld’s Debt Payoff Calculator runs a fixed monthly payment against a balance and APR to estimate months to clear, total interest, and total paid.\n\nUse it for credit cards, personal loans, or any amortizing consumer debt where you control the payment. Pair with EMI extra-payments or amortization tools when you want a full schedule chart.",
+    whenToUse: [
+      "Stress-testing a larger monthly payment to shorten payoff.",
+      "Seeing total interest if you only pay a fixed amount.",
+      "Comparing payoff timelines before a balance transfer.",
+    ],
+    commonMistakes: [
+      "Entering a payment that does not cover monthly interest — the tool will say so.",
+      "Forgetting new purchases that keep a revolving balance alive.",
+      "Ignoring fees and penalty APRs that real cards can trigger.",
+    ],
+    howToUse: [
+      "Enter the current balance.",
+      "Enter the APR.",
+      "Enter the monthly payment you can sustain.",
+      "Read months to payoff, interest, and total paid.",
+    ],
+    howToInterpret: [
+      "Months to payoff assumes the payment never changes and no new charges.",
+      "Total interest is the cost of carrying the balance at that APR and payment.",
+      "Educational — issuer statements win for legal payoff quotes.",
+    ],
+    workedExample: {
+      title: "Worked example — $8,000 at 19.9% APR, $250 / month",
+      steps: [
+        "Monthly rate ≈ 19.9%/12.",
+        "Month 1 interest ≈ 8,000 × 0.199/12 ≈ 132.67; principal ≈ 250 − 132.67 ≈ 117.33.",
+        "Repeat until balance reaches zero — months and cumulative interest appear in results.",
+      ],
+      result:
+        "A multi-year payoff with substantial interest if you never raise the payment — check the live panel for exact months.",
+    },
+    faqs: [
+      { question: "Why does it say payment is too low?", answer: "If the payment does not cover the first month’s interest, the balance grows or stalls — raise the payment." },
+      { question: "Does this model minimum payments that shrink?", answer: "No — it assumes a fixed payment you choose." },
+      { question: "Can I include extra payments?", answer: "Raise the monthly payment field, or use the EMI extra-payments tool for loan-style schedules." },
+      { question: "Is snowball vs avalanche included?", answer: "This page is single-balance. Multi-debt strategy needs separate runs per balance." },
+      { question: "Are results advice to close a card?", answer: "No — educational estimates only. Consider credit-score and emergency-fund impacts separately." },
+    ],
+  },
+
+  "savings-goal": {
+    seoTitle: "Savings Goal Calculator — Monthly Deposit Needed",
+    seoDescription:
+      "Estimate the monthly deposit required to reach a savings target with growth. Free savings goal calculator with worked example and FAQs.",
+    formulaNote:
+      "Solves for the monthly contribution that grows current savings to a goal over a given number of years at an assumed annual return (standard savings-goal annuity identity in MyCalcsWorld finance formulas).",
+    overview:
+      "A savings goal is clearer when you know the monthly number. MyCalcsWorld’s Savings Goal Calculator asks for the target, what you already have, years available, and an assumed annual return — then estimates the monthly deposit needed.\n\nIt is a planning aid for emergency funds, travel pots, and down-payment timelines. Returns are not guaranteed; stress-test a lower rate.",
+    whenToUse: [
+      "Planning a down payment or emergency fund with a deadline.",
+      "Checking whether a monthly auto-transfer is in the right ballpark.",
+      "Comparing aggressive vs conservative return assumptions.",
+    ],
+    commonMistakes: [
+      "Using an equity-like return for money you need in one year.",
+      "Forgetting that contributions themselves need to come from after-tax cash flow.",
+      "Ignoring inflation — pair with the inflation adjuster for long goals.",
+    ],
+    howToUse: [
+      "Enter the goal amount.",
+      "Enter current savings.",
+      "Set years to the goal and an expected annual return.",
+      "Read the monthly deposit needed and approximate total deposits.",
+    ],
+    howToInterpret: [
+      "Monthly deposit assumes level contributions and a steady annualized return.",
+      "Total deposits approx multiplies the monthly figure by months — actual invested path can differ.",
+      "Educational — markets and bank rates vary.",
+    ],
+    workedExample: {
+      title: "Worked example — $20,000 goal, $2,000 saved, 3 years, 4% return",
+      steps: [
+        "Goal 20,000; current 2,000; years 3; annual return 4%.",
+        "The solver finds the monthly deposit that grows the nest egg to the goal.",
+        "Re-run at 2% return to see how much more you may need to save if yields are lower.",
+      ],
+      result:
+        "A few hundred per month in the classic 4%/3y illustration — confirm the live panel and stress-test lower returns.",
+    },
+    faqs: [
+      { question: "Is the return guaranteed?", answer: "No. It is an assumption. Use a conservative rate for short-term goals." },
+      { question: "Can I model irregular deposits?", answer: "This page assumes a steady monthly amount. Average lumpy deposits or re-run scenarios." },
+      { question: "How is this different from SIP?", answer: "SIP projects growth from a chosen monthly investment. Savings goal solves for the monthly amount needed to hit a target." },
+      { question: "Should I include inflation?", answer: "For multi-year goals, raise the target with the inflation adjuster, then re-run." },
+      { question: "What if I already saved more than the goal?", answer: "Monthly needed may be zero or negative — you are already there under the assumptions." },
+    ],
+  },
+
 };

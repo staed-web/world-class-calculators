@@ -152,7 +152,7 @@ export const scienceCalculators: CalculatorMeta[] = [
     ],
     related: ["velocity"],
     compute: (v) => {
-      const parsed = requireNums(v, ["v0", "v1", "t"]);
+      const parsed = requireNums(v, ["v0", "v1", "t"], { emptyAsZero: ["v0"] });
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       if (n.t === 0) return err("Time cannot be zero.");

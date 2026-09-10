@@ -701,10 +701,11 @@ function toolSpecificInterpret(calc: CalculatorMeta): string[] {
     "Educational estimate only — verify critical numbers with a qualified professional or primary source.",
   ];
   const extras = [
-    `On the ${calc.name}, read emphasized metrics first — those are the primary answers this tool is built to show.`,
+    `On the ${calc.name}, read the large primary result first, then secondary totals, then any chart or table.`,
     calc.fields?.length
       ? `Each result is driven only by the labeled inputs (${fieldList(calc.fields, 4)}); anything not on the form (fees, holidays, clinical adjustments) is outside this estimate.`
       : `Anything not collected on this form is outside the ${calc.name} estimate.`,
+    "If the form offers More options, open them only when you need advanced controls — the essentials stay above.",
   ];
   const seen = new Set<string>();
   const out: string[] = [];

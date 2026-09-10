@@ -247,11 +247,11 @@ export const businessCalculators: CalculatorMeta[] = [
       { id: "price", label: "List price", type: "number", defaultValue: 200, prefix: "$" },
       { id: "d1", label: "First discount %", type: "number", defaultValue: 20, suffix: "%" },
       { id: "d2", label: "Second discount %", type: "number", defaultValue: 10, suffix: "%" },
-      { id: "d3", label: "Third discount %", type: "number", defaultValue: 0, suffix: "%" },
+      { id: "d3", label: "Third discount % (optional)", type: "number", defaultValue: 0, suffix: "%", helpText: "Leave blank for 0" },
     ],
     related: ["discount", "margin-markup"],
     compute: (v) => {
-      const parsed = requireNums(v, ["price", "d1", "d2", "d3"]);
+      const parsed = requireNums(v, ["price", "d1", "d2", "d3"], { emptyAsZero: ["d2", "d3"] });
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       let p = n.price;

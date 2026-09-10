@@ -35,6 +35,11 @@ export interface FieldDef {
   /** Marks a money input — prefix tracks display currency. */
   money?: boolean;
   /**
+   * Collapse into a “More options” disclosure in CalculatorForm.
+   * Use for secondary controls (reinvest, deposits, weekends, poly coeffs, …).
+   */
+  advanced?: boolean;
+  /**
    * Show this field only when another field's value is one of `in`.
    * Used for mode-aware forms (solve-for-X, converters, etc.).
    */

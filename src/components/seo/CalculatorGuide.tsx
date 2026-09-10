@@ -59,7 +59,7 @@ export function CalculatorGuide({
   }
 
   const toc: { id: string; label: string }[] = [];
-  if (content.overview) toc.push({ id: "guide-about", label: "About" });
+  if (content.overview) toc.push({ id: "guide-about", label: "What it is" });
   if (content.whenToUse?.length) toc.push({ id: "guide-when", label: "When to use" });
   if (hasHowTo) toc.push({ id: "guide-howto", label: "How to use" });
   if (content.howToInterpret?.length)
@@ -68,7 +68,7 @@ export function CalculatorGuide({
     toc.push({ id: "guide-mistakes", label: "Mistakes" });
   if (content.workedExample)
     toc.push({ id: "guide-example", label: "Example" });
-  if (note) toc.push({ id: "guide-formula", label: "Formula" });
+  if (note) toc.push({ id: "guide-formula", label: "How to calculate" });
   if (content.faqs?.length) toc.push({ id: "guide-faq", label: "FAQ" });
 
   return (
@@ -83,9 +83,9 @@ export function CalculatorGuide({
             Detailed guide
           </p>
           <p className="mt-1 text-sm text-muted max-w-2xl">
-            A plain-language guide for this tool — when it helps, how to use it,
-            how to read the numbers, common mistakes, a worked example, formula
-            notes, and FAQs.
+            What it is, how to use it, how to read the numbers, common mistakes,
+            a worked numeric example, formulas, and FAQs — written for MyCalcsWorld,
+            not copied from other sites.
           </p>
         </div>
       </div>
@@ -112,7 +112,7 @@ export function CalculatorGuide({
 
       {content.overview && (
         <div>
-          <SectionTitle id="guide-about">About this calculator</SectionTitle>
+          <SectionTitle id="guide-about">What this calculator is</SectionTitle>
           <p className="mt-3 text-sm sm:text-base text-muted leading-relaxed whitespace-pre-wrap">
             {content.overview}
           </p>
@@ -188,7 +188,7 @@ export function CalculatorGuide({
 
       {note && (
         <div>
-          <SectionTitle id="guide-formula">Formula notes</SectionTitle>
+          <SectionTitle id="guide-formula">How to calculate / formula</SectionTitle>
           <p className="mt-3 text-sm sm:text-base text-muted leading-relaxed whitespace-pre-wrap">
             {note}
           </p>

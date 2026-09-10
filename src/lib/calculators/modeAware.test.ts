@@ -198,3 +198,40 @@ describe("empty required numbers are rejected", () => {
     expect(out).toHaveProperty("error");
   });
 });
+
+describe("emptyAsZero optional numeric fields", () => {
+  it("daily-compound empty optional horizon fields", () => {
+    const out = run("daily-compound-interest", {
+      principal: "1000",
+      rateMode: "daily",
+      rate: "0.4",
+      years: "1",
+      months: "",
+      days: "",
+      reinvest: "",
+      depositFreq: "none",
+      deposit: "",
+      excludeWeekends: "no",
+    });
+    expect(out).not.toHaveProperty("error");
+    const items = out as { label: string; value: string }[];
+    expect(items.find((i) => i.label === "Future value")?.value).toBeTruthy();
+  });
+
+  it("discount-stack allows empty third discount", () => {
+    const out = run("discount-stack", { price: "200", d1: "20", d2: "10", d3: "" });
+    expect(out).not.toHaveProperty("error");
+  });
+
+  it("pace allows empty extra seconds", () => {
+    const out = run("pace", { distance: "5", unit: "km", minutes: "28", seconds: "" });
+    expect(out).not.toHaveProperty("error");
+  });
+
+  it("distance-formula allows empty origin coordinates as zero", () => {
+    const out = run("distance-formula", { x1: "", y1: "", x2: "3", y2: "4" });
+    expect(out).not.toHaveProperty("error");
+    const items = out as { label: string; value: string }[];
+    expect(Number(items.find((i) => i.label === "Distance")?.value)).toBeCloseTo(5, 5);
+  });
+});

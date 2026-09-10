@@ -1891,23 +1891,37 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
     seoDescription:
       "Calculate daily compound interest with daily or annual rates, optional reinvest %, extra deposits, and weekend exclusion. Free chart + snapshots — not investment advice.",
     formulaNote:
-      "Daily rate form: grow the balance each day by interest = balance × r, then keep reinvest% of that interest in the account (withdraw the rest as cash). Closed form when reinvest = 100% and there are no deposits: A = P(1+r)^t with r = daily decimal and t = compounding days. Annual-rate mode uses r_daily = r_annual/365, i.e. A = P(1 + r/365)^(365·T) over a full year of calendar compounding. Deposits are added at the end of each day or every 30 calendar days. Exclude weekends compounds Monday–Friday only inside the calendar span.",
+      "Daily rate form: grow the balance each day by interest = balance × r, then keep reinvest% of that interest in the account (withdraw the rest as cash). Closed form when reinvest = 100% and there are no deposits: A = P(1+r)^t with r = daily decimal and t = compounding days.\n\nWorked numeric check: P = 1,000, r = 0.4%/day, t = 365, full reinvest → A = 1,000 × (1.004)^365 ≈ 4,293.44 (interest ≈ 3,293.44).\n\nAnnual-rate mode uses r_daily = r_annual/365, i.e. A = P(1 + r/365)^(365·T) over a full year of calendar compounding. Deposits are added at the end of each day or every 30 calendar days. Exclude weekends compounds Monday–Friday only inside the calendar span.",
     overview:
-      "Daily compound interest credits earnings every day so each session’s interest can itself earn interest. Banks often quote daily compounding on savings, CDs, and money-market products; traders sometimes model daily financing or marked-to-market gains the same way — with far higher risk.\n\nMyCalcsWorld’s Daily Compound Interest Calculator is built to match (and extend) what people expect from flagship finance tools: choose a daily rate or an annual rate divided by 365, set a horizon in years + months + days, optionally keep only part of each day’s interest invested (reinvest %), add daily or monthly deposits at end of period, and exclude weekends for business-day calendars. Results include future value, total interest, deposits, cash withdrawn, effective growth, a balance-over-time chart, and periodic snapshots. Currency formatting uses the site CurrencyProvider / fmtMoney picker (USD, INR, EUR, and more).\n\nIllustrative only — not investment advice. Extreme daily percentage rates sometimes appear in trading or margin examples and can imply severe risk of loss beyond your principal.",
+      "Daily compound interest credits earnings every day so each day’s interest can itself earn interest. Banks often quote daily compounding on savings, CDs, and money-market products; some trading and financing examples use daily rates too — usually with far higher risk.\n\nMyCalcsWorld’s Daily Compound Interest Calculator is a complete day-by-day planner in our own voice: pick a daily rate or an annual rate divided by 365, set a horizon in years + months + days, open More options for reinvest %, daily or monthly deposits, and weekend (business-day) filtering. Results highlight future value first, then interest, deposits, cash withdrawn, effective growth, a balance-over-time chart, and periodic snapshots. Format money in USD, INR, EUR, and other codes with the currency picker.\n\nIllustrative only — not investment advice. Extreme daily percentage rates can imply severe risk of loss beyond your principal.",
+    whenToUse: [
+      "Comparing a savings or money-market product that compounds every day against a brochure quote.",
+      "Modeling what happens if you reinvest only part of each day’s interest and take the rest as cash.",
+      "Adding a daily or monthly contribution on top of an existing balance.",
+      "Exploring weekday-only compounding for educational trading/financing calendars (not a broker).",
+      "Checking a worked A = P(1+r)^t example with a chart and snapshot table beside the numbers.",
+    ],
+    commonMistakes: [
+      "Treating a daily % the same as an annual % — 0.4% per day is enormous versus 0.4% per year.",
+      "Forgetting that Future value excludes cash already withdrawn when reinvest is below 100%.",
+      "Expecting weekend exclusion to remove public holidays (this tool only skips Saturday/Sunday).",
+      "Entering deposits while Additional deposits is still set to None — open More options and choose daily or monthly.",
+      "Assuming the currency picker converts foreign exchange; it only changes display formatting.",
+    ],
     howToUse: [
-      "Enter the starting principal.",
+      "Enter the starting principal and pick your display currency if you like.",
       "Choose Daily rate (%) or Annual rate (%) → ÷365, then enter the rate.",
       "Set years, months, and extra days (horizon = years×365 + months×30 + days).",
-      "Optionally set a daily reinvest rate below 100% to model cash withdrawals of interest.",
-      "Optionally add daily or monthly deposits and/or exclude weekends.",
-      "Read future value, interest, deposits, withdrawn cash, chart, and snapshot table.",
+      "Open More options only if you need them: reinvest %, deposits, or weekend skip.",
+      "For deposits, choose Daily or Monthly, then enter the deposit amount.",
+      "Read the big future-value result first, then secondary totals, chart, and snapshots.",
     ],
     howToInterpret: [
       "Future value is the invested balance at the end — it excludes cash you already withdrew when reinvest < 100%.",
       "Total interest generated counts all interest before splitting into reinvested vs withdrawn.",
       "Effective growth divides net gain (FV + withdrawn − total deposits) by total deposits.",
       "Compounding days shrinks when weekends are excluded even though the calendar span is unchanged.",
-      "Charts downsample long horizons; the snapshot table keeps periodic checkpoints.",
+      "Charts downsample long horizons; the snapshot table keeps periodic checkpoints you can scan quickly.",
     ],
     workedExample: {
       title: "Worked example — $1,000 at 0.4% per day for 365 days",
@@ -1956,6 +1970,11 @@ export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
         question: "How is this different from the Compound Interest calculator?",
         answer:
           "The classic Compound Interest tool uses A = P(1+r/n)^(n·t) with a chosen n (monthly, daily, …). This Daily Compound page specializes in day-by-day modeling with reinvest %, deposits, weekend filters, charts, and snapshots.",
+      },
+      {
+        question: "Where did reinvest, deposits, and weekends go?",
+        answer:
+          "They live under More options so the main form stays simple: principal, rate mode, rate, and time. Open More options when you need partial reinvestment, extra deposits, or business-day compounding.",
       },
     ],
   },

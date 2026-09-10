@@ -292,7 +292,7 @@ export const healthCalculators: CalculatorMeta[] = [
     ],
     related: ["tdee"],
     compute: (v) => {
-      const parsed = requireNums(v, ["distance", "minutes", "seconds"]);
+      const parsed = requireNums(v, ["distance", "minutes", "seconds"], { emptyAsZero: ["seconds"] });
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       if (n.distance <= 0) return err("Distance must be positive.");

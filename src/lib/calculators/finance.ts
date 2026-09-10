@@ -34,6 +34,7 @@ import { amortizeYearlySummary } from "../formulas/catalog";
 import { sipGrowthSchedule } from "../formulas/wave2";
 import {
   requireNums,
+  optionalNum,
   fmtMoney,
   fmtNumber,
   fmtPercent,
@@ -1100,26 +1101,50 @@ export const financeCalculators: CalculatorMeta[] = [
       },
       { id: "rate", label: "Interest rate", type: "number", defaultValue: 0.4, suffix: "%", step: 0.001, helpText: "Daily % or annual % depending on mode" },
       { id: "years", label: "Years", type: "number", defaultValue: 1, min: 0, step: 1 },
-      { id: "months", label: "Months", type: "number", defaultValue: 0, min: 0, step: 1 },
-      { id: "days", label: "Extra days", type: "number", defaultValue: 0, min: 0, step: 1, helpText: "Added to years×365 + months×30" },
-      { id: "reinvest", label: "Daily reinvest rate", type: "number", defaultValue: 100, suffix: "%", min: 0, max: 100, step: 1, helpText: "e.g. 80 keeps 80% invested and withdraws 20% cash" },
+      { id: "months", label: "Months", type: "number", defaultValue: 0, min: 0, step: 1, helpText: "Leave blank for 0" },
+      { id: "days", label: "Extra days", type: "number", defaultValue: 0, min: 0, step: 1, helpText: "Added to years×365 + months×30 — blank counts as 0" },
+      {
+        id: "reinvest",
+        label: "Daily reinvest rate",
+        type: "number",
+        defaultValue: 100,
+        suffix: "%",
+        min: 0,
+        max: 100,
+        step: 1,
+        advanced: true,
+        helpText: "e.g. 80 keeps 80% invested and withdraws 20% cash — blank defaults to 100%",
+      },
       {
         id: "depositFreq",
         label: "Additional deposits",
         type: "select",
         defaultValue: "none",
+        advanced: true,
         options: [
           { value: "none", label: "None" },
           { value: "daily", label: "Daily (end of day)" },
           { value: "monthly", label: "Monthly (every 30 days)" },
         ],
       },
-      { id: "deposit", label: "Deposit amount", type: "number", defaultValue: 0, prefix: "$", min: 0, money: true },
+      {
+        id: "deposit",
+        label: "Deposit amount",
+        type: "number",
+        defaultValue: 0,
+        prefix: "$",
+        min: 0,
+        money: true,
+        advanced: true,
+        visibleWhen: { field: "depositFreq", in: ["daily", "monthly"] },
+        helpText: "Added at end of each deposit period",
+      },
       {
         id: "excludeWeekends",
         label: "Exclude weekends",
         type: "select",
         defaultValue: "no",
+        advanced: true,
         options: [
           { value: "no", label: "Compound every calendar day" },
           { value: "yes", label: "Business days only (Mon–Fri)" },
@@ -1129,11 +1154,16 @@ export const financeCalculators: CalculatorMeta[] = [
     ],
     related: ["compound-interest", "compounding", "sip", "cd-apy"],
     compute: (v) => {
-      const parsed = requireNums(v, ["principal", "rate", "years", "months", "days", "reinvest", "deposit"]);
+      const parsed = requireNums(
+        v,
+        ["principal", "rate", "years", "months", "days", "deposit"],
+        { emptyAsZero: ["years", "months", "days", "deposit"] }
+      );
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
+      const reinvest = optionalNum(v, "reinvest") ?? 100;
       if (n.principal < 0) return err("Principal must be ≥ 0.");
-      if (n.reinvest < 0 || n.reinvest > 100) return err("Reinvest rate must be between 0 and 100%.");
+      if (reinvest < 0 || reinvest > 100) return err("Reinvest rate must be between 0 and 100%.");
       const rateMode = v.rateMode === "annual" ? "annual" : "daily";
       const depositFrequency =
         v.depositFreq === "daily" || v.depositFreq === "monthly" ? v.depositFreq : "none";
@@ -1145,7 +1175,7 @@ export const financeCalculators: CalculatorMeta[] = [
         ratePct: n.rate,
         rateMode,
         totalDays,
-        reinvestPct: n.reinvest,
+        reinvestPct: reinvest,
         depositAmount: depositFrequency === "none" ? 0 : n.deposit,
         depositFrequency,
         excludeWeekends: v.excludeWeekends === "yes",

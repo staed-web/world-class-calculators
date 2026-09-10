@@ -629,7 +629,7 @@ export const mathCalculators: CalculatorMeta[] = [
     ],
     related: ["slope", "pythagoras"],
     compute: (v) => {
-      const parsed = requireNums(v, ["x1", "y1", "x2", "y2"]);
+      const parsed = requireNums(v, ["x1", "y1", "x2", "y2"], { emptyAsZero: ["x1", "y1", "x2", "y2"] });
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       const d = distance2d(n.x1, n.y1, n.x2, n.y2);

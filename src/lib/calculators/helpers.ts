@@ -14,13 +14,27 @@ export function err(message: string): { error: string } {
 export type NumsOk = { ok: true; n: Record<string, number> };
 export type NumsErr = { ok: false; error: string };
 
+export type RequireNumsOpts = {
+  /** Keys that treat blank input as 0 (still error on non-numeric junk). */
+  emptyAsZero?: readonly string[];
+};
+
 export function requireNums(
   values: Record<string, string>,
-  keys: string[]
+  keys: string[],
+  opts?: RequireNumsOpts
 ): NumsOk | NumsErr {
+  const emptyZero = new Set(opts?.emptyAsZero ?? []);
   const out: Record<string, number> = {};
   for (const k of keys) {
-    const num = parseNum(values[k]);
+    const raw = values[k];
+    const trimmed =
+      raw === undefined || raw === null ? "" : String(raw).trim();
+    if (trimmed === "" && emptyZero.has(k)) {
+      out[k] = 0;
+      continue;
+    }
+    const num = parseNum(raw);
     if (!Number.isFinite(num)) {
       const label = k.replace(/-/g, " ").replace(/_/g, " ");
       return {

@@ -524,7 +524,7 @@ export const wave2Calculators: CalculatorMeta[] = [
     ],
     related: ["distance-formula", "pythagoras", "vector-magnitude"],
     compute: (v) => {
-      const parsed = requireNums(v, ["x1","y1","z1","x2","y2","z2"]);
+      const parsed = requireNums(v, ["x1","y1","z1","x2","y2","z2"], { emptyAsZero: ["x1","y1","z1","x2","y2","z2"] });
       if (!parsed.ok) return err(parsed.error);
       const n = parsed.n;
       const d = distance3d(n.x1,n.y1,n.z1,n.x2,n.y2,n.z2);
@@ -706,13 +706,13 @@ export const wave2Calculators: CalculatorMeta[] = [
         { value: "cos", label: "cos(x)" }, { value: "exp", label: "exp(x)" }, { value: "ln", label: "ln(x)" },
       ]},
       { id: "x", label: "x", type: "number", defaultValue: 1, step: 0.1 },
-      { id: "a", label: "a (poly)", type: "number", defaultValue: 1 },
-      { id: "b", label: "b (poly)", type: "number", defaultValue: 0 },
-      { id: "c", label: "c (poly)", type: "number", defaultValue: 0 },
+      { id: "a", label: "a (poly)", type: "number", defaultValue: 1, advanced: true },
+      { id: "b", label: "b (poly)", type: "number", defaultValue: 0, advanced: true },
+      { id: "c", label: "c (poly)", type: "number", defaultValue: 0, advanced: true },
     ],
     related: ["integral-numeric", "quadratic"],
     compute: (v) => {
-      const parsed = requireNums(v, ["x","a","b","c"]);
+      const parsed = requireNums(v, ["x","a","b","c"], { emptyAsZero: ["a","b","c"] });
       if (!parsed.ok) return err(parsed.error);
       const fn = (v.fn as "poly"|"sin"|"cos"|"exp"|"ln") || "poly";
       const d = numericDerivative(parsed.n.x, fn, parsed.n.a, parsed.n.b, parsed.n.c);
@@ -733,13 +733,13 @@ export const wave2Calculators: CalculatorMeta[] = [
       ]},
       { id: "lo", label: "Lower bound", type: "number", defaultValue: 0 },
       { id: "hi", label: "Upper bound", type: "number", defaultValue: 3.14159 },
-      { id: "a", label: "a (poly)", type: "number", defaultValue: 1 },
-      { id: "b", label: "b (poly)", type: "number", defaultValue: 0 },
-      { id: "c", label: "c (poly)", type: "number", defaultValue: 0 },
+      { id: "a", label: "a (poly)", type: "number", defaultValue: 1, advanced: true },
+      { id: "b", label: "b (poly)", type: "number", defaultValue: 0, advanced: true },
+      { id: "c", label: "c (poly)", type: "number", defaultValue: 0, advanced: true },
     ],
     related: ["derivative-numeric", "graphing-calculator"],
     compute: (v) => {
-      const parsed = requireNums(v, ["lo","hi","a","b","c"]);
+      const parsed = requireNums(v, ["lo","hi","a","b","c"], { emptyAsZero: ["lo","a","b","c"] });
       if (!parsed.ok) return err(parsed.error);
       const fn = (v.fn as "poly"|"sin"|"cos"|"exp") || "sin";
       const i = numericIntegral(parsed.n.lo, parsed.n.hi, fn, parsed.n.a, parsed.n.b, parsed.n.c);
@@ -840,13 +840,13 @@ export const wave2Calculators: CalculatorMeta[] = [
       ]},
       { id: "xMin", label: "x min", type: "number", defaultValue: -6.28 },
       { id: "xMax", label: "x max", type: "number", defaultValue: 6.28 },
-      { id: "a", label: "a", type: "number", defaultValue: 1 },
-      { id: "b", label: "b", type: "number", defaultValue: 0 },
-      { id: "c", label: "c", type: "number", defaultValue: 0 },
+      { id: "a", label: "a (poly)", type: "number", defaultValue: 1, advanced: true, helpText: "Used when Function = ax² + bx + c" },
+      { id: "b", label: "b (poly)", type: "number", defaultValue: 0, advanced: true },
+      { id: "c", label: "c (poly)", type: "number", defaultValue: 0, advanced: true },
     ],
     related: ["derivative-numeric", "integral-numeric", "3d-function"],
     compute: (v) => {
-      const parsed = requireNums(v, ["xMin","xMax","a","b","c"]);
+      const parsed = requireNums(v, ["xMin","xMax","a","b","c"], { emptyAsZero: ["a","b","c"] });
       if (!parsed.ok) return err(parsed.error);
       if (parsed.n.xMax <= parsed.n.xMin) return err("x max must be greater than x min.");
       const fn = (v.fn as "sin"|"cos"|"exp"|"poly") || "sin";
@@ -1799,7 +1799,7 @@ export const wave2Calculators: CalculatorMeta[] = [
     ],
     related: ["wavelength-frequency", "speed"],
     compute: (v) => {
-      const parsed = requireNums(v, ["f0","vs","vo"]);
+      const parsed = requireNums(v, ["f0","vs","vo"], { emptyAsZero: ["vs","vo"] });
       if (!parsed.ok) return err(parsed.error);
       const f = dopplerShift(
         parsed.n.f0,
