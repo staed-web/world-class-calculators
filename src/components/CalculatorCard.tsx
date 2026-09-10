@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CalculatorMeta } from "@/lib/types";
 import { categoryMap } from "@/lib/categories";
 import { calculatorPath } from "@/lib/calculators/registry";
+import { CategoryIcon } from "./CategoryIcon";
 
 export function CalculatorCard({ calc }: { calc: CalculatorMeta }) {
   const cat = categoryMap[calc.category];
@@ -12,9 +13,10 @@ export function CalculatorCard({ calc }: { calc: CalculatorMeta }) {
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-[var(--accent)] opacity-0 transition group-hover:opacity-100" />
       <span
-        className={`mb-3 inline-flex w-fit rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
+        className={`mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
       >
-        {cat?.icon} {cat?.name}
+        {cat?.icon ? <CategoryIcon icon={cat.icon} size="sm" /> : null}
+        {cat?.name}
       </span>
       <h3 className="font-serif font-semibold tracking-tight text-foreground group-hover:text-[var(--accent)]">
         {calc.name}

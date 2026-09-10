@@ -12,6 +12,7 @@ import { CurrencyPicker } from "./CurrencyPicker";
 import { contactMailto } from "@/lib/site";
 import { ContactEmail } from "./ContactEmail";
 import { InstallApp } from "./InstallApp";
+import { CategoryIcon } from "./CategoryIcon";
 
 const mobileQuick = [
   { href: "/calculators/finance/loan-emi", label: "EMI" },
@@ -136,12 +137,7 @@ export function Header() {
                           className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-foreground hover:bg-brand-soft/50"
                           onClick={() => setOpen(false)}
                         >
-                          <span
-                            aria-hidden
-                            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-sm leading-none"
-                          >
-                            {c.icon}
-                          </span>
+                          <CategoryIcon icon={c.icon} size="md" />
                           {c.name}
                         </Link>
                       </li>
@@ -277,12 +273,7 @@ export function Header() {
               href={`/categories/${c.slug}`}
               className="whitespace-nowrap inline-flex min-h-8 items-center rounded-full px-2.5 py-1 transition hover:bg-card hover:text-brand"
             >
-              <span
-                aria-hidden
-                className="mr-1.5 inline-flex h-5 w-5 items-center justify-center rounded bg-brand-soft/70 text-[13px] leading-none"
-              >
-                {c.icon}
-              </span>
+              <CategoryIcon icon={c.icon} size="sm" className="mr-1.5" />
               {c.name}
             </Link>
           ))}

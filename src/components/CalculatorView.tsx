@@ -21,6 +21,7 @@ import {
 } from "./seo/CalculatorGuide";
 import { TrackRecentCalculator } from "./TrackRecentCalculator";
 import { FavoriteButton } from "./FavoriteButton";
+import { CategoryIcon } from "./CategoryIcon";
 import { ContactEmail } from "./ContactEmail";
 import {
   Function3DCalculator,
@@ -144,12 +145,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <span
           className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cat?.color ?? ""}`}
         >
-          <span
-            aria-hidden
-            className="inline-flex h-5 w-5 items-center justify-center rounded bg-white/70 text-[13px] leading-none dark:bg-black/25"
-          >
-            {cat?.icon}
-          </span>
+          {cat?.icon ? <CategoryIcon icon={cat.icon} size="sm" /> : null}
           {cat?.name}
         </span>
         <h1 className="mt-2 font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-foreground text-balance">

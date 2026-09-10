@@ -98,6 +98,19 @@ html {
   box-shadow: var(--shadow);
 }
 
+/* Classic navy/cream circular badge for category emoji icons */
+.category-icon {
+  background: color-mix(in oklab, var(--accent-soft) 72%, #f6f3ec);
+  color: color-mix(in oklab, var(--accent) 90%, var(--foreground));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 14%, var(--border));
+  filter: saturate(0.7) contrast(0.96);
+}
+.dark .category-icon {
+  background: color-mix(in oklab, var(--accent-soft) 88%, var(--card));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 22%, var(--border));
+  filter: saturate(0.65) contrast(0.98);
+}
+
 /* Solid editorial card — no glassmorphism spectacle */
 .glass-card {
   background: var(--card);

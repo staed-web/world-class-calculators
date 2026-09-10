@@ -8,6 +8,7 @@ import {
 } from "@/lib/calculators/registry";
 import { AdSlot } from "@/components/AdSlot";
 import { CategoryDirectory } from "@/components/CategoryDirectory";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 export function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
@@ -54,8 +55,9 @@ export default async function CategoryPage({
         <span className="mx-2">/</span>
         <span className="text-foreground">{cat.name}</span>
       </nav>
-      <div className={`mb-6 inline-flex rounded-2xl border px-4 py-2 text-sm ${cat.color}`}>
-        {cat.icon} {cat.name}
+      <div className={`mb-6 inline-flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm ${cat.color}`}>
+        <CategoryIcon icon={cat.icon} size="md" />
+        {cat.name}
       </div>
       <h1 className="font-serif text-3xl font-semibold text-foreground">{cat.name} Calculators</h1>
       <p className="mt-2 max-w-3xl text-muted leading-relaxed">{cat.description}</p>
@@ -70,9 +72,10 @@ export default async function CategoryPage({
             <Link
               key={c.slug}
               href={`/categories/${c.slug}`}
-              className="inline-flex min-h-10 items-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:border-brand hover:text-brand"
             >
-              {c.icon} {c.name}
+              <CategoryIcon icon={c.icon} size="sm" />
+              {c.name}
             </Link>
           ))}
       </div>
