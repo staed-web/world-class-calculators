@@ -39,20 +39,25 @@ export default function HomePage() {
         <div className="hero-orb right-0 top-20 h-64 w-64 bg-indigo-400/35" style={{ animationDelay: "1.5s" }} />
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_15%_20%,white,transparent_42%),radial-gradient(circle_at_85%_10%,#a5b4fc,transparent_35%)]" />
         <div className="relative mx-auto max-w-6xl px-4 py-14 sm:py-20">
-          <div className="rise-in mb-5 flex items-center gap-3">
+          <div className="rise-in mb-5 flex items-center gap-3.5 sm:gap-4">
             <Image
-              src="/logo-v2.png"
-              alt="MyCalcsWorld"
+              src="/logo-mark-lg.png"
+              alt=""
               width={56}
               height={56}
               className="h-14 w-14 rounded-2xl object-cover shadow-lg ring-2 ring-white/20"
               priority
             />
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-100">
-                MyCalcsWorld
-              </p>
-              <p className="text-xs text-teal-50/90">
+            <div className="min-w-0">
+              <Image
+                src="/logo-wordmark-v3.png"
+                alt="MyCalcsWorld"
+                width={220}
+                height={38}
+                className="h-7 sm:h-8 w-auto object-contain brightness-110 drop-shadow-sm"
+                priority
+              />
+              <p className="mt-1.5 text-xs text-teal-50/90">
                 {calculatorCount}+ free calculators · live FX · charts · 3D math
               </p>
             </div>

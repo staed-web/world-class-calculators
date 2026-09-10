@@ -12,18 +12,21 @@ export function Footer() {
         <AdSlot placement="footer" className="mb-8 bg-slate-900 border-slate-800 no-print" />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="mb-3 flex items-center gap-2.5">
+            <div className="mb-3 flex items-center gap-3">
               <Image
-                src="/logo-v2.png"
+                src="/logo-mark.png"
                 alt=""
                 width={32}
                 height={32}
                 className="h-8 w-8 rounded-lg object-cover ring-1 ring-teal-400/30"
               />
-              <p className="text-lg font-bold">
-                <span className="bg-gradient-to-r from-teal-300 to-indigo-300 bg-clip-text text-transparent">MyCalcs</span>
-                <span className="text-white">World</span>
-              </p>
+              <Image
+                src="/logo-wordmark-v3.png"
+                alt="MyCalcsWorld"
+                width={148}
+                height={26}
+                className="h-6 w-auto object-contain brightness-110"
+              />
             </div>
             <p className="text-sm text-slate-400">
               Free online calculators for finance, math, health, and everyday life —{" "}

@@ -181,24 +181,26 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5">
         <Link
           href="/"
-          className="group flex shrink-0 items-center gap-2 font-bold text-base sm:text-lg tracking-tight min-h-10"
+          className="group flex shrink-0 items-center gap-2.5 sm:gap-3 font-bold text-base sm:text-lg tracking-tight min-h-10"
           aria-label="MyCalcsWorld home"
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/logo-v2.png"
+            src="/logo-mark.png"
             alt=""
             width={36}
             height={36}
             className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-cover shadow-sm ring-1 ring-teal-500/20 transition group-hover:scale-105"
             priority
           />
-          <span className="hidden min-[360px]:inline">
-            <span className="bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent dark:from-teal-300 dark:to-indigo-300">
-              MyCalcs
-            </span>
-            <span className="text-foreground">World</span>
-          </span>
+          <Image
+            src="/logo-wordmark-v3.png"
+            alt="MyCalcsWorld"
+            width={160}
+            height={28}
+            className="hidden min-[360px]:block h-5 sm:h-6 w-auto object-contain"
+            priority
+          />
         </Link>
 
         <div className="hidden flex-1 md:block max-w-md ml-auto">

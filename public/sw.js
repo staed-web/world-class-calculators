@@ -1,6 +1,6 @@
 /* MyCalcsWorld service worker — shell cache + network-first for HTML/API.
    Versioned caches; never cache ad networks. */
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const SHELL_CACHE = `mcw-shell-${CACHE_VERSION}`;
 const STATIC_CACHE = `mcw-static-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";
@@ -10,7 +10,9 @@ const PRECACHE_URLS = [
   OFFLINE_URL,
   "/icons/icon-192.png",
   "/icons/icon-512.png",
-  "/logo-v2.png",
+  "/logo-v3.png",
+  "/logo-mark.png",
+  "/logo-wordmark-v3.png",
   "/apple-touch-icon.png",
 ];
 

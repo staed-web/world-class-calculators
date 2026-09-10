@@ -62,13 +62,13 @@ export const metadata: Metadata = {
     title: "MyCalcsWorld",
     description:
       "Free online calculators for finance, math, health, and everyday life.",
-    images: [{ url: "/logo-mark.png", width: 128, height: 128, alt: "MyCalcsWorld" }],
+    images: [{ url: "/logo-mark-lg.png", width: 256, height: 256, alt: "MyCalcsWorld" }],
   },
   twitter: {
     card: "summary",
     title: "MyCalcsWorld",
     description: "Free online calculators for finance, math, health, and everyday life.",
-    images: ["/logo-mark.png"],
+    images: ["/logo-mark-lg.png"],
   },
   robots: { index: true, follow: true },
   other: {
