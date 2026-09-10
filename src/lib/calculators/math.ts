@@ -124,22 +124,38 @@ export const mathCalculators: CalculatorMeta[] = [
           { value: "/", label: "Divide" },
         ],
       },
-      { id: "n2", label: "Numerator 2", type: "number", defaultValue: 1 },
-      { id: "d2", label: "Denominator 2", type: "number", defaultValue: 3 },
+      {
+        id: "n2",
+        label: "Numerator 2",
+        type: "number",
+        defaultValue: 1,
+        visibleWhen: { field: "op", in: ["+", "-", "*", "/"] },
+      },
+      {
+        id: "d2",
+        label: "Denominator 2",
+        type: "number",
+        defaultValue: 3,
+        visibleWhen: { field: "op", in: ["+", "-", "*", "/"] },
+      },
     ],
     related: ["ratio", "gcf-lcm"],
     compute: (v) => {
-      const parsed = requireNums(v, ["n1", "d1", "n2", "d2"]);
-      if (!parsed.ok) return err(parsed.error);
-      const n = parsed.n;
-      if (n.d1 === 0 || n.d2 === 0) return err("Denominator cannot be zero.");
       if (v.op === "simplify") {
+        const parsed = requireNums(v, ["n1", "d1"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
+        if (n.d1 === 0) return err("Denominator cannot be zero.");
         const s = simplifyFraction(n.n1, n.d1);
         return ok([
           { label: "Simplified", value: `${s.num}/${s.den}`, emphasize: true },
           { label: "Decimal", value: fmtNumber(s.num / s.den, 6) },
         ]);
       }
+      const parsed = requireNums(v, ["n1", "d1", "n2", "d2"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
+      if (n.d1 === 0 || n.d2 === 0) return err("Denominator cannot be zero.");
       let num = 0;
       let den = 1;
       switch (v.op) {
@@ -449,7 +465,13 @@ export const mathCalculators: CalculatorMeta[] = [
           { value: "custom", label: "Custom base" },
         ],
       },
-      { id: "customBase", label: "Custom base (if selected)", type: "number", defaultValue: 5 },
+      {
+        id: "customBase",
+        label: "Custom base",
+        type: "number",
+        defaultValue: 5,
+        visibleWhen: { field: "base", in: ["custom"] },
+      },
     ],
     related: ["scientific"],
     compute: (v) => {
@@ -472,7 +494,7 @@ export const mathCalculators: CalculatorMeta[] = [
     category: "math",
     name: "Pythagoras Theorem Calculator",
     description:
-      "Find the hypotenuse or a leg of a right triangle; optional 3D space diagonal.",
+      "Find the hypotenuse or either leg of a right triangle; optional 3D space diagonal.",
     keywords: ["pythagoras", "hypotenuse", "right triangle", "3d diagonal", "pythagorean"],
     featured: true,
     popular: true,
@@ -485,26 +507,51 @@ export const mathCalculators: CalculatorMeta[] = [
         type: "select",
         defaultValue: "hyp",
         options: [
-          { value: "hyp", label: "Find hypotenuse c from legs a, b" },
-          { value: "leg", label: "Find leg a from b and hypotenuse c" },
+          { value: "hyp", label: "Find hypotenuse c from legs a & b" },
+          { value: "leg-a", label: "Find leg a from leg b & hypotenuse c" },
+          { value: "leg-b", label: "Find leg b from leg a & hypotenuse c" },
           { value: "3d", label: "3D space diagonal from a, b, c" },
         ],
       },
-      { id: "a", label: "Side a", type: "number", defaultValue: 3 },
-      { id: "b", label: "Side b", type: "number", defaultValue: 4 },
-      { id: "c", label: "Side c (hypotenuse when finding a leg)", type: "number", defaultValue: 5 },
+      {
+        id: "a",
+        label: "Side a (leg)",
+        type: "number",
+        defaultValue: 3,
+        placeholder: "enter leg a",
+        visibleWhen: { field: "mode", in: ["hyp", "leg-b", "3d"] },
+      },
+      {
+        id: "b",
+        label: "Side b (leg)",
+        type: "number",
+        defaultValue: 4,
+        placeholder: "enter leg b",
+        visibleWhen: { field: "mode", in: ["hyp", "leg-a", "leg", "3d"] },
+      },
+      {
+        id: "c",
+        label: "Side c (hypotenuse)",
+        type: "number",
+        placeholder: "enter hypotenuse c",
+        visibleWhen: { field: "mode", in: ["leg-a", "leg-b", "leg", "3d"] },
+      },
     ],
     related: ["triangle-area-heron", "distance-formula", "circle"],
     compute: (v) => {
-      const parsed = requireNums(v, ["a", "b", "c"]);
-      if (!parsed.ok) return err(parsed.error);
-      const n = parsed.n;
-      if (v.mode === "3d") {
+      const mode = v.mode === "leg" ? "leg-a" : v.mode || "hyp";
+      if (mode === "3d") {
+        const parsed = requireNums(v, ["a", "b", "c"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
         if (n.a < 0 || n.b < 0 || n.c < 0) return err("Sides must be non-negative.");
         const d = pythagoras3d(n.a, n.b, n.c);
         return ok([{ label: "Space diagonal", value: fmtNumber(d, 8), emphasize: true }]);
       }
-      if (v.mode === "leg") {
+      if (mode === "leg-a") {
+        const parsed = requireNums(v, ["b", "c"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
         if (n.b <= 0 || n.c <= 0) return err("b and c must be positive.");
         if (n.c <= n.b) return err("Hypotenuse c must be greater than leg b.");
         const a = pythagoras(0, n.b, n.c, "a");
@@ -514,6 +561,22 @@ export const mathCalculators: CalculatorMeta[] = [
           { label: "Check c", value: fmtNumber(pythagoras(a, n.b, 0, "c"), 8) },
         ]);
       }
+      if (mode === "leg-b") {
+        const parsed = requireNums(v, ["a", "c"]);
+        if (!parsed.ok) return err(parsed.error);
+        const n = parsed.n;
+        if (n.a <= 0 || n.c <= 0) return err("a and c must be positive.");
+        if (n.c <= n.a) return err("Hypotenuse c must be greater than leg a.");
+        const b = pythagoras(n.a, 0, n.c, "b");
+        if (!Number.isFinite(b)) return err("Invalid triangle.");
+        return ok([
+          { label: "Leg b", value: fmtNumber(b, 8), emphasize: true },
+          { label: "Check c", value: fmtNumber(pythagoras(n.a, b, 0, "c"), 8) },
+        ]);
+      }
+      const parsed = requireNums(v, ["a", "b"]);
+      if (!parsed.ok) return err(parsed.error);
+      const n = parsed.n;
       if (n.a <= 0 || n.b <= 0) return err("Legs must be positive.");
       const c = pythagoras(n.a, n.b, 0, "c");
       return ok([

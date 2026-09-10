@@ -149,7 +149,15 @@ export const healthCalculators: CalculatorMeta[] = [
       { id: "height", label: "Height", type: "number", defaultValue: 175, suffix: "cm" },
       { id: "neck", label: "Neck (cm)", type: "number", defaultValue: 38 , suffix: "cm"},
       { id: "waist", label: "Waist (cm)", type: "number", defaultValue: 84 , suffix: "cm"},
-      { id: "hip", label: "Hip (cm, required for female)", type: "number", defaultValue: 95 , suffix: "cm"},
+      {
+        id: "hip",
+        label: "Hip (cm)",
+        type: "number",
+        defaultValue: 95,
+        suffix: "cm",
+        helpText: "Required for female Navy estimate.",
+        visibleWhen: { field: "sex", in: ["female"] },
+      },
     ],
     related: ["bmi", "ideal-weight"],
     compute: (v) => {

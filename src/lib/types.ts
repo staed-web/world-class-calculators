@@ -34,6 +34,11 @@ export interface FieldDef {
   required?: boolean;
   /** Marks a money input — prefix tracks display currency. */
   money?: boolean;
+  /**
+   * Show this field only when another field's value is one of `in`.
+   * Used for mode-aware forms (solve-for-X, converters, etc.).
+   */
+  visibleWhen?: { field: string; in: string[] };
 }
 
 export interface ResultTable {

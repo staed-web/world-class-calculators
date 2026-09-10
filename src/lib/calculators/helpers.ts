@@ -41,3 +41,14 @@ export function parseList(raw: string): number[] {
     .map(Number)
     .filter((n) => Number.isFinite(n));
 }
+
+/** Parse a number only if the field is non-empty; empty → undefined (not an error). */
+export function optionalNum(
+  values: Record<string, string>,
+  key: string
+): number | undefined {
+  const raw = values[key];
+  if (raw === undefined || raw === null || String(raw).trim() === "") return undefined;
+  const num = parseNum(raw);
+  return Number.isFinite(num) ? num : undefined;
+}

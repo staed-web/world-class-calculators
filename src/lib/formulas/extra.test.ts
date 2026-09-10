@@ -26,6 +26,9 @@ describe("pythagoras", () => {
   it("finds a leg", () => {
     expect(pythagoras(0, 4, 5, "a")).toBeCloseTo(3);
   });
+  it("finds b leg", () => {
+    expect(pythagoras(3, 0, 5, "b")).toBeCloseTo(4);
+  });
 });
 
 describe("heronArea", () => {

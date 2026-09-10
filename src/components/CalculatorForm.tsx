@@ -115,11 +115,16 @@ export function CalculatorForm({
           )}
         </div>
         {fields.map((f) => {
+          if (f.visibleWhen) {
+            const dep = values[f.visibleWhen.field] ?? "";
+            if (!f.visibleWhen.in.includes(dep)) return null;
+          }
           const prefix = fieldPrefix(f.prefix);
           const labelUnit =
             f.suffix && !f.label.includes(`(${f.suffix})`) && !f.label.includes(f.suffix)
               ? ` (${f.suffix})`
               : "";
+          const isRequired = f.required === true;
           return (
             <div key={f.id}>
               <label htmlFor={f.id} className="mb-1.5 block text-sm font-medium text-foreground">
@@ -134,6 +139,7 @@ export function CalculatorForm({
                   value={values[f.id] ?? ""}
                   onChange={(e) => setField(f.id, e.target.value)}
                   className={`${inputClass} px-3`}
+                  required={isRequired}
                 >
                   {f.options?.map((o) => (
                     <option key={o.value} value={o.value}>
@@ -149,6 +155,7 @@ export function CalculatorForm({
                   rows={4}
                   placeholder={f.placeholder}
                   className={`${inputClass} px-3`}
+                  required={isRequired}
                 />
               ) : (
                 <div className="relative">
@@ -167,6 +174,7 @@ export function CalculatorForm({
                     max={f.max}
                     step={f.step ?? "any"}
                     placeholder={f.placeholder}
+                    required={isRequired}
                     className={`${inputClass} ${
                       prefix ? "pl-9 pr-3" : f.suffix ? "pl-3 pr-14" : "px-3"
                     }`}
