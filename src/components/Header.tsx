@@ -9,6 +9,7 @@ import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { CurrencyPicker } from "./CurrencyPicker";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { InstallApp } from "./InstallApp";
 
 const mobileQuick = [
   { href: "/calculators/finance/loan-emi", label: "EMI" },
@@ -141,6 +142,7 @@ export function Header() {
                   </ul>
                 </div>
                 <div className="space-y-1 border-t border-border pt-4">
+                  <InstallApp variant="menu" onNavigated={() => setOpen(false)} />
                   <Link
                     href="/about"
                     className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"

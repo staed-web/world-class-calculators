@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
+import { PwaRegister } from "@/components/PwaRegister";
+import { InstallApp } from "@/components/InstallApp";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +21,16 @@ const geistMono = Geist_Mono({
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
 
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0f766e" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
+  colorScheme: "light dark",
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -27,10 +39,20 @@ export const metadata: Metadata = {
   },
   description:
     "Free online calculators for finance, math, health, and everyday life. 280+ working tools with interactive charts, live FX, and 3D math — mortgage, SIP, BMI, and more.",
+  applicationName: "MyCalcsWorld",
+  appleWebApp: {
+    capable: true,
+    title: "MyCalcs",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+      { url: "/icons/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icons/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
@@ -79,6 +101,8 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <InstallApp />
+            <PwaRegister />
           </CurrencyProvider>
         </div>
         {adsenseClient ? (

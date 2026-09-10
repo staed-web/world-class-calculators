@@ -282,3 +282,41 @@ main {
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+
+/* —— Installed / standalone app chrome —— */
+@media (display-mode: standalone), (display-mode: minimal-ui) {
+  html {
+    /* Soften rubber-band overscroll in installed shell */
+    overscroll-behavior-y: none;
+  }
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  /* Keep form fields and results selectable */
+  input,
+  textarea,
+  select,
+  [contenteditable="true"],
+  .result-panel,
+  .result-panel *,
+  main p,
+  main li,
+  main dd,
+  main td {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+  /* Slightly denser sticky header once chrome is gone */
+  header.sticky {
+    border-bottom-color: color-mix(in oklab, var(--border) 70%, transparent);
+  }
+}
+
+html.standalone-app,
+html.standalone-ios {
+  min-height: 100dvh;
+}
