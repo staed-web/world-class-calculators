@@ -11,27 +11,19 @@ export default function OfflinePage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-lg flex-col items-center justify-center px-4 py-16 text-center">
       <div className="relative mb-6">
-        <div
-          className="absolute -inset-6 rounded-full opacity-60 blur-2xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, var(--brand) 35%, transparent), transparent 70%)",
-          }}
-          aria-hidden
-        />
         <Image
           src="/icons/icon-192.png"
           alt=""
           width={88}
           height={88}
-          className="relative h-20 w-20 rounded-2xl shadow-lg ring-1 ring-teal-500/25"
+          className="relative h-20 w-20 rounded-full shadow-md ring-1 ring-[color-mix(in_oklab,var(--gold)_45%,transparent)]"
           priority
         />
       </div>
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">
         Offline
       </p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+      <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
         You’re offline
       </h1>
       <p className="mt-3 max-w-md text-muted leading-relaxed">
@@ -42,7 +34,7 @@ export default function OfflinePage() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <a
           href="/"
-          className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-teal-600 to-indigo-600 px-5 text-sm font-semibold text-white shadow-md shadow-teal-900/20 transition hover:opacity-95"
+          className="btn-primary inline-flex min-h-11 items-center justify-center px-5 text-sm shadow-sm"
         >
           Try again
         </a>

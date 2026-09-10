@@ -28,7 +28,7 @@ function SectionTitle({ id, children }: { id: string; children: ReactNode }) {
   return (
     <h2
       id={id}
-      className="scroll-mt-28 text-xl font-bold tracking-tight text-foreground border-b border-border/70 pb-2"
+      className="scroll-mt-28 font-serif text-xl font-semibold tracking-tight text-foreground border-b border-border pb-2"
     >
       {children}
     </h2>
@@ -74,7 +74,7 @@ export function CalculatorGuide({
   return (
     <section
       id="calculator-guide"
-      className="scroll-mt-28 space-y-8 rounded-2xl surface-card p-4 sm:p-7 ring-1 ring-border/60 min-w-0 overflow-x-clip"
+      className="scroll-mt-28 space-y-8 rounded-xl surface-card p-4 sm:p-7 min-w-0 overflow-x-clip"
       aria-label="Guide and FAQ"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -159,9 +159,9 @@ export function CalculatorGuide({
       {content.workedExample && (
         <div
           id="guide-example"
-          className="scroll-mt-28 rounded-xl border border-teal-200/70 bg-gradient-to-br from-teal-50/80 via-background to-indigo-50/40 p-4 sm:p-5 dark:border-teal-900 dark:from-teal-950/40 dark:to-indigo-950/30"
+          className="scroll-mt-28 rounded-xl border border-border bg-background p-4 sm:p-5"
         >
-          <h2 className="text-xl font-bold tracking-tight text-foreground">
+          <h2 className="font-serif text-xl font-semibold tracking-tight text-foreground">
             Worked example
           </h2>
           <p className="mt-1 text-sm font-medium text-foreground">
@@ -173,7 +173,7 @@ export function CalculatorGuide({
             ))}
           </ol>
           <p className="mt-4 rounded-lg border border-border/80 bg-background/80 px-3 py-2 text-sm text-foreground">
-            <span className="font-semibold text-teal-800 dark:text-teal-300">
+            <span className="font-semibold text-[var(--accent)] dark:text-brand">
               Result:{" "}
             </span>
             {content.workedExample.result}
@@ -267,7 +267,7 @@ export function TrustStrip() {
       <span className="inline-flex min-h-8 items-center rounded-full border border-border bg-card px-2.5 py-1">
         No signup
       </span>
-      <span className="inline-flex min-h-8 items-center rounded-full border border-teal-200/80 bg-teal-50 px-2.5 py-1 text-teal-900 dark:border-teal-900 dark:bg-teal-950/40 dark:text-teal-100">
+      <span className="inline-flex min-h-8 items-center rounded-full border border-border bg-brand-soft px-2.5 py-1 text-[var(--accent)] dark:text-brand">
         Educational estimates — not professional advice
       </span>
     </div>

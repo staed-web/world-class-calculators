@@ -214,7 +214,7 @@ export function CalculatorForm({
     <div className="grid gap-6 lg:grid-cols-5 min-w-0 w-full">
       <form
         onSubmit={onSubmit}
-        className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-4 sm:p-6 min-w-0 w-full"
+        className="lg:col-span-3 space-y-4 rounded-xl surface-card p-4 sm:p-6 min-w-0 w-full"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -252,7 +252,7 @@ export function CalculatorForm({
               <span className="flex flex-wrap items-center gap-2">
                 More options
                 {advancedActiveCount > 0 && (
-                  <span className="inline-flex rounded-full bg-teal-100 px-2 py-0.5 text-[11px] font-semibold text-teal-900 dark:bg-teal-950/60 dark:text-teal-100">
+                  <span className="inline-flex rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-[var(--accent)] dark:text-brand">
                     {advancedActiveCount} adjusted
                   </span>
                 )}
@@ -298,7 +298,7 @@ export function CalculatorForm({
           <button
             type="button"
             onClick={onLoadExample}
-            className="min-h-12 rounded-xl border border-teal-200/80 bg-teal-50 px-4 py-3 text-sm font-semibold text-teal-900 hover:border-teal-400 transition dark:border-teal-900 dark:bg-teal-950/40 dark:text-teal-100"
+            className="min-h-12 rounded-xl border border-border bg-brand-soft px-4 py-3 text-sm font-semibold text-[var(--accent)] hover:border-brand transition dark:text-brand"
             title="Load the demo numbers from this tool’s worked example"
           >
             Try example
@@ -450,17 +450,17 @@ function ResultsPanel({
   return (
     <div
       id="print-results"
-      className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-4 sm:p-6 shadow-sm backdrop-blur-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30 min-w-0 overflow-hidden"
+      className="result-panel rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm min-w-0 overflow-hidden"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--accent)] dark:text-brand">
           Results{currency ? ` · ${currency}` : ""}
         </h2>
         <div className="no-print flex flex-wrap gap-1.5">
           <button
             type="button"
             onClick={copySummary}
-            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            className="inline-flex min-h-9 items-center rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-[var(--accent)] hover:border-brand hover:text-brand dark:text-brand"
             aria-label="Copy results summary"
           >
             {copied ? "Copied ✓" : "Copy"}
@@ -468,7 +468,7 @@ function ResultsPanel({
           <button
             type="button"
             onClick={shareSummary}
-            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            className="inline-flex min-h-9 items-center rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-[var(--accent)] hover:border-brand hover:text-brand dark:text-brand"
             aria-label="Share results summary"
           >
             Share
@@ -476,7 +476,7 @@ function ResultsPanel({
           <button
             type="button"
             onClick={() => window.print()}
-            className="inline-flex min-h-9 items-center rounded-lg border border-teal-200/80 bg-white/70 px-2.5 py-1.5 text-xs font-semibold text-teal-800 hover:bg-white dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200"
+            className="inline-flex min-h-9 items-center rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-[var(--accent)] hover:border-brand hover:text-brand dark:text-brand"
             aria-label="Print results"
           >
             Print
@@ -494,9 +494,9 @@ function ResultsPanel({
           {primary.map((item) => (
             <div
               key={item.label}
-              className="rounded-xl border border-teal-300/80 bg-white/85 px-3.5 py-3 shadow-sm dark:border-teal-800 dark:bg-teal-950/40"
+              className="rounded-xl border border-border bg-background px-3.5 py-3 shadow-sm"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-teal-800/80 dark:text-teal-300/90">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
                 {item.label}
               </p>
               <div className="mt-0.5 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
@@ -582,9 +582,9 @@ function MiniBars({ data }: { data: ResultChartBar[] }) {
       {data.map((d) => (
         <div key={d.label} className="flex items-center gap-2 text-[10px] text-muted">
           <span className="w-8 shrink-0">{d.label}</span>
-          <div className="h-2 flex-1 rounded-full bg-teal-100 dark:bg-teal-950">
+          <div className="h-2 flex-1 rounded-full bg-brand-soft">
             <div
-              className="h-2 rounded-full bg-teal-500"
+              className="h-2 rounded-full bg-brand"
               style={{ width: `${Math.max(2, (d.value / max) * 100)}%` }}
             />
           </div>

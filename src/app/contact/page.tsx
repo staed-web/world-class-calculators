@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold text-foreground">Contact</h1>
+      <h1 className="font-serif text-3xl font-semibold text-foreground">Contact</h1>
       <p className="mt-2 text-sm text-muted">
         We read every message. For calculator feedback, formula corrections, or site
         questions, email us or use the form below.
       </p>
 
-      <div className="mt-6 rounded-2xl surface-card p-5 sm:p-6 space-y-4">
+      <div className="mt-6 rounded-xl surface-card p-5 sm:p-6 space-y-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
             Email us
@@ -33,7 +33,7 @@ export default function ContactPage() {
         <div className="flex flex-wrap gap-2">
           <a
             href={contactMailto("MyCalcsWorld inquiry")}
-            className="inline-flex min-h-10 items-center justify-center rounded-xl bg-brand px-3 py-2 text-sm font-semibold text-white hover:opacity-95"
+            className="btn-primary inline-flex min-h-10 items-center justify-center px-3 py-2 text-sm"
           >
             Open in mail app
           </a>
@@ -54,7 +54,7 @@ export default function ContactPage() {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-foreground mb-3">Send a message</h2>
+        <h2 className="font-serif text-lg font-semibold text-foreground mb-3">Send a message</h2>
         <ContactForm />
       </div>
 

@@ -31,7 +31,7 @@ export function ContactForm() {
     "mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-base sm:text-sm text-foreground outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 min-h-11";
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4 rounded-2xl surface-card p-5 sm:p-6">
+    <form onSubmit={onSubmit} className="space-y-4 rounded-xl surface-card p-5 sm:p-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
           <span className="font-medium text-foreground">Name</span>
@@ -77,7 +77,7 @@ export function ContactForm() {
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:opacity-95 min-h-11"
+          className="rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:opacity-95 min-h-11"
         >
           Open email draft
         </button>

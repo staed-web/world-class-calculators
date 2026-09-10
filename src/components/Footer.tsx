@@ -8,9 +8,9 @@ import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-slate-950 text-slate-300 pb-[env(safe-area-inset-bottom)]">
+    <footer className="mt-auto border-t border-[#0a1f3d] bg-[#07234a] text-slate-300 pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <AdSlot placement="footer" className="mb-8 bg-slate-900 border-slate-800 no-print" />
+        <AdSlot placement="footer" className="mb-8 bg-[#0a2d5c]/60 border-[#0a1f3d] no-print" />
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="mb-3 flex items-center gap-3">
@@ -19,7 +19,7 @@ export function Footer() {
                 alt=""
                 width={32}
                 height={32}
-                className="h-8 w-8 rounded-lg object-cover ring-1 ring-white/20"
+                className="h-8 w-8 rounded-full object-cover ring-1 ring-[color-mix(in_oklab,var(--gold)_45%,transparent)]"
               />
               <BrandWordmark tone="light" size="sm" />
             </div>
@@ -30,11 +30,11 @@ export function Footer() {
             </p>
           </div>
           <div>
-            <p className="text-white font-semibold mb-2">Categories</p>
+            <p className="font-serif text-white font-semibold mb-2">Categories</p>
             <ul className="space-y-1 text-sm">
               {categories.slice(0, 6).map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/categories/${c.slug}`} className="hover:text-teal-300">
+                  <Link href={`/categories/${c.slug}`} className="hover:text-[#9fd4cf]">
                     {c.name}
                   </Link>
                 </li>
@@ -42,11 +42,11 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-white font-semibold mb-2">More</p>
+            <p className="font-serif text-white font-semibold mb-2">More</p>
             <ul className="space-y-1 text-sm">
               {categories.slice(6).map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/categories/${c.slug}`} className="hover:text-teal-300">
+                  <Link href={`/categories/${c.slug}`} className="hover:text-[#9fd4cf]">
                     {c.name}
                   </Link>
                 </li>
@@ -54,46 +54,46 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-white font-semibold mb-2">Legal</p>
+            <p className="font-serif text-white font-semibold mb-2">Legal</p>
             <ul className="space-y-1 text-sm">
               <li>
-                <Link href="/about" className="hover:text-teal-300">
+                <Link href="/about" className="hover:text-[#9fd4cf]">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-teal-300">
+                <Link href="/contact" className="hover:text-[#9fd4cf]">
                   Contact
                 </Link>
               </li>
               <li>
-                <a href={contactMailto()} className="hover:text-teal-300 break-all">
+                <a href={contactMailto()} className="hover:text-[#9fd4cf] break-all">
                   {CONTACT_EMAIL}
                 </a>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-teal-300">
+                <Link href="/privacy" className="hover:text-[#9fd4cf]">
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-teal-300">
+                <Link href="/disclaimer" className="hover:text-[#9fd4cf]">
                   Disclaimer
                 </Link>
               </li>
               <li>
-                <Link href="/calculators/finance/currency-converter" className="hover:text-teal-300">
+                <Link href="/calculators/finance/currency-converter" className="hover:text-[#9fd4cf]">
                   Currency converter
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <p className="mt-8 border-t border-slate-800 pt-6 text-xs text-slate-500">
+        <p className="mt-8 border-t border-white/10 pt-6 text-xs text-slate-400">
           © {new Date().getFullYear()} MyCalcsWorld. Estimates only — not
           professional advice. FX rates are delayed educational quotes. Guides and
           FAQs are original MyCalcsWorld copy. Contact{" "}
-          <a href={contactMailto()} className="text-teal-300 hover:underline break-all">
+          <a href={contactMailto()} className="text-[#9fd4cf] hover:underline break-all">
             {CONTACT_EMAIL}
           </a>
           .

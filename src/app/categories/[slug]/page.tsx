@@ -57,7 +57,7 @@ export default async function CategoryPage({
       <div className={`mb-6 inline-flex rounded-2xl border px-4 py-2 text-sm ${cat.color}`}>
         {cat.icon} {cat.name}
       </div>
-      <h1 className="text-3xl font-bold text-foreground">{cat.name} Calculators</h1>
+      <h1 className="font-serif text-3xl font-semibold text-foreground">{cat.name} Calculators</h1>
       <p className="mt-2 max-w-3xl text-muted leading-relaxed">{cat.description}</p>
       <p className="mt-2 text-sm text-muted">
         {calcs.length} tools in this category — each calculator page includes how-to steps,

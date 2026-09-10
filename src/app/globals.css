@@ -5,52 +5,55 @@
    (e.g. OS dark + site light → dark: utilities fire on a light --header). */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Classic professional palette — Mark 2 seal navy + cream + restrained teal */
 :root {
-  --background: #f3f6fb;
+  --background: #f6f3ec;
   --foreground: #0b1220;
   --brand: #0f766e;
-  --brand-dark: #0d9488;
-  --brand-soft: #ccfbf1;
+  --brand-dark: #0d5c56;
+  --brand-soft: #e7f3f1;
   --card: #ffffff;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --accent: #4f46e5;
-  --accent-soft: #e0e7ff;
-  --success: #059669;
-  --danger: #e11d48;
-  --ring: #2dd4bf;
-  --header: rgba(255, 255, 255, 0.78);
-  --hero-from: #0f766e;
-  --hero-via: #0d9488;
-  --hero-to: #4f46e5;
-  --shadow: 0 12px 40px -20px rgba(15, 23, 42, 0.35);
-  --mesh-a: rgba(45, 212, 191, 0.18);
-  --mesh-b: rgba(99, 102, 241, 0.14);
-  --mesh-c: rgba(244, 114, 182, 0.08);
+  --muted: #5a6573;
+  --border: #e2ddd3;
+  --accent: #07234a;
+  --accent-soft: #e8eef5;
+  --success: #047857;
+  --danger: #b91c1c;
+  --ring: #0f766e;
+  --gold: #b8975a;
+  --header: rgba(246, 243, 236, 0.94);
+  --hero-from: #07234a;
+  --hero-via: #0a2d5c;
+  --hero-to: #0b1220;
+  --shadow: 0 8px 28px -18px rgba(7, 35, 74, 0.28);
+  --mesh-a: rgba(7, 35, 74, 0.04);
+  --mesh-b: rgba(15, 118, 110, 0.05);
+  --mesh-c: rgba(184, 151, 90, 0.04);
 }
 
 .dark {
-  --background: #070b14;
-  --foreground: #e5eefb;
-  --brand: #2dd4bf;
+  --background: #0b1220;
+  --foreground: #e8eef5;
+  --brand: #2a9d94;
   --brand-dark: #5eead4;
-  --brand-soft: #134e4a;
-  --card: #0f172a;
+  --brand-soft: #123c39;
+  --card: #121a2b;
   --muted: #94a3b8;
-  --border: #1e293b;
-  --accent: #818cf8;
-  --accent-soft: #1e1b4b;
+  --border: #243044;
+  --accent: #c4a35a;
+  --accent-soft: #1a2438;
   --success: #34d399;
-  --danger: #fb7185;
-  --ring: #2dd4bf;
-  --header: rgba(15, 23, 42, 0.82);
-  --hero-from: #042f2e;
-  --hero-via: #134e4a;
-  --hero-to: #312e81;
-  --shadow: 0 16px 48px -24px rgba(0, 0, 0, 0.75);
-  --mesh-a: rgba(45, 212, 191, 0.08);
-  --mesh-b: rgba(99, 102, 241, 0.1);
-  --mesh-c: rgba(244, 114, 182, 0.06);
+  --danger: #f87171;
+  --ring: #2a9d94;
+  --gold: #c4a35a;
+  --header: rgba(11, 18, 32, 0.94);
+  --hero-from: #061828;
+  --hero-via: #07234a;
+  --hero-to: #0b1220;
+  --shadow: 0 12px 36px -20px rgba(0, 0, 0, 0.65);
+  --mesh-a: rgba(15, 118, 110, 0.06);
+  --mesh-b: rgba(184, 151, 90, 0.04);
+  --mesh-c: rgba(7, 35, 74, 0.2);
 }
 
 @theme inline {
@@ -95,51 +98,48 @@ html {
   box-shadow: var(--shadow);
 }
 
+/* Solid editorial card — no glassmorphism spectacle */
 .glass-card {
-  background: color-mix(in oklab, var(--card) 88%, transparent);
-  backdrop-filter: blur(10px);
+  background: var(--card);
+  border: 1px solid var(--border);
 }
 
 .ambient-mesh {
   background:
-    radial-gradient(ellipse 80% 60% at 10% -10%, var(--mesh-a), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 0%, var(--mesh-b), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 50% 100%, var(--mesh-c), transparent 55%),
-    linear-gradient(180deg, transparent, transparent);
+    radial-gradient(ellipse 70% 50% at 8% 0%, var(--mesh-a), transparent 58%),
+    radial-gradient(ellipse 55% 40% at 92% 8%, var(--mesh-b), transparent 52%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, var(--mesh-c), transparent 60%);
 }
 
 .ambient-grid {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--border) 55%, transparent) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    linear-gradient(to right, color-mix(in oklab, var(--border) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 40%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 15%, transparent 72%);
+  opacity: 0.35;
 }
 
+/* Soft navy wash — replaces floating glow orbs */
 .hero-orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(40px);
-  opacity: 0.45;
-  animation: floaty 12s ease-in-out infinite;
-}
-
-@keyframes floaty {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-18px) scale(1.05); }
+  filter: blur(56px);
+  opacity: 0.18;
+  pointer-events: none;
 }
 
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .rise-in {
-  animation: rise-in 0.55s ease-out both;
+  animation: rise-in 0.45s ease-out both;
 }
 
 .result-panel {
-  animation: rise-in 0.35s ease-out;
+  animation: rise-in 0.3s ease-out;
 }
 
 .kbd {
@@ -147,10 +147,39 @@ html {
   font-size: 0.7rem;
   border: 1px solid var(--border);
   border-bottom-width: 2px;
-  border-radius: 0.4rem;
+  border-radius: 0.35rem;
   padding: 0.1rem 0.35rem;
   color: var(--muted);
   background: color-mix(in oklab, var(--card) 80%, var(--border));
+}
+
+/* Classic navy / teal action buttons */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.btn-primary:hover {
+  opacity: 0.92;
+}
+.btn-teal {
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition: opacity 0.15s ease;
+}
+.btn-teal:hover {
+  opacity: 0.92;
+}
+
+.section-title {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
 }
 
 @media (prefers-reduced-motion: reduce) {

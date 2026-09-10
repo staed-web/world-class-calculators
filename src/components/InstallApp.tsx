@@ -55,7 +55,7 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
           }}
         >
           <span
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-teal-500/20 to-indigo-500/20 text-brand ring-1 ring-teal-500/25"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand ring-1 ring-[color-mix(in_oklab,var(--brand)_25%,transparent)]"
             aria-hidden
           >
             <InstallGlyph />
@@ -100,10 +100,9 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
         aria-label="Install MyCalcsWorld"
       >
         <div
-          className="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl border border-border/80 shadow-[var(--shadow)] backdrop-blur-xl"
+          className="pointer-events-auto w-full max-w-md overflow-hidden rounded-xl border border-border shadow-[var(--shadow)]"
           style={{
-            background:
-              "color-mix(in oklab, var(--card) 92%, transparent)",
+            background: "var(--card)",
           }}
         >
           <div className="flex gap-3 p-3.5 sm:p-4">
@@ -112,7 +111,7 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
               alt=""
               width={48}
               height={48}
-              className="h-12 w-12 shrink-0 rounded-xl shadow-sm ring-1 ring-teal-500/20"
+              className="h-12 w-12 shrink-0 rounded-full shadow-sm ring-1 ring-[color-mix(in_oklab,var(--gold)_40%,transparent)]"
             />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-foreground">
@@ -125,7 +124,7 @@ export function InstallApp({ variant = "banner", onNavigated }: Props) {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <button
                   type="button"
-                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-teal-600 to-indigo-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:opacity-95"
+                  className="btn-primary inline-flex min-h-10 items-center justify-center px-3.5 text-xs shadow-sm"
                   onClick={async () => {
                     if (canNativePrompt) {
                       await promptInstall();
@@ -215,11 +214,11 @@ function IosTipSheet({
         aria-label="Close"
         onClick={onClose}
       />
-      <div className="relative z-10 m-3 w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-2xl pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+      <div className="relative z-10 m-3 w-full max-w-sm overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xl pb-[max(1.25rem,env(safe-area-inset-bottom))]">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand">
           iPhone & iPad
         </p>
-        <h2 className="mt-1 text-lg font-bold text-foreground">
+        <h2 className="mt-1 font-serif text-lg font-semibold text-foreground">
           Add to Home Screen
         </h2>
         <ol className="mt-4 space-y-3 text-sm text-foreground/90">
@@ -249,7 +248,7 @@ function IosTipSheet({
         <div className="mt-5 flex gap-2">
           <button
             type="button"
-            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-teal-600 to-indigo-600 text-sm font-semibold text-white"
+            className="btn-primary inline-flex min-h-11 flex-1 items-center justify-center text-sm"
             onClick={onClose}
           >
             Got it

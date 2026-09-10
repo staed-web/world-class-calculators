@@ -31,7 +31,7 @@ export function RecentlyUsedCalculators({
     <section className={className} aria-label="Recently used calculators">
       <div className="mb-3 flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          <h2 className="section-title text-xl sm:text-2xl">
             Recently used
           </h2>
           <p className="text-sm text-muted mt-0.5">

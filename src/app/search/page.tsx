@@ -20,7 +20,7 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="text-3xl font-bold text-foreground">Search</h1>
+      <h1 className="font-serif text-3xl font-semibold text-foreground">Search</h1>
       <div className="mt-4 max-w-xl">
         <SearchBar initialQuery={q} autofocus />
       </div>
@@ -38,7 +38,7 @@ export default async function SearchPage({
             </div>
           </>
         ) : (
-          <div className="mt-6 rounded-2xl border border-dashed border-border p-8 text-center">
+          <div className="mt-6 rounded-xl border border-dashed border-border p-8 text-center">
             <p className="text-base font-semibold text-foreground">
               No calculators match “{q}”
             </p>

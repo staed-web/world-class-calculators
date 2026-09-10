@@ -28,7 +28,7 @@ export default function NotFound() {
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">
         404
       </p>
-      <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+      <h1 className="mt-2 font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
         We could not find that page
       </h1>
       <p className="mt-3 text-muted leading-relaxed">
@@ -41,7 +41,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-10">
-        <h2 className="text-lg font-bold text-foreground">Helpful calculators</h2>
+        <h2 className="font-serif text-lg font-semibold text-foreground">Helpful calculators</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {helpful.map((c) => (
             <li key={c.slug}>
@@ -58,7 +58,7 @@ export default function NotFound() {
 
       {popular.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-lg font-bold text-foreground">Popular right now</h2>
+          <h2 className="font-serif text-lg font-semibold text-foreground">Popular right now</h2>
           <ul className="mt-3 space-y-2">
             {popular.map((c) => (
               <li key={c.slug}>

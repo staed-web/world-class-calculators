@@ -28,7 +28,7 @@ export function LiveCurrencyConverter() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-5">
-      <div className="lg:col-span-3 space-y-4 rounded-2xl surface-card glass-card p-6">
+      <div className="lg:col-span-3 space-y-4 rounded-xl surface-card p-6">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
             Convert
@@ -112,8 +112,8 @@ export function LiveCurrencyConverter() {
       </div>
 
       <div className="lg:col-span-2">
-        <div className="result-panel rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/95 via-white to-indigo-50/40 p-6 shadow-sm dark:border-teal-900 dark:from-teal-950/50 dark:via-card dark:to-indigo-950/30">
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
+        <div className="result-panel rounded-xl border border-border bg-card p-6 shadow-sm">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[var(--accent)] dark:text-brand">
             Results
           </h2>
           {result ? (

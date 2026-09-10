@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold text-foreground">About MyCalcsWorld</h1>
+      <h1 className="font-serif text-3xl font-semibold text-foreground">About MyCalcsWorld</h1>
       <p className="mt-2 text-sm text-muted">
         Last updated: September 10, 2026 (IST)
       </p>
@@ -36,7 +36,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">For a worldwide audience</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">For a worldwide audience</h2>
       <p className="mt-2 text-muted leading-relaxed">
         Tools cover planning people do everywhere:{" "}
         <strong className="text-foreground">loan EMI</strong>,{" "}
@@ -46,7 +46,7 @@ export default function AboutPage() {
         units and currency that fit your situation — we do not assume one country.
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Privacy &amp; how math runs</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Privacy &amp; how math runs</h2>
       <p className="mt-2 text-muted leading-relaxed">
         Core calculator math runs in your browser. No account is required. Hosting logs and
         advertising (when shown) follow standard web practice — see{" "}
@@ -56,7 +56,7 @@ export default function AboutPage() {
         .
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Who we are</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Who we are</h2>
       <p className="mt-2 text-muted leading-relaxed">
         MyCalcsWorld is an independently operated project at{" "}
         <a href="https://mycalcsworld.online" className="text-brand hover:underline">
@@ -77,7 +77,7 @@ export default function AboutPage() {
         .
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">What you will find here</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">What you will find here</h2>
       <ul className="mt-2 list-disc pl-5 text-muted space-y-1">
         <li>A growing library of free, working calculators</li>
         <li>Search and categories so you can find the right tool quickly</li>
@@ -85,14 +85,14 @@ export default function AboutPage() {
         <li>Related tools when you want to dig a little deeper</li>
       </ul>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">What this site is not</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">What this site is not</h2>
       <p className="mt-2 text-muted leading-relaxed">
         We do not claim to include every calculator on earth. Regulated financial products,
         personalized tax filing, and live trading desks are out of scope. Currency and commodity
         quotes are delayed educational references with fallbacks — not executable market orders.
       </p>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Why people use MyCalcsWorld</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Why people use MyCalcsWorld</h2>
       <ul className="mt-2 list-disc pl-5 text-muted space-y-2">
         <li>
           <strong className="text-foreground">Runs in your browser</strong> — core calculations
@@ -117,7 +117,7 @@ export default function AboutPage() {
         </li>
       </ul>
 
-      <h2 className="mt-8 text-xl font-semibold text-foreground">Our standards</h2>
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Our standards</h2>
       <ul className="mt-2 list-disc pl-5 text-muted space-y-2 text-sm leading-relaxed">
         <li>
           <strong className="text-foreground">Practical tools</strong> — built around real planning

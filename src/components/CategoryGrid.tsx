@@ -11,15 +11,15 @@ export function CategoryGrid() {
           <Link
             key={c.slug}
             href={`/categories/${c.slug}`}
-            className={`rounded-2xl border p-4 transition hover:shadow-md hover:-translate-y-0.5 ${c.color}`}
+            className={`rounded-xl border p-4 transition hover:shadow-md ${c.color}`}
           >
             <div className="flex items-start justify-between gap-2">
               <div className="text-2xl mb-1">{c.icon}</div>
-              <span className="rounded-full bg-white/70 px-2 py-0.5 text-[11px] font-semibold dark:bg-black/20">
+              <span className="rounded-full bg-white/80 px-2 py-0.5 text-[11px] font-semibold text-[var(--accent)] dark:bg-black/25">
                 {count}
               </span>
             </div>
-            <div className="font-semibold">{c.name}</div>
+            <div className="font-serif font-semibold">{c.name}</div>
             <div className="text-xs opacity-80 mt-1 line-clamp-2">{c.description}</div>
           </Link>
         );

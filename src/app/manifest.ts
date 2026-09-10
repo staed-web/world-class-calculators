@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 
-/** Brand teal from globals.css :root --brand / dark splash --background */
-const THEME_COLOR = "#0f766e";
-const BACKGROUND_COLOR = "#070b14";
+/** Classic navy from globals.css — Mark 2 seal */
+const THEME_COLOR = "#07234a";
+const BACKGROUND_COLOR = "#0b1220";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {

@@ -68,7 +68,7 @@ export function ScientificCalculator() {
 
   return (
     <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="mb-3 rounded-xl bg-slate-900 px-4 py-4 text-right font-mono text-2xl text-teal-300 break-all min-h-[3.5rem]">
+      <div className="mb-3 rounded-xl bg-[#07234a] px-4 py-4 text-right font-mono text-2xl text-[#d4e4f7] break-all min-h-[3.5rem]">
         {display}
       </div>
       {error && <p className="mb-2 text-xs text-rose-600">{error}</p>}
@@ -80,7 +80,7 @@ export function ScientificCalculator() {
             onClick={() => press(key)}
             className={`rounded-xl py-3 text-sm font-semibold transition ${
               key === "="
-                ? "bg-teal-600 text-white hover:bg-teal-700"
+                ? "bg-brand text-white hover:opacity-90"
                 : ["C", "←"].includes(key)
                   ? "bg-rose-50 text-rose-700 hover:bg-rose-100"
                   : "bg-slate-100 text-slate-800 hover:bg-slate-200"

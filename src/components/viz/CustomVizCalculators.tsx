@@ -78,8 +78,8 @@ function Field({
 
 function Results({ items }: { items: Array<{ label: string; value: string; emphasize?: boolean }> }) {
   return (
-    <div className="rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-50/90 to-white p-5 dark:border-teal-900 dark:from-teal-950/40 dark:to-card">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--accent)] dark:text-brand">
         Results
       </h3>
       <dl className="space-y-2">

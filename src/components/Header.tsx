@@ -175,7 +175,7 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 border-b border-border/80 backdrop-blur-xl pt-[env(safe-area-inset-top)]"
+      className="sticky top-0 z-50 border-b border-border pt-[env(safe-area-inset-top)]"
       style={{ background: "var(--header)" }}
     >
       {/* Compact top bar — always */}
@@ -191,7 +191,7 @@ export function Header() {
             alt=""
             width={36}
             height={36}
-            className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-cover shadow-sm ring-1 ring-[#07234a]/15 transition group-hover:scale-105"
+            className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover shadow-sm ring-1 ring-[#07234a]/20 transition group-hover:ring-[#07234a]/40"
             priority
           />
           <BrandWordmark
@@ -259,7 +259,7 @@ export function Header() {
         className={`hidden lg:block border-t border-border/70 overflow-x-auto overscroll-x-contain transition-[max-height,opacity] duration-200 ${
           compact ? "max-h-0 opacity-0 overflow-hidden border-0" : "max-h-14 opacity-100"
         }`}
-        style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)" }}
+        style={{ background: "color-mix(in oklab, var(--background) 88%, var(--card))" }}
       >
         <div className="mx-auto flex max-w-6xl gap-1 px-4 py-2 text-xs font-medium text-muted">
           {categories.map((c) => (

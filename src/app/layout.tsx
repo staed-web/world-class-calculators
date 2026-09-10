@@ -30,8 +30,8 @@ const siteUrl =
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0f766e" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    { media: "(prefers-color-scheme: light)", color: "#07234a" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
   ],
   colorScheme: "light dark",
   viewportFit: "cover",
@@ -104,10 +104,10 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("wcc-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}})();`,
           }}
         />
-        {/* App shell: mesh lives here (not on body/html) so portals stay viewport-fixed. */}
+        {/* App shell: subtle wash lives here (not on body/html) so portals stay viewport-fixed. */}
         <div className="relative isolate flex min-h-full flex-1 flex-col">
           <div
-            className="pointer-events-none absolute inset-0 -z-10 ambient-mesh"
+            className="pointer-events-none absolute inset-0 -z-10 ambient-mesh opacity-80"
             aria-hidden
           />
           <CurrencyProvider>

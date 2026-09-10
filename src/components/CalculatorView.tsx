@@ -146,7 +146,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         >
           {cat?.icon} {cat?.name}
         </span>
-        <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-foreground text-balance">
+        <h1 className="mt-2 font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-foreground text-balance">
           {calc.name}
         </h1>
         <p className="mt-2 max-w-3xl text-muted text-sm sm:text-base leading-relaxed">
@@ -229,8 +229,8 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         <aside className="hidden lg:block space-y-4 no-print">
           <AdSlot placement="sidebar" />
           {related.length > 0 && (
-            <div className="rounded-2xl surface-card p-4 sticky top-28">
-              <h2 className="mb-3 text-sm font-semibold text-foreground">
+            <div className="rounded-xl surface-card p-4 sticky top-28">
+              <h2 className="mb-3 font-serif text-sm font-semibold text-foreground">
                 Related tools
               </h2>
               <ul className="space-y-2">
@@ -259,7 +259,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
       {/* Mobile related rail (desktop has sidebar) */}
       {related.length > 0 && (
         <section className="mt-8 lg:hidden no-print" aria-label="Related tools">
-          <h2 className="mb-3 text-lg font-bold text-foreground">Related tools</h2>
+          <h2 className="mb-3 font-serif text-lg font-semibold text-foreground">Related tools</h2>
           <div className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 [-webkit-overflow-scrolling:touch]">
             {related.map((r) => (
               <Link
@@ -276,7 +276,7 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
 
       {related.length > 0 && (
         <section className="mt-10 sm:mt-12 no-print">
-          <h2 className="mb-4 text-xl font-bold text-foreground">
+          <h2 className="mb-4 font-serif text-xl font-semibold text-foreground">
             You might also like
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

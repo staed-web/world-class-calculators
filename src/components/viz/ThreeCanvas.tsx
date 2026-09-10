@@ -13,7 +13,7 @@ export function ThreeCanvas({
 }) {
   return (
     <div
-      className={`relative h-72 w-full overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 ${className}`}
+      className={`relative h-72 w-full overflow-hidden rounded-2xl border border-border bg-[#0b1220] ${className}`}
     >
       <Suspense
         fallback={

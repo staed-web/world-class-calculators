@@ -43,11 +43,11 @@ export function CategoryDirectory({ items }: { items: DirectoryItem[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted">
+        <div className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted">
           No calculators match “{q}”. Try a shorter keyword.
         </div>
       ) : (
-        <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+        <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
           {filtered.map((c) => (
             <li key={c.slug}>
               <Link
