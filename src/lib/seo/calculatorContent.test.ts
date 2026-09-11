@@ -5,6 +5,7 @@ import {
   getAllCalculatorSeoCoverage,
   popularPlanningSlugs,
   seoContentSlugs,
+  highTrafficSlugs,
 } from "./calculatorContent";
 import { allCalculators, getCalculatorBySlug } from "@/lib/calculators/registry";
 
@@ -151,5 +152,39 @@ describe("calculator SEO content", () => {
     }
     // Parity bar: almost the entire catalog — long-tail defaults + merge padding.
     expect(full).toBeGreaterThanOrEqual(Math.floor(allCalculators.length * 0.95));
+  });
+
+  it("every calculator has unique seoTitle and meta description", () => {
+    const titles = new Map<string, string>();
+    const descs = new Map<string, string>();
+    for (const calc of allCalculators) {
+      const c = getCalculatorSeoContent(calc.slug)!;
+      const title = (c.seoTitle || "").trim();
+      const desc = (c.seoDescription || "").trim();
+      expect(title.length, calc.slug).toBeGreaterThanOrEqual(12);
+      expect(desc.length, calc.slug).toBeGreaterThanOrEqual(40);
+      if (titles.has(title)) {
+        throw new Error(`Duplicate seoTitle for ${calc.slug} and ${titles.get(title)}: ${title}`);
+      }
+      titles.set(title, calc.slug);
+      // Descriptions may rarely collide on thin stubs; prefer uniqueness.
+      if (descs.has(desc)) {
+        throw new Error(`Duplicate seoDescription for ${calc.slug} and ${descs.get(desc)}`);
+      }
+      descs.set(desc, calc.slug);
+    }
+  });
+
+  it("high-traffic planning tools stay deep", () => {
+    expect(highTrafficSlugs.length).toBeGreaterThanOrEqual(50);
+    for (const slug of highTrafficSlugs) {
+      expect(getCalculatorBySlug(slug), slug).toBeTruthy();
+      const c = getCalculatorSeoContent(slug)!;
+      expect((c.overview?.length ?? 0), slug).toBeGreaterThanOrEqual(400);
+      expect((c.howToUse?.length ?? 0), slug).toBeGreaterThanOrEqual(5);
+      expect((c.faqs?.length ?? 0), slug).toBeGreaterThanOrEqual(5);
+      expect((c.seoTitle?.length ?? 0), slug).toBeGreaterThanOrEqual(12);
+      expect((c.seoDescription?.length ?? 0), slug).toBeGreaterThanOrEqual(50);
+    }
   });
 });

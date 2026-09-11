@@ -6,6 +6,7 @@ import {
   getCalculatorsByCategory,
   calculatorPath,
 } from "@/lib/calculators/registry";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { AdSlot } from "@/components/AdSlot";
 import { CategoryDirectory } from "@/components/CategoryDirectory";
 import { CategoryIcon } from "@/components/CategoryIcon";
@@ -22,9 +23,21 @@ export async function generateMetadata({
   const { slug } = await params;
   const cat = getCategory(slug);
   if (!cat) return { title: "Category" };
+  const title = `${cat.name} Calculators`;
+  const description = cat.description;
+  const canonical = `${SITE_URL}/categories/${cat.slug}`;
   return {
-    title: `${cat.name} Calculators`,
-    description: cat.description,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: SITE_NAME,
+      type: "website",
+    },
+    twitter: { card: "summary", title, description },
   };
 }
 

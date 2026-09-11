@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allCalculators, getCalculator } from "@/lib/calculators/registry";
+import { allCalculators, getCalculator, calculatorPath } from "@/lib/calculators/registry";
 import { getCalculatorSeoContent } from "@/lib/seo/calculatorContent";
 import { CalculatorView } from "@/components/CalculatorView";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return allCalculators.map((c) => ({
@@ -20,10 +21,38 @@ export async function generateMetadata({
   const calc = getCalculator(category, slug);
   if (!calc) return { title: "Calculator" };
   const seo = getCalculatorSeoContent(calc.slug);
+  const title = seo?.seoTitle || calc.name;
+  const description = seo?.seoDescription || calc.description;
+  const path = calculatorPath(calc);
+  const canonical = `${SITE_URL}${path}`;
+  const ogImage = {
+    url: "/logo-mark-lg.png",
+    width: 256,
+    height: 256,
+    alt: SITE_NAME,
+  };
+
   return {
-    title: seo?.seoTitle || calc.name,
-    description: seo?.seoDescription || calc.description,
+    title,
+    description,
     keywords: calc.keywords,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title,
+      description,
+      url: canonical,
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+      images: [ogImage.url],
+    },
   };
 }
 

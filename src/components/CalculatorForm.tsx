@@ -1,12 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import type { FieldDef, ResultChartBar, ResultItem, ResultTable } from "@/lib/types";
 import { getCalculator } from "@/lib/calculators/registry";
-import { ResultLineChartView } from "@/components/charts/ResultLineChart";
 import { AnimatedNumber } from "@/components/charts/AnimatedNumber";
 import { useCurrency } from "./CurrencyProvider";
 import { CurrencyPicker } from "./CurrencyPicker";
+
+const ResultLineChartView = dynamic(
+  () =>
+    import("@/components/charts/ResultLineChart").then(
+      (m) => m.ResultLineChartView
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-3 h-48 animate-pulse rounded-xl border border-border bg-muted/20" aria-hidden />
+    ),
+  }
+);
 
 function FieldControl({
   f,

@@ -2,12 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { CopyEmailButton } from "@/components/CopyEmailButton";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { CONTACT_EMAIL, SITE_URL, contactMailto } from "@/lib/site";
 import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: `Contact MyCalcsWorld at ${CONTACT_EMAIL} — feedback, corrections, and partnership notes.`,
+  alternates: { canonical: `${SITE_URL}/contact` },
+  openGraph: {
+    title: "Contact | MyCalcsWorld",
+    description: `Reach MyCalcsWorld at ${CONTACT_EMAIL}.`,
+    url: `${SITE_URL}/contact`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Contact | MyCalcsWorld",
+    description: `Reach MyCalcsWorld at ${CONTACT_EMAIL}.`,
+  },
 };
 
 export default function ContactPage() {

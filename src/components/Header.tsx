@@ -147,6 +147,13 @@ export function Header() {
                 <div className="space-y-1 border-t border-border pt-4">
                   <InstallApp variant="menu" onNavigated={() => setOpen(false)} />
                   <Link
+                    href="/calculators"
+                    className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
+                    onClick={() => setOpen(false)}
+                  >
+                    All calculators
+                  </Link>
+                  <Link
                     href="/about"
                     className="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium hover:bg-brand-soft/50"
                     onClick={() => setOpen(false)}
@@ -210,6 +217,9 @@ export function Header() {
           className="hidden lg:flex items-center gap-3 text-sm font-medium text-muted"
           aria-label="Primary"
         >
+          <Link href="/calculators" className="hover:text-brand transition min-h-10 inline-flex items-center">
+            Calculators
+          </Link>
           <Link href="/#categories" className="hover:text-brand transition min-h-10 inline-flex items-center">
             Categories
           </Link>

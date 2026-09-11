@@ -6,6 +6,10 @@ import {
 } from "./seoDefaults";
 import { calculatorSeoExtra } from "./overridesExtra";
 import { calculatorSeoParity } from "./overridesParity";
+import {
+  calculatorSeoHighTraffic,
+  highTrafficSlugs,
+} from "./overridesHighTraffic";
 
 /** High-ROI FAQ / how-to / SEO overlays keyed by calculator slug. */
 export const calculatorSeoContent: Record<string, CalculatorSeoContent> = {
@@ -2399,11 +2403,19 @@ for (const [slug, extra] of Object.entries(calculatorSeoExtra)) {
   calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
 }
 
+// High-traffic named tools (salary, GPA, calorie/TDEE, pregnancy, age, …).
+for (const [slug, extra] of Object.entries(calculatorSeoHighTraffic)) {
+  const prev = calculatorSeoContent[slug];
+  calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
+}
+
 // Flagship-parity overlays for spot-check / popular tools (win last when equally specified).
 for (const [slug, extra] of Object.entries(calculatorSeoParity)) {
   const prev = calculatorSeoContent[slug];
   calculatorSeoContent[slug] = prev ? { ...prev, ...extra } : extra;
 }
+
+export { highTrafficSlugs };
 
 export const seoContentSlugs = Object.keys(calculatorSeoContent);
 

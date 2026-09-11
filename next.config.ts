@@ -28,6 +28,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Apex preference: www → non-www (also in vercel.json for edge hosts)
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.mycalcsworld.online" }],
+        destination: "https://mycalcsworld.online/:path*",
+        permanent: true,
+      },
       // Category shorthand: /calculators/finance → /categories/finance
       {
         source: "/calculators/:category",

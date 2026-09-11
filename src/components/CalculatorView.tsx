@@ -8,9 +8,6 @@ import {
 } from "@/lib/calculators/registry";
 import { getCalculatorSeoContent } from "@/lib/seo/calculatorContent";
 import { CalculatorForm } from "./CalculatorForm";
-import { ScientificCalculator } from "./ScientificCalculator";
-import { LiveCommoditiesCalculator } from "./LiveCommoditiesCalculator";
-import { LiveCurrencyConverter } from "./LiveCurrencyConverter";
 import { AdSlot } from "./AdSlot";
 import { DisclaimerBanner } from "./DisclaimerBanner";
 import { CalculatorCard } from "./CalculatorCard";
@@ -19,20 +16,22 @@ import {
   FaqJsonLd,
   TrustStrip,
 } from "./seo/CalculatorGuide";
+import { BreadcrumbJsonLd } from "./seo/JsonLd";
 import { TrackRecentCalculator } from "./TrackRecentCalculator";
 import { FavoriteButton } from "./FavoriteButton";
 import { CategoryIcon } from "./CategoryIcon";
 import { ContactEmail } from "./ContactEmail";
+import { SITE_URL } from "@/lib/site";
 import {
-  Function3DCalculator,
-  Pythagoras3DCalculator,
-  Sphere3DCalculator,
-  Cylinder3DCalculator,
-  Compound3DCalculator,
-} from "./viz/CustomVizCalculators";
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
+  LazyScientificCalculator as ScientificCalculator,
+  LazyLiveCommoditiesCalculator as LiveCommoditiesCalculator,
+  LazyLiveCurrencyConverter as LiveCurrencyConverter,
+  LazyFunction3DCalculator as Function3DCalculator,
+  LazyPythagoras3DCalculator as Pythagoras3DCalculator,
+  LazySphere3DCalculator as Sphere3DCalculator,
+  LazyCylinder3DCalculator as Cylinder3DCalculator,
+  LazyCompound3DCalculator as Compound3DCalculator,
+} from "./LazyCalcWidgets";
 
 function relatedFor(calc: CalculatorMeta): CalculatorMeta[] {
   const fromMeta = (calc.related ?? [])
@@ -108,8 +107,9 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
   const cat = categoryMap[calc.category];
   const related = relatedFor(calc);
   const seo = getCalculatorSeoContent(calc.slug);
-  const pageUrl = `${siteUrl}${calculatorPath(calc)}`;
+  const pageUrl = `${SITE_URL}${calculatorPath(calc)}`;
   const href = calculatorPath(calc);
+  const categoryUrl = `${SITE_URL}/categories/${calc.category}`;
 
   return (
     <div className="mx-auto max-w-6xl px-3 sm:px-4 py-5 sm:py-8 min-w-0 w-full overflow-x-clip">
@@ -118,6 +118,13 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
         category={calc.category}
         name={calc.name}
         href={href}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: cat?.name || calc.category, url: categoryUrl },
+          { name: calc.name, url: pageUrl },
+        ]}
       />
       {seo?.faqs && seo.faqs.length > 0 && (
         <FaqJsonLd faqs={seo.faqs} pageUrl={pageUrl} name={calc.name} />
@@ -128,6 +135,12 @@ export function CalculatorView({ calc }: { calc: CalculatorMeta }) {
           <li>
             <Link href="/" className="hover:text-brand">
               Home
+            </Link>
+          </li>
+          <li aria-hidden className="px-1">/</li>
+          <li>
+            <Link href="/calculators" className="hover:text-brand">
+              Calculators
             </Link>
           </li>
           <li aria-hidden className="px-1">/</li>

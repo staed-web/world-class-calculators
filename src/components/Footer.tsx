@@ -44,6 +44,11 @@ export function Footer() {
           <div>
             <p className="font-serif text-white font-semibold mb-2">More</p>
             <ul className="space-y-1 text-sm">
+              <li>
+                <Link href="/calculators" className="hover:text-[#9fd4cf]">
+                  All calculators
+                </Link>
+              </li>
               {categories.slice(6).map((c) => (
                 <li key={c.slug}>
                   <Link href={`/categories/${c.slug}`} className="hover:text-[#9fd4cf]">
@@ -51,6 +56,11 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/calculators/finance/currency-converter" className="hover:text-[#9fd4cf]">
+                  Currency converter
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -75,13 +85,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-[#9fd4cf]">
-                  Disclaimer
+                <Link href="/terms" className="hover:text-[#9fd4cf]">
+                  Terms
                 </Link>
               </li>
               <li>
-                <Link href="/calculators/finance/currency-converter" className="hover:text-[#9fd4cf]">
-                  Currency converter
+                <Link href="/disclaimer" className="hover:text-[#9fd4cf]">
+                  Disclaimer
                 </Link>
               </li>
             </ul>

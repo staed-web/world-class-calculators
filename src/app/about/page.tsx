@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { calculatorCount } from "@/lib/calculators/registry";
-import { CONTACT_EMAIL, contactMailto } from "@/lib/site";
+import { SITE_URL, contactMailto } from "@/lib/site";
 import { ContactEmail } from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "About MyCalcsWorld",
   description:
     "About MyCalcsWorld — free browser-based calculators for finance, math, health, and everyday life. Honest scope, clear formulas, and client-side math for everyone worldwide.",
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    title: "About MyCalcsWorld",
+    description:
+      "Free browser-based calculators with guides, FAQs, and charts — not a bank or clinic.",
+    url: `${SITE_URL}/about`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "About MyCalcsWorld",
+    description:
+      "Free browser-based calculators with guides, FAQs, and charts.",
+  },
 };
 
 export default function AboutPage() {
@@ -15,7 +29,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="font-serif text-3xl font-semibold text-foreground">About MyCalcsWorld</h1>
       <p className="mt-2 text-sm text-muted">
-        Last updated: September 10, 2026 (IST)
+        Last updated: September 11, 2026 (IST)
       </p>
       <p className="mt-1 text-xs text-muted">
         Operated independently · Contact{" "}
@@ -45,6 +59,20 @@ export default function AboutPage() {
         units and currency that fit your situation — we do not assume one country.
       </p>
 
+      <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Browse the library</h2>
+      <p className="mt-2 text-muted leading-relaxed">
+        Start at the{" "}
+        <Link href="/calculators" className="text-brand hover:underline">
+          all calculators hub
+        </Link>
+        , jump by{" "}
+        <Link href="/#categories" className="text-brand hover:underline">
+          category
+        </Link>
+        , or use search. Every tool page includes when-to-use tips, common mistakes, a worked
+        example, formula notes, and FAQs written for MyCalcsWorld.
+      </p>
+
       <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Privacy &amp; how math runs</h2>
       <p className="mt-2 text-muted leading-relaxed">
         Core calculator math runs in your browser. No account is required. Hosting logs and
@@ -52,13 +80,13 @@ export default function AboutPage() {
         <Link href="/privacy" className="text-brand hover:underline">
           Privacy
         </Link>
-        .
+        . Optional analytics only load if we enable a measurement ID in production.
       </p>
 
       <h2 className="mt-8 font-serif text-xl font-semibold text-foreground">Who we are</h2>
       <p className="mt-2 text-muted leading-relaxed">
         MyCalcsWorld is an independently operated project at{" "}
-        <a href="https://mycalcsworld.online" className="text-brand hover:underline">
+        <a href={SITE_URL} className="text-brand hover:underline">
           mycalcsworld.online
         </a>
         . We are not a bank, brokerage, clinic, or government portal. Results are educational
@@ -128,11 +156,27 @@ export default function AboutPage() {
         </li>
         <li>
           <strong className="text-foreground">Open to feedback</strong> — no account required for
-          core math; privacy policy and disclaimer are linked in the footer; corrections welcome at{" "}
-          <ContactEmail className="text-brand hover:underline" />
+          core math; privacy, terms, and disclaimer are linked in the footer; corrections welcome at{" "}
+          <ContactEmail href={contactMailto("About / feedback")} className="text-brand hover:underline" />
           .
         </li>
       </ul>
+
+      <p className="mt-8 text-sm text-muted">
+        Also see{" "}
+        <Link href="/terms" className="text-brand hover:underline">
+          Terms
+        </Link>
+        ,{" "}
+        <Link href="/privacy" className="text-brand hover:underline">
+          Privacy
+        </Link>
+        , and{" "}
+        <Link href="/disclaimer" className="text-brand hover:underline">
+          Disclaimer
+        </Link>
+        .
+      </p>
     </div>
   );
 }

@@ -750,12 +750,17 @@ function toolSpecificInterpret(calc: CalculatorMeta): string[] {
 export function buildDefaultCalculatorSeo(calc: CalculatorMeta): CalculatorSeoContent {
   const cat = categoryMap[calc.category];
   const { howToUse } = buildHowTo(calc);
+  const slugWords = calc.slug.replace(/-/g, " ");
+  const titleCore = calc.name.trim();
+  // Always include slug cue so identical display names stay unique in <title>.
+  const seoTitle = `${titleCore} — Free ${slugWords} calculator`;
+  const seoDescription = `${calc.description} Free ${slugWords} ${cat?.name || "online"} calculator on MyCalcsWorld with how-to, worked example, mistakes guide, and FAQs — no signup.`
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 165);
   return {
-    seoTitle: `${calc.name} — Free Online Tool with Guide & FAQ`,
-    seoDescription: `${calc.description} Free ${cat?.name || "online"} calculator on MyCalcsWorld with step-by-step how-to, worked example, common mistakes, and FAQs — no signup.`.replace(
-      /\s+/g,
-      " "
-    ).trim(),
+    seoTitle,
+    seoDescription,
     overview: buildOverview(calc),
     whenToUse: toolSpecificWhen(calc),
     commonMistakes: toolSpecificMistakes(calc),

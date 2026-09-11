@@ -6,6 +6,9 @@ import { Footer } from "@/components/Footer";
 import { CurrencyProvider } from "@/components/CurrencyProvider";
 import { PwaRegister } from "@/components/PwaRegister";
 import { InstallApp } from "@/components/InstallApp";
+import { SiteJsonLd } from "@/components/seo/JsonLd";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,9 +27,8 @@ const sourceSerif = Source_Serif_4({
   weight: ["400", "600", "700"],
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://mycalcsworld.online";
-
+const siteDescription =
+  "Free online calculators for finance, math, health, and everyday life. 280+ working tools with interactive charts, live FX, and 3D math — mortgage, SIP, BMI, and more.";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -38,14 +40,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "MyCalcsWorld — Free Online Calculators",
     template: "%s | MyCalcsWorld",
   },
-  description:
-    "Free online calculators for finance, math, health, and everyday life. 280+ working tools with interactive charts, live FX, and 3D math — mortgage, SIP, BMI, and more.",
-  applicationName: "MyCalcsWorld",
+  description: siteDescription,
+  applicationName: SITE_NAME,
   appleWebApp: {
     capable: true,
     title: "MyCalcs",
@@ -53,6 +54,9 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  alternates: {
+    canonical: "/",
   },
   icons: {
     icon: [
@@ -64,16 +68,19 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "MyCalcsWorld",
-    title: "MyCalcsWorld",
-    description:
-      "Free online calculators for finance, math, health, and everyday life.",
-    images: [{ url: "/logo-mark-lg.png", width: 256, height: 256, alt: "MyCalcsWorld" }],
+    siteName: SITE_NAME,
+    title: "MyCalcsWorld — Free Online Calculators",
+    description: siteDescription,
+    url: SITE_URL,
+    images: [
+      { url: "/logo-mark-lg.png", width: 256, height: 256, alt: "MyCalcsWorld" },
+    ],
   },
   twitter: {
     card: "summary",
-    title: "MyCalcsWorld",
-    description: "Free online calculators for finance, math, health, and everyday life.",
+    title: "MyCalcsWorld — Free Online Calculators",
+    description:
+      "Free online calculators for finance, math, health, and everyday life.",
     images: ["/logo-mark-lg.png"],
   },
   robots: { index: true, follow: true },
@@ -104,6 +111,8 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("wcc-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}})();`,
           }}
         />
+        <SiteJsonLd />
+        <GoogleAnalytics />
         {/* App shell: subtle wash lives here (not on body/html) so portals stay viewport-fixed. */}
         <div className="relative isolate flex min-h-full flex-1 flex-col">
           <div
