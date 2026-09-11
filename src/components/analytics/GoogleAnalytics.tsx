@@ -1,11 +1,13 @@
 import Script from "next/script";
 
+/** Default production GA4 stream for MyCalcsWorld (public client ID). Override with NEXT_PUBLIC_GA_MEASUREMENT_ID. */
+const DEFAULT_GA_ID = "G-Q3KLWD6CME";
+
 /**
- * Optional GA4 — only loads when NEXT_PUBLIC_GA_MEASUREMENT_ID is set
- * (e.g. G-XXXXXXXX). Leave unset in preview / until you are ready.
+ * GA4 — loads gtag when a Measurement ID is available.
  */
 export function GoogleAnalytics() {
-  const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+  const id = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || DEFAULT_GA_ID).trim();
   if (!id) return null;
 
   return (
